@@ -7,8 +7,8 @@
     5 - Contribution
     6 - Licence
 
-	wiki : https://github.com/McMuzzle/OpenSpaceTycoon/wiki
-	FAQ : https://github.com/McMuzzle/OpenSpaceTycoon/wiki/FAQ
+	wiki : https://github.com/BorealianStudio/OpenSpaceTycoon/wiki
+	FAQ : https://github.com/BorealianStudio/OpenSpaceTycoon/wiki/FAQ
 	
 1 - Introduction
 	
@@ -33,7 +33,7 @@
 	un tag "ToImplement"
 	
 	Pour les détails sur les façons de contribuer, regardez la page wiki de la contribution :
-	https://github.com/McMuzzle/OpenSpaceTycoon/wiki/Contributions
+	https://github.com/BorealianStudio/OpenSpaceTycoon/wiki/Contributions
 
 6 - Licence
 	Toutes les sources du projet Open space tycoon sont sous licence MIT. Pourquoi choisir l'open source? L'objectif du
