@@ -12,10 +12,10 @@
 	
 1 - Introduction
 	
-	Open space tycoon est un projet de jeu libre mettant le joueur au contrôle d'une société de transport de marchandise
-	insterstellaire. Le joueur devra réuissir à maximiser ses profits s'il veut pouvoir être victorieux. Pour se faire
-	il devra créer des routes commerciales récupérant des ressources dans une des stations productrices pour les livrer
-	aux stations consomatrices.	
+	Open space tycoon est un projet de jeu libre mettant le joueur au contrôle d'une société de transport de
+	marchandise	insterstellaire. Le joueur devra réuissir à maximiser ses profits s'il veut pouvoir être 
+	victorieux. Pour se faire il devra créer des routes commerciales récupérant des ressources dans une des
+	stations productrices pour les livrer aux stations consomatrices.	
 	
 2 - Installation de l'environement
 	Pour construire l'application il faut : 
@@ -29,16 +29,17 @@
 
 5 - Contribution
 
-	Toutes contributions sont appréciées. afin de contribuer, consulter les Issues du github et choisissez en une qui a
-	un tag "ToImplement"
+	Toutes contributions sont appréciées. Les contributions peuvent concerner du code, de l'édition de la 
+	documentation ou des ajout en assets graphiques.
 	
-	Pour les détails sur les façons de contribuer, regardez la page wiki de la contribution :
+	Afin de savoir comment contribuer, consultez la page wiki suivante : 
 	https://github.com/BorealianStudio/OpenSpaceTycoon/wiki/Contributions
 
 6 - Licence
-	Toutes les sources du projet Open space tycoon sont sous licence MIT. Pourquoi choisir l'open source? L'objectif du
-	projet est de créer un projet et qui sait, réunir des gens passionés par un concept. Open source ne veux pas dire
-	que chacun fait comme il le sent, chaque contribution doit être approuvé par un administrateur du projet.
+	Toutes les sources du projet Open space tycoon sont sous licence MIT. 
+	Pourquoi choisir l'open source? L'objectif du projet est de créer un jeu et qui sait, réunir des gens passionés
+	par un concept. Open source ne veux pas dire que chacun fait comme il le sent, chaque contribution doit être 
+	approuvé par un administrateur du projet.
 
 	
 	
