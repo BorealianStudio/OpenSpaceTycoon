@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OSTData", "OSTData\OSTData.csproj", "{406CB778-6AF6-45F6-9D19-163FECBA6D08}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OSTData.tst", "OSTData.tst\OSTData.tst.csproj", "{D0A8B107-68B7-4159-85EF-8F27262EE9DB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{406CB778-6AF6-45F6-9D19-163FECBA6D08}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{406CB778-6AF6-45F6-9D19-163FECBA6D08}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{406CB778-6AF6-45F6-9D19-163FECBA6D08}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{406CB778-6AF6-45F6-9D19-163FECBA6D08}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D0A8B107-68B7-4159-85EF-8F27262EE9DB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D0A8B107-68B7-4159-85EF-8F27262EE9DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D0A8B107-68B7-4159-85EF-8F27262EE9DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D0A8B107-68B7-4159-85EF-8F27262EE9DB}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
