@@ -1,0 +1,8 @@
+language: csharp
+install:
+  - nuget restore ./Code/Solutions/OpenSpaceTycoon2015/OpenSpaceTycoon2015.sln
+  - nuget install NUnit.Runners -Version 2.6.4 -OutputDirectory testrunner
+  - nuget install NUnit -Version 2.6.4 -OutputDirectory testrunner
+script:
+  - xbuild /p:Configuration=Release ./Code/Solutions/OpenSpaceTycoon2015/OpenSpaceTycoon2015.sln
+  - mono ./testrunner/NUnit.Runners.2.6.4/tools/nunit-console.exe ./Code/Solutions/OpenSpaceTycoon2015/OSTData.tst/bin/Release/OSTData.tst.dll
