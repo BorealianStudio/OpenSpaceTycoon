@@ -1,11 +1,11 @@
-﻿
 using NUnit.Framework;
 
 namespace OSTData.tst {
     [TestFixture]
-    public class UnitTest1 {
+    public class StationUnitTest {
+
         [Test]
-        public void TestMethod1() {
+        public void Construction1() {
         }
     }
 }

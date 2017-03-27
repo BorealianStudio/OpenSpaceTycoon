@@ -54,7 +54,12 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="UnitTest1.cs" />
+    <Compile Include="..\..\..\Src\OSTData.tst\Station.cs">
+      <Link>Station.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Src\OSTData.tst\Universe.cs">
+      <Link>Universe.cs</Link>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

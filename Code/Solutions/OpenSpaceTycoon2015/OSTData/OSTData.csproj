@@ -40,6 +40,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\..\Src\OSTData\Station.cs">
+      <Link>Station.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Src\OSTData\Universe.cs">
+      <Link>Universe.cs</Link>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
