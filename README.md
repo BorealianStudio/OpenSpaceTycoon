@@ -1,4 +1,5 @@
 [![Join the chat at https://gitter.im/OpenSpaceTycoon/Lobby](https://badges.gitter.im/OpenSpaceTycoon/Lobby.svg)](https://gitter.im/OpenSpaceTycoon/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![Build Status](https://travis-ci.org/BorealianStudio/OpenSpaceTycoon.svg?branch=master)](https://travis-ci.org/BorealianStudio/OpenSpaceTycoon)
 
     1 - Introduction
     2 - Installation de l'environement
