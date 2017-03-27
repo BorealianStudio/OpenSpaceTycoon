@@ -1,6 +1,6 @@
 language: csharp
 install:
-  - nuget restore solution-name.sln
+  - nuget restore ./code/Solutions/OpenSpaceTycoon2015/OpenSpaceTycoon2015.sln
   - nuget install NUnit.Runners -Version 2.6.4 -OutputDirectory testrunner
 script:
   - xbuild /p:Configuration=Release ./code/Solutions/OpenSpaceTycoon2015/OpenSpaceTycoon2015.sln
