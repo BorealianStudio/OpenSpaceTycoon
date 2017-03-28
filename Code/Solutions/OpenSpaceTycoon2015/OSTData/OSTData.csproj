@@ -40,6 +40,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\..\Src\OSTData\Hangar.cs">
+      <Link>Hangar.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Src\OSTData\ResourceElement.cs">
+      <Link>ResourceElement.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Src\OSTData\ResourceStack.cs">
+      <Link>ResourceStack.cs</Link>
+    </Compile>
     <Compile Include="..\..\..\Src\OSTData\Station.cs">
       <Link>Station.cs</Link>
     </Compile>
