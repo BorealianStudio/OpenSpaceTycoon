@@ -54,11 +54,28 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="UnitTest1.cs" />
+    <Compile Include="..\..\..\Src\OSTData.tst\ResourceElementUnitTest.cs">
+      <Link>ResourceElementUnitTest.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Src\OSTData.tst\ResourceStackUnitTest.cs">
+      <Link>ResourceStackUnitTest.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Src\OSTData.tst\StationUnitTest.cs">
+      <Link>StationUnitTest.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Src\OSTData.tst\UniverseUnitTest.cs">
+      <Link>UniverseUnitTest.cs</Link>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\OSTData\OSTData.csproj">
+      <Project>{406cb778-6af6-45f6-9d19-163fecba6d08}</Project>
+      <Name>OSTData</Name>
+    </ProjectReference>
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

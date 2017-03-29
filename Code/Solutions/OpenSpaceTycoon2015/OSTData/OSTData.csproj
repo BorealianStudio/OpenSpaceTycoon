@@ -20,6 +20,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Debug\OSTData.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -40,6 +41,21 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\..\Src\OSTData\Hangar.cs">
+      <Link>Hangar.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Src\OSTData\ResourceElement.cs">
+      <Link>ResourceElement.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Src\OSTData\ResourceStack.cs">
+      <Link>ResourceStack.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Src\OSTData\Station.cs">
+      <Link>Station.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Src\OSTData\Universe.cs">
+      <Link>Universe.cs</Link>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
