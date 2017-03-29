@@ -13,13 +13,17 @@ namespace OSTData.tst {
 
         [Test, Description("test de la construction")]
         [Ignore("Issue#11")]
-        public void Construction() {
+        public void StackConstruction() {
             //test d'un constructeur avec parametres
-            ResourceElement elem2 = new ResourceElement(ResourceElement.ResourceType.Water, station, 100, 200);
-            Assert.AreEqual(elem2.Type, ResourceElement.ResourceType.Water);
-            Assert.AreEqual(elem2.Qte, 100);
-            Assert.AreEqual(elem2.DateProd, 200);
-            Assert.AreEqual(elem2.Station, station);
+            ResourceStack stack = new ResourceStack(ResourceElement.ResourceType.Wastes);
+
+            Assert.AreEqual(stack.Qte, 0);
+            Assert.AreEqual(stack.Type, ResourceElement.ResourceType.Wastes);
+
+            ResourceElement elem = new ResourceElement(ResourceElement.ResourceType.Water, station, 100, 200);
+            ResourceStack stack2 = new ResourceStack(elem);
+            Assert.AreEqual(elem.Qte, 100);
+            Assert.AreEqual(elem.Type, ResourceElement.ResourceType.Water);                
         }
 
     }
