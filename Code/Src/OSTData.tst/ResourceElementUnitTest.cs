@@ -11,7 +11,8 @@ namespace OSTData.tst {
             station = new Station();
         }
 
-        [Test]
+        [Test, Description("test de la construction")]
+        [Ignore("Issue#8")]
         public void Construction() {
             ResourceElement elem = new ResourceElement();
 
@@ -25,11 +26,12 @@ namespace OSTData.tst {
             Assert.AreEqual(elem2.Station, station);
         }
 
-        [Test]
+        [Test, Description("Division d'un ResourceStack en 2")]
+        [Ignore("Issue#8")]
         public void Divide() {
             ResourceElement elem1 = new ResourceElement(ResourceElement.ResourceType.Water,station,100,200);
             ResourceElement elem2 = elem1.Divide(25);
-
+            
             Assert.AreEqual(elem2.Qte, 25);
             Assert.AreEqual(elem1.Qte, 75);
             Assert.AreEqual(elem2.Type,ResourceElement.ResourceType.Water);
