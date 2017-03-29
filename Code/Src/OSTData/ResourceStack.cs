@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 
 namespace OSTData {
     /// <summary>
@@ -29,6 +30,32 @@ namespace OSTData {
         /// <summary> La quantite de ressource dans ce Stack en m3</summary>
         public int Qte {
             get { throw new System.NotImplementedException(); }
+        }
+
+        /// <summary>
+        /// Ajout d'un ResourceElement a ce stack. 
+        /// </summary>
+        /// <param name="Elem"> le resourceElement a ajouter </param>
+        public void Add(ResourceElement Elem) {
+            throw new System.NotImplementedException();
+        }
+
+        /// <summary>
+        /// Permet d'extraire un ResourceStack de ce stack.
+        /// Les ressources les plus anciennes seront priorisées et Qte sera retire de ce stack
+        /// </summary>
+        /// <param name="Qte"></param>
+        /// <returns>un ResourceStack contenant Qte m3 ou null si ce n'est pas possible</returns>
+        public ResourceStack GetSubStack(int Qte) {
+            throw new System.NotImplementedException();
+        }
+
+        /// <summary>
+        /// Permet de récuperer tout les ResourceElement qui constituent ce Stack
+        /// </summary>
+        /// <returns>Une list de reference vers les ResourceElement de ce Stack</returns>
+        public List<ResourceElement> GetElements() {
+            throw new System.NotImplementedException();
         }
     }
 }
