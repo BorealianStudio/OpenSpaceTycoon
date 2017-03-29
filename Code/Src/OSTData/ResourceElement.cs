@@ -1,8 +1,8 @@
 namespace OSTData {
 
     /// <summary>
-    /// cette classe représente un tas de ressource.
-    /// Chaque tas ne peut avoir qu'un type et etre compose de ressource 
+    /// cette classe représente un element de ressource.
+    /// Chaque element ne peut avoir qu'un type et etre compose de ressource 
     /// provenant de la meme station et produite au meme moment.
     /// </summary>
     public class ResourceElement {
@@ -20,8 +20,6 @@ namespace OSTData {
             /// <summary> dechets toxiques</summary>
             ToxicWaste
         }
-        /// <summary> constructeur sans parametres </summary>
-        public ResourceElement() { }
 
         /// <summary>
         /// constructeur avec paramètres
@@ -32,7 +30,6 @@ namespace OSTData {
         /// <param name="ProductionDate"> la date ou cette ressource est produite </param>
         /// <returns>l'element retire </returns>
         public ResourceElement(ResourceType Type, Station From, int Qte, int ProductionDate) {
-            // todo 
         }
 
         #region getters
@@ -59,12 +56,15 @@ namespace OSTData {
         #region methods
 
         /// <summary>
-        /// Permet de diviser un element en 2 elements
-        /// 
+        /// Permet de diviser un element en 2 elements en creant un nouveau ResourceElement
+        /// et en enlevant la qte necessaire a cet element.
+        /// On ne peut pas diviser un element si cela aurait pour but de le vider
         /// </summary>
-        /// <param name="Qte"> la quantite a retirer de l'element </param>
-        /// <returns>l'element retire </returns>
-        public ResourceElement Divide(int Qte) {
+        /// <param name="NewElementQte"> la quantite a retirer de l'element et mettre dans
+        /// l'element cree</param>
+        /// <returns>Un nouveau ResourceElement avec la quantite demande dedans
+        ///  ou null si l'operation n'est pas possible</returns>
+        public ResourceElement Split(int NewElementQte) {
             throw new System.NotImplementedException();
         }
 

@@ -57,6 +57,9 @@
     <Compile Include="..\..\..\Src\OSTData.tst\ResourceElementUnitTest.cs">
       <Link>ResourceElementUnitTest.cs</Link>
     </Compile>
+    <Compile Include="..\..\..\Src\OSTData.tst\ResourceStackUnitTest.cs">
+      <Link>ResourceStackUnitTest.cs</Link>
+    </Compile>
     <Compile Include="..\..\..\Src\OSTData.tst\StationUnitTest.cs">
       <Link>StationUnitTest.cs</Link>
     </Compile>
