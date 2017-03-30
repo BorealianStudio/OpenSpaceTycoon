@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-
 using NUnit.Framework;
 
 namespace OSTData.tst {
@@ -36,20 +34,20 @@ namespace OSTData.tst {
             stack.Add(elem1);
             Assert.AreEqual(stack.Qte, 100);
             Assert.AreEqual(stack.Type, ResourceElement.ResourceType.Wastes);
-            Assert.AreEqual(elem1.Qte, 0);
+            Assert.AreEqual(elem1.Quantity, 0);
 
             ResourceElement elem2 = new ResourceElement(ResourceElement.ResourceType.Water, station, 50, 201);
             stack.Add(elem2);
 
             Assert.AreEqual(stack.Qte, 100);
             Assert.AreEqual(stack.Type, ResourceElement.ResourceType.Wastes);
-            Assert.AreEqual(elem2.Qte, 50);
+            Assert.AreEqual(elem2.Quantity, 50);
 
             ResourceElement elem3 = new ResourceElement(ResourceElement.ResourceType.Wastes, station, 200, 300);
             stack.Add(elem3);
             Assert.AreEqual(stack.Qte, 300);
             Assert.AreEqual(stack.Type, ResourceElement.ResourceType.Wastes);
-            Assert.AreEqual(elem3.Qte, 0);
+            Assert.AreEqual(elem3.Quantity, 0);
         }
 
         [Test, Description("creation d'un substack")]
