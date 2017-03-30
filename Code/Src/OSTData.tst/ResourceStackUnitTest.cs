@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 using NUnit.Framework;
 
 namespace OSTData.tst {
@@ -22,7 +24,7 @@ namespace OSTData.tst {
 
             ResourceElement elem = new ResourceElement(ResourceElement.ResourceType.Water, station, 100, 200);
             ResourceStack stack2 = new ResourceStack(elem);
-            Assert.AreEqual(elem.Qte, 100);
+            Assert.AreEqual(elem.Quantity, 100);
             Assert.AreEqual(elem.Type, ResourceElement.ResourceType.Water);         
         }
 
@@ -105,9 +107,9 @@ namespace OSTData.tst {
             List<ResourceElement> elems = s3.GetElements();
             Assert.AreEqual(elems.Count, 2);
             Assert.AreEqual(elems[0].DateProd, 1);
-            Assert.AreEqual(elems[0].Qte, 75);
+            Assert.AreEqual(elems[0].Quantity, 75);
             Assert.AreEqual(elems[1].DateProd, 2);
-            Assert.AreEqual(elems[1].Qte, 25);
+            Assert.AreEqual(elems[1].Quantity, 25);
         }
     }
 }

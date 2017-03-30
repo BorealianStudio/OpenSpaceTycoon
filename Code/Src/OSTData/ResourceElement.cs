@@ -29,7 +29,7 @@ namespace OSTData {
         /// <param name="qte"> la quantite en m3 </param>
         /// <param name="productionDate"> la date ou cette ressource est produite </param>
         /// <returns>l'element retire </returns>
-        public ResourceElement(ResourceType Type, Station From, int Qte, int ProductionDate) {
+        public ResourceElement(ResourceType type, Station from, int qte, int productionDate) {
             Type = type;
             Station = from;
             Quantity = qte;
