@@ -12,7 +12,6 @@ namespace OSTData.tst {
         }
 
         [Test, Description("test de la construction")]
-        [Ignore("Issue#9")]
         public void Construction() {
             //test d'un constructeur avec parametres
             ResourceElement elem2 = new ResourceElement(ResourceElement.ResourceType.Water, station, 100, 200);
@@ -23,7 +22,6 @@ namespace OSTData.tst {
         }
 
         [Test, Description("Division d'un ResourceStack en 2, cas normaux")]
-        [Ignore("Issue#9")]
         public void Divide() {
             //enlever 25 resource a elem1 pour creer elem2
             ResourceElement elem1 = new ResourceElement(ResourceElement.ResourceType.Water, station, 100, 200);
@@ -36,7 +34,6 @@ namespace OSTData.tst {
         }
 
         [Test, Description("Division d'un ResourceStack en 2, cas d'erreur")]
-        [Ignore("Issue#9")]
         public void DivideError() {
             ResourceElement elem1 = new ResourceElement(ResourceElement.ResourceType.Water, station, 100, 200);
 
