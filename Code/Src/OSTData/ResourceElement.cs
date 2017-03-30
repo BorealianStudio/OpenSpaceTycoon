@@ -24,33 +24,29 @@ namespace OSTData {
         /// <summary>
         /// constructeur avec paramètres
         /// </summary>
-        /// <param name="Type"> le type de resource de cet element </param>
-        /// <param name="From"> la station qui a produit cette resource </param>
-        /// <param name="Qte"> la quantite en m3 </param>
-        /// <param name="ProductionDate"> la date ou cette ressource est produite </param>
+        /// <param name="type"> le type de resource de cet element </param>
+        /// <param name="from"> la station qui a produit cette resource </param>
+        /// <param name="qte"> la quantite en m3 </param>
+        /// <param name="productionDate"> la date ou cette ressource est produite </param>
         /// <returns>l'element retire </returns>
-        public ResourceElement(ResourceType Type, Station From, int Qte, int ProductionDate) {
+        public ResourceElement(ResourceType type, Station from, int qte, int productionDate) {
+            Type = type;
+            Station = from;
+            Quantity = qte;
+            DateProd = productionDate;
         }
 
         #region getters
         /// <summary> le type de ressource de cet element </summary>
-        public ResourceType Type{
-            get { throw new System.NotImplementedException(); }
-        }
+        public ResourceType Type { get; private set; }
         /// <summary> la station qui a produit les ressources de cet element</summary>
-        public Station Station {
-            get { throw new System.NotImplementedException(); }
-        }
+        public Station Station { get; private set; }
 
         /// <summary> la quantite de ressource dans cet element</summary>
-        public int Qte { 
-            get { throw new System.NotImplementedException(); }
-        }
+        public int Quantity { get; private set; }
 
         /// <summary> la date ou les ressource de cet element ont ete produites</summary>
-        public int DateProd { 
-            get { throw new System.NotImplementedException(); }
-        }
+        public int DateProd { get; private set; }
         #endregion
 
         #region methods
@@ -65,7 +61,12 @@ namespace OSTData {
         /// <returns>Un nouveau ResourceElement avec la quantite demande dedans
         ///  ou null si l'operation n'est pas possible</returns>
         public ResourceElement Split(int NewElementQte) {
-            throw new System.NotImplementedException();
+            if (Quantity > NewElementQte && NewElementQte > 0) {
+                Quantity -= NewElementQte;
+                return new ResourceElement(Type, Station, NewElementQte, DateProd);
+            } else {
+                return null;
+            }
         }
 
         #endregion

@@ -17,7 +17,7 @@ namespace OSTData.tst {
             //test d'un constructeur avec parametres
             ResourceElement elem2 = new ResourceElement(ResourceElement.ResourceType.Water, station, 100, 200);
             Assert.AreEqual(elem2.Type, ResourceElement.ResourceType.Water);
-            Assert.AreEqual(elem2.Qte, 100);
+            Assert.AreEqual(elem2.Quantity, 100);
             Assert.AreEqual(elem2.DateProd, 200);
             Assert.AreEqual(elem2.Station, station);
         }
