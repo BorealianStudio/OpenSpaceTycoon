@@ -24,12 +24,12 @@ namespace OSTData {
         /// <summary>
         /// constructeur avec paramètres
         /// </summary>
-        /// <param name="Type"> le type de resource de cet element </param>
-        /// <param name="From"> la station qui a produit cette resource </param>
-        /// <param name="Qte"> la quantite en m3 </param>
-        /// <param name="ProductionDate"> la date ou cette ressource est produite </param>
+        /// <param name="type"> le type de resource de cet element </param>
+        /// <param name="from"> la station qui a produit cette resource </param>
+        /// <param name="qte"> la quantite en m3 </param>
+        /// <param name="productionDate"> la date ou cette ressource est produite </param>
         /// <returns>l'element retire </returns>
-        public ResourceElement(ResourceType Type, Station From, int Qte, int ProductionDate) {
+        public ResourceElement(ResourceType type, Station from, int qte, int productionDate) {
         }
 
         #region getters
