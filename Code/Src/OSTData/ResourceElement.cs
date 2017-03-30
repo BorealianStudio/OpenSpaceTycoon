@@ -24,16 +24,16 @@ namespace OSTData {
         /// <summary>
         /// constructeur avec paramètres
         /// </summary>
-        /// <param name="_Type"> le type de resource de cet element </param>
-        /// <param name="From"> la station qui a produit cette resource </param>
-        /// <param name="_Qte"> la quantite en m3 </param>
-        /// <param name="ProductionDate"> la date ou cette ressource est produite </param>
+        /// <param name="type"> le type de resource de cet element </param>
+        /// <param name="from"> la station qui a produit cette resource </param>
+        /// <param name="qte"> la quantite en m3 </param>
+        /// <param name="productionDate"> la date ou cette ressource est produite </param>
         /// <returns>l'element retire </returns>
-        public ResourceElement(ResourceType _Type, Station From, int _Qte, int ProductionDate) {
-            Type = _Type;
-            Station = From;
-            Qte = _Qte;
-            DateProd = ProductionDate;
+        public ResourceElement(ResourceType type, Station from, int qte, int productionDate) {
+            Type = type;
+            Station = from;
+            Quantity = qte;
+            DateProd = productionDate;
         }
 
         #region getters
@@ -43,7 +43,7 @@ namespace OSTData {
         public Station Station { get; private set; }
 
         /// <summary> la quantite de ressource dans cet element</summary>
-        public int Qte { get; private set; }
+        public int Quantity { get; private set; }
 
         /// <summary> la date ou les ressource de cet element ont ete produites</summary>
         public int DateProd { get; private set; }
@@ -61,8 +61,8 @@ namespace OSTData {
         /// <returns>Un nouveau ResourceElement avec la quantite demande dedans
         ///  ou null si l'operation n'est pas possible</returns>
         public ResourceElement Split(int NewElementQte) {
-            if (Qte > NewElementQte && NewElementQte > 0) {
-                Qte -= NewElementQte;
+            if (Quantity > NewElementQte && NewElementQte > 0) {
+                Quantity -= NewElementQte;
                 return new ResourceElement(Type, Station, NewElementQte, DateProd);
             } else {
                 return null;
