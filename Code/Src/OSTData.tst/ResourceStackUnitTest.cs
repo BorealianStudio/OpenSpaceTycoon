@@ -50,6 +50,30 @@ namespace OSTData.tst {
             Assert.AreEqual(elem3.Quantity, 0);
         }
 
+        [Test, Description("Ajout d'un stack a un stack")]
+        [Ignore("Issue#11")]
+        public void StackAddStack() {
+            ResourceStack stack1 = new ResourceStack(ResourceElement.ResourceType.Water);
+            ResourceElement elem1 = new ResourceElement(ResourceElement.ResourceType.Water, station, 100, 1);
+            ResourceElement elem2 = new ResourceElement(ResourceElement.ResourceType.Water, station, 50, 2);
+            stack1.Add(elem1);
+            stack1.Add(elem2);
+
+            ResourceStack stack2 = new ResourceStack(ResourceElement.ResourceType.Water);
+            ResourceElement elem3 = new ResourceElement(ResourceElement.ResourceType.Water, station, 25, 3);
+            stack2.Add(elem3);
+            
+            stack1.Add(stack2);
+            Assert.AreEqual(stack1.Qte, 175);
+            Assert.AreEqual(stack2.Qte, 0);
+
+            ResourceElement elem4 = new ResourceElement(ResourceElement.ResourceType.ToxicWaste, station, 1, 1);
+            ResourceStack stack3 = new ResourceStack(elem4);
+            stack1.Add(stack3);
+            Assert.AreEqual(stack1.Qte, 175);
+            Assert.AreEqual(stack3.Qte, 1);                
+        }
+
         [Test, Description("creation d'un substack")]
         [Ignore("Issue#11")]
         public void StackSubStack() {

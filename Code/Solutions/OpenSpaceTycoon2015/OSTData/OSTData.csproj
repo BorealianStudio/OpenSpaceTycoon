@@ -41,20 +41,23 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\..\Src\OSTData\Corporation.cs">
+      <Link>Src\Corporation.cs</Link>
+    </Compile>
     <Compile Include="..\..\..\Src\OSTData\Hangar.cs">
-      <Link>Hangar.cs</Link>
+      <Link>Src\Hangar.cs</Link>
     </Compile>
     <Compile Include="..\..\..\Src\OSTData\ResourceElement.cs">
-      <Link>ResourceElement.cs</Link>
+      <Link>Src\ResourceElement.cs</Link>
     </Compile>
     <Compile Include="..\..\..\Src\OSTData\ResourceStack.cs">
-      <Link>ResourceStack.cs</Link>
+      <Link>Src\ResourceStack.cs</Link>
     </Compile>
     <Compile Include="..\..\..\Src\OSTData\Station.cs">
-      <Link>Station.cs</Link>
+      <Link>Src\Station.cs</Link>
     </Compile>
     <Compile Include="..\..\..\Src\OSTData\Universe.cs">
-      <Link>Universe.cs</Link>
+      <Link>Src\Universe.cs</Link>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
