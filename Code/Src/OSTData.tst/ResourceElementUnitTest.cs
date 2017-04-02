@@ -42,14 +42,15 @@ namespace OSTData.tst {
             Assert.AreEqual(elem2, null);
             Assert.AreEqual(elem1.Quantity, 100);
 
-            //cas si qte egale
-            ResourceElement elem3 = elem1.Split(100);
-            Assert.AreEqual(elem3, null);
-            Assert.AreEqual(elem1.Quantity, 100);
-
+            //cas si qte impossible
             ResourceElement elem4 = elem1.Split(-1);
             Assert.AreEqual(elem4, null);
             Assert.AreEqual(elem1.Quantity, 100);
+
+            //cas si qte egale
+            ResourceElement elem3 = elem1.Split(100);
+            Assert.AreEqual(elem3.Quantity, 100); // elem3 est une copie de elem1
+            Assert.AreEqual(elem1.Quantity, 0); // vide elem1
         }
     }
 }

@@ -63,10 +63,11 @@ namespace OSTData.tst {
             ResourceStack stack2 = new ResourceStack(ResourceElement.ResourceType.Water);
             ResourceElement elem3 = new ResourceElement(ResourceElement.ResourceType.Water, station, 25, 3);
             stack2.Add(elem3);
-            
+
             stack1.Add(stack2);
-            Assert.AreEqual(stack1.Qte, 175);
-            Assert.AreEqual(stack2.Qte, 0);
+
+            Assert.AreEqual(175, stack1.Qte);
+            Assert.AreEqual(0, stack2.Qte);
 
             ResourceElement elem4 = new ResourceElement(ResourceElement.ResourceType.ToxicWaste, station, 1, 1);
             ResourceStack stack3 = new ResourceStack(elem4);
