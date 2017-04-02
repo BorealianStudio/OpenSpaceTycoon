@@ -8,13 +8,11 @@ namespace OSTData.tst {
         public void Init() {
         }
 
-        [Test]
+        [Test, Description("Creation")]
         public void Construction1() {
-        }
+            Universe universe = new Universe(0);
 
-        [TestCase(12, 3, Result = 15)]
-        public int Test(int a, int b) {
-            return a+b;
+            Assert.AreEqual(universe.GetStations().Count, 60);
         }
     }
 }

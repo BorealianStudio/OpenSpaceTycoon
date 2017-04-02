@@ -10,7 +10,7 @@ namespace OSTData.tst {
 
         [SetUp]
         public void Init() {
-            station = new Station();
+            station = new Station(Station.StationType.Agricultural);
         }
 
         [Test, Description("test de la construction")]
