@@ -106,11 +106,17 @@ namespace OSTData {
             // de ce stack et les enlever de ce stack. Il ne faut pas garder de resourceElement vide
             if (qte > 0 && qte <= Qte) {
                 ResourceStack subStack = new ResourceStack(Type);
-                for (int i = 0; i < mResourceElementsInto.Count; i++) {
-                    if (subStack.Qte + mResourceElementsInto[i].Quantity < qte) {
-                        subStack.Add(mResourceElementsInto[i]); // On ajoute l'élément entier.
+                foreach(ResourceElement re in mResourceElementsInto) {
+                    if (subStack.Qte + re.Quantity < qte && re.Quantity > 0) {
+                        subStack.Add(re); // On ajoute l'élément entier.
                     } else if (subStack.Qte < qte) {
-                        subStack.Add( mResourceElementsInto[i].Split(qte - subStack.Qte) );
+                        subStack.Add(re.Split(qte - subStack.Qte));
+                    }
+                }
+
+                for (int i = mResourceElementsInto.Count-1; i>=0; i--) {
+                    if (mResourceElementsInto[i].Quantity == 0) {
+                        Remove(mResourceElementsInto[i]);
                     }
                 }
                 return subStack;
