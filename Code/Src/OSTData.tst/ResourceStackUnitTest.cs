@@ -81,6 +81,7 @@ namespace OSTData.tst {
             ResourceElement elem1 = new ResourceElement(ResourceElement.ResourceType.Water, station, 100, 1);
             ResourceStack stack = new ResourceStack(elem1);
             ResourceElement elem2 = new ResourceElement(ResourceElement.ResourceType.Water, station, 100, 2);
+            stack.Add(elem2);
 
             ResourceStack s1 = stack.GetSubStack(25);
             Assert.AreEqual(25, s1.Qte);
