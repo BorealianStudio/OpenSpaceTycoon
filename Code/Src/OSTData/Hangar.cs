@@ -1,6 +1,7 @@
 
 
 namespace OSTData {
+
     /// <summary>
     /// Un Hangar est une zone dans une station appartenant à une societe.
     /// Elle contient des ResourceStack.
@@ -10,28 +11,35 @@ namespace OSTData {
         /// <summary>
         /// Constructeur de base
         /// </summary>
-        /// <param name="station">la station qui contient ce hangar</param>
-        /// /// <param name="corporation">La corporation a qui appartient ce hangar</param>
+        /// <param name="station">La station qui contient ce hangar</param>
+        /// <param name="corporation">La corporation a qui appartient ce hangar</param>
         public Hangar(Station station, Corporation corporation) {
+            Station = station;
+            Corporation = corporation;
+            ResourceElements = new ResourceElement[1];
         }
 
         /// <summary> The station this hangar is in </summary>
-        public Station Station{
-            get { throw new System.NotImplementedException(); }
-        }
+        public Station Station { get; private set; }
 
         /// <summary> Corporation owning this hangar </summary>
-        public Corporation Corporation {
-            get { throw new System.NotImplementedException(); }
-        }
+        public Corporation Corporation { get; private set; }
+
+        /// <summary> All ResourceElement in this hangar </summary>
+        public ResourceElement[] ResourceElements { get; private set; }
 
         /// <summary>
-        /// Permet de connaitre la quantite d'une ressource dans ce hangar
+        /// Permet de connaitre la quantite d'une ressource dans ce hangar.
         /// </summary>
-        /// <param name="type">la ressource a tester</param>
-        /// <returns>la quantite de m3 de la ressource demande</returns>
+        /// <param name="type">la ressource a tester.</param>
+        /// <returns>la quantite de m3 de la ressource demande.</returns>
         public int GetResourceQte(ResourceElement.ResourceType type) {
-            throw new System.NotImplementedException();
+            for (int i = 0; i < ResourceElements.Length; i++) {
+                if (ResourceElements[i].Type == type) {
+                    return ResourceElements[i].Quantity;
+                }
+            }
+            return 0;
         }
 
         /// <summary>
@@ -45,4 +53,5 @@ namespace OSTData {
             throw new System.NotImplementedException();
         }
     }
+
 }

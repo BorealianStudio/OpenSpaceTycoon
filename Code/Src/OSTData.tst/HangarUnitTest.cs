@@ -15,7 +15,6 @@ namespace OSTData.tst {
         }
 
         [Test, Description("test de la construction")]
-        [Ignore("Issue#12")]
         public void HangarConstruction() {
             Hangar h = new Hangar(station, corporation);
 
@@ -25,7 +24,6 @@ namespace OSTData.tst {
         }
 
         [Test, Description("test de transaction sur un hangar")]
-        [Ignore("Issue#12")]
         public void HangarTransactions1() {
             Hangar h = new Hangar(station,corporation);
 

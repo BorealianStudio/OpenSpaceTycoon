@@ -9,38 +9,55 @@ namespace OSTData {
     public class ResourceStack {
 
         /// <summary>
-        /// Constructeur de base
+        /// Constructeur de base.
         /// </summary>
         /// <param name="type">Le type de ressource que pourra contenir ce stack </param>
         public ResourceStack(ResourceElement.ResourceType type) {
+            Type = type;
+            Qte = 0;
+            mResourceElementsInto = new List<ResourceElement>();
         }
 
         /// <summary>
-        /// Construction a partir d'un ResourceElement
+        /// Construction a partir d'un ResourceElement.
         /// </summary>
         /// <param name="elem">L'élement a ajouter au stack a la construction </param>
         public ResourceStack(ResourceElement elem) {
+            Type = elem.Type;
+            Qte = 0;
+            mResourceElementsInto = new List<ResourceElement>();
+            Add(elem);
         }
 
         /// <summary> Le type de ressource dans ce Stack </summary>
-        public ResourceElement.ResourceType Type {
-            get { throw new System.NotImplementedException(); }
-        }
+        public ResourceElement.ResourceType Type { get; private set; }
 
-        /// <summary> La quantite de ressource dans ce Stack en m3</summary>
-        public int Qte {
-            get { throw new System.NotImplementedException(); }
-        }
+        /// <summary> La quantite total de ressource dans ce Stack en m3</summary>
+        public int Qte { get; private set; }
+
+        /// <summary> L'ensemble des ResourceElement composant le stack </summary>
+        private List<ResourceElement> mResourceElementsInto;
 
         /// <summary>
         /// Ajout d'un ResourceElement a ce stack. 
         /// </summary>
-        /// <param name="elem"> le resourceElement a ajouter, sa Qte vaudra 0 suite a l'ajout </param>
+        /// <param name="elem"> le resourceElement a ajouter</param>
         public void Add(ResourceElement elem) {
             // il faut ajouter le Elem a ce stack si et seulement si ils ont le meme
-            // type de ressource. La Qte du Elem doit etre reduite a 0 pour éviter les
-            // erreurs.
-            throw new System.NotImplementedException();
+            // type de ressource.
+            if (elem.Type == Type) {
+                ResourceElement newElement = new ResourceElement(elem.Type, elem.Station, elem.Quantity, elem.DateProd);
+                mResourceElementsInto.Add(newElement);
+                Qte += newElement.Quantity;
+                mResourceElementsInto.Sort( // Triage de la liste par date croissante (élément plus vieux en premier)
+                    delegate (ResourceElement r1, ResourceElement r2) {
+                        return r1.DateProd - r2.DateProd;
+                    }
+                );
+                elem.Remove(elem.Quantity);
+            } else {
+                //Erreur
+            }
         }
 
         /// <summary>
@@ -69,8 +86,8 @@ namespace OSTData {
         /// </summary>
         /// <returns>Une list de reference vers les ResourceElement de ce Stack</returns>
         public List<ResourceElement> GetElements() {
-            // Il faut retourner les ResourceElement de ce stack dans l'ordre de date de production
-            throw new System.NotImplementedException();
+            // Il faut retourner les ResourceElement de ce stack dans l'ordre de date de production.
+            return mResourceElementsInto; // La liste est déjà triée à chaque ajout.
         }
     }
 }

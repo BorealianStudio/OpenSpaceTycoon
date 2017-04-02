@@ -14,7 +14,6 @@ namespace OSTData.tst {
         }
 
         [Test, Description("test de la construction")]
-        [Ignore("Issue#11")]
         public void StackConstruction() {
             //test d'un constructeur avec parametres
             ResourceStack stack = new ResourceStack(ResourceElement.ResourceType.Wastes);
@@ -29,7 +28,6 @@ namespace OSTData.tst {
         }
 
         [Test, Description("test d'ajout d'elements")]
-        [Ignore("Issue#11")]
         public void StackAdd() {
             ResourceStack stack = new ResourceStack(ResourceElement.ResourceType.Wastes);
             ResourceElement elem1 = new ResourceElement(ResourceElement.ResourceType.Wastes, station, 100, 200);
@@ -53,7 +51,6 @@ namespace OSTData.tst {
         }
 
         [Test, Description("Ajout d'un stack a un stack")]
-        [Ignore("Issue#11")]
         public void StackAddStack() {
             ResourceStack stack1 = new ResourceStack(ResourceElement.ResourceType.Water);
             ResourceElement elem1 = new ResourceElement(ResourceElement.ResourceType.Water, station, 100, 1);
@@ -77,7 +74,6 @@ namespace OSTData.tst {
         }
 
         [Test, Description("creation d'un substack")]
-        [Ignore("Issue#11")]
         public void StackSubStack() {
             ResourceElement elem1 = new ResourceElement(ResourceElement.ResourceType.Water, station, 100, 1);
             ResourceStack stack = new ResourceStack(elem1);
