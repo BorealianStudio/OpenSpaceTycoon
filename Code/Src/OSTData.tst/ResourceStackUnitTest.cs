@@ -10,7 +10,7 @@ namespace OSTData.tst {
 
         [SetUp]
         public void Init() {
-            station = new Station();
+            station = new Station(Station.StationType.Agricultural, null, new OSTTools.Vector3D());
         }
 
         [Test, Description("test de la construction")]
@@ -20,14 +20,14 @@ namespace OSTData.tst {
             //test d'un constructeur avec parametres
             ResourceStack stack = new ResourceStack(ResourceElement.ResourceType.Wastes);
 
-            Assert.AreEqual(stack.Qte, 0);
-            Assert.AreEqual(stack.Type, ResourceElement.ResourceType.Wastes);
+            Assert.AreEqual(0, stack.Qte);
+            Assert.AreEqual(ResourceElement.ResourceType.Wastes, stack.Type);
 
             ResourceElement elem = new ResourceElement(ResourceElement.ResourceType.Water, station, 100, 200);
             ResourceStack stack2 = new ResourceStack(elem);
-            Assert.AreEqual(stack2.Qte, 100);
-            Assert.AreEqual(stack2.Type, ResourceElement.ResourceType.Water);
-            Assert.AreEqual(elem.Quantity, 0);
+            Assert.AreEqual(100, stack2.Qte);
+            Assert.AreEqual(ResourceElement.ResourceType.Water, stack2.Type);
+            Assert.AreEqual(0, elem.Quantity);
         }
 
         [Test, Description("test d'ajout d'elements")]
@@ -36,22 +36,22 @@ namespace OSTData.tst {
             ResourceStack stack = new ResourceStack(ResourceElement.ResourceType.Wastes);
             ResourceElement elem1 = new ResourceElement(ResourceElement.ResourceType.Wastes, station, 100, 200);
             stack.Add(elem1);
-            Assert.AreEqual(stack.Qte, 100);
-            Assert.AreEqual(stack.Type, ResourceElement.ResourceType.Wastes);
-            Assert.AreEqual(elem1.Quantity, 0);
+            Assert.AreEqual(100, stack.Qte);
+            Assert.AreEqual(ResourceElement.ResourceType.Wastes, stack.Type);
+            Assert.AreEqual(0, elem1.Quantity);
 
             ResourceElement elem2 = new ResourceElement(ResourceElement.ResourceType.Water, station, 50, 201);
             stack.Add(elem2);
 
-            Assert.AreEqual(stack.Qte, 100);
-            Assert.AreEqual(stack.Type, ResourceElement.ResourceType.Wastes);
-            Assert.AreEqual(elem2.Quantity, 50);
+            Assert.AreEqual(100, stack.Qte);
+            Assert.AreEqual(ResourceElement.ResourceType.Wastes, stack.Type);
+            Assert.AreEqual(50, elem2.Quantity);
 
             ResourceElement elem3 = new ResourceElement(ResourceElement.ResourceType.Wastes, station, 200, 300);
             stack.Add(elem3);
-            Assert.AreEqual(stack.Qte, 300);
-            Assert.AreEqual(stack.Type, ResourceElement.ResourceType.Wastes);
-            Assert.AreEqual(elem3.Quantity, 0);
+            Assert.AreEqual(300, stack.Qte);
+            Assert.AreEqual(ResourceElement.ResourceType.Wastes, stack.Type);
+            Assert.AreEqual(0, elem3.Quantity);
         }
 
         [Test, Description("Ajout d'un stack a un stack")]
@@ -68,14 +68,14 @@ namespace OSTData.tst {
             stack2.Add(elem3);
             
             stack1.Add(stack2);
-            Assert.AreEqual(stack1.Qte, 175);
-            Assert.AreEqual(stack2.Qte, 0);
+            Assert.AreEqual(175, stack1.Qte);
+            Assert.AreEqual(0, stack2.Qte);
 
             ResourceElement elem4 = new ResourceElement(ResourceElement.ResourceType.ToxicWaste, station, 1, 1);
             ResourceStack stack3 = new ResourceStack(elem4);
             stack1.Add(stack3);
-            Assert.AreEqual(stack1.Qte, 175);
-            Assert.AreEqual(stack3.Qte, 1);                
+            Assert.AreEqual(175, stack1.Qte);
+            Assert.AreEqual(1, stack3.Qte);                
         }
 
         [Test, Description("creation d'un substack")]
@@ -86,32 +86,32 @@ namespace OSTData.tst {
             ResourceElement elem2 = new ResourceElement(ResourceElement.ResourceType.Water, station, 100, 2);
 
             ResourceStack s1 = stack.GetSubStack(25);
-            Assert.AreEqual(s1.Qte, 25);
-            Assert.AreEqual(s1.Type, ResourceElement.ResourceType.Water);
-            Assert.AreEqual(stack.Qte, 175);
-            Assert.AreEqual(stack.Type, ResourceElement.ResourceType.Water);
+            Assert.AreEqual(25, s1.Qte);
+            Assert.AreEqual(ResourceElement.ResourceType.Water, s1.Type);
+            Assert.AreEqual(175, stack.Qte);
+            Assert.AreEqual(ResourceElement.ResourceType.Water, stack.Type);
             foreach (ResourceElement e in s1.GetElements()) {
-                Assert.AreEqual(e.DateProd, 1);
+                Assert.AreEqual(1, e.DateProd);
             }
 
             ResourceStack s2 = stack.GetSubStack(200);
-            Assert.AreEqual(s2, null);
-            Assert.AreEqual(stack.Qte, 175);
+            Assert.AreEqual(null, s2);
+            Assert.AreEqual(175, stack.Qte);
 
             //retirer un stack composé de 2 elements
             ResourceStack s3 = stack.GetSubStack(100);
-            Assert.AreEqual(s3.Qte, 100);
-            Assert.AreEqual(s3.Type, ResourceElement.ResourceType.Water);
-            Assert.AreEqual(stack.Qte, 75);
+            Assert.AreEqual(100, s3.Qte);
+            Assert.AreEqual(ResourceElement.ResourceType.Water, s3.Type);
+            Assert.AreEqual(75, stack.Qte);
             List<ResourceElement> elemsStack = stack.GetElements();
-            Assert.AreEqual(elemsStack.Count, 1);
-            Assert.AreEqual(elemsStack[0].DateProd, 2);
+            Assert.AreEqual(1, elemsStack.Count);
+            Assert.AreEqual(2, elemsStack[0].DateProd);
             List<ResourceElement> elems = s3.GetElements();
-            Assert.AreEqual(elems.Count, 2);
-            Assert.AreEqual(elems[0].DateProd, 1);
-            Assert.AreEqual(elems[0].Quantity, 75);
-            Assert.AreEqual(elems[1].DateProd, 2);
-            Assert.AreEqual(elems[1].Quantity, 25);
+            Assert.AreEqual(2, elems.Count);
+            Assert.AreEqual(1, elems[0].DateProd);
+            Assert.AreEqual(75, elems[0].Quantity);
+            Assert.AreEqual(2, elems[1].DateProd);
+            Assert.AreEqual(25, elems[1].Quantity);
         }
     }
 }
