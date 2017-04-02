@@ -14,7 +14,7 @@ namespace OSTData {
         /// <param name="type">Le type de ressource que pourra contenir ce stack </param>
         public ResourceStack(ResourceElement.ResourceType type) {
             Type = type;
-            mResourceElementsInto = new List<ResourceElement>();
+            _ResourceElementsInto = new List<ResourceElement>();
         }
 
         /// <summary>
@@ -23,7 +23,7 @@ namespace OSTData {
         /// <param name="elem">L'élement a ajouter au stack a la construction </param>
         public ResourceStack(ResourceElement elem) {
             Type = elem.Type;
-            mResourceElementsInto = new List<ResourceElement>();
+            _ResourceElementsInto = new List<ResourceElement>();
             Add(elem);
         }
 
@@ -32,14 +32,14 @@ namespace OSTData {
         public ResourceElement.ResourceType Type { get; private set; }
 
         /// <summary> L'ensemble des ResourceElement dans le stack. </summary>
-        private List<ResourceElement> mResourceElementsInto;
+        private List<ResourceElement> _ResourceElementsInto;
 
         /// <summary> La quantite total de ressource dans ce Stack en m3. </summary>
         public int Qte {
             get {
                 int qte = 0;
-                for (int i = 0; i < mResourceElementsInto.Count; i++) {
-                    qte += mResourceElementsInto[i].Quantity;
+                for (int i = 0; i < _ResourceElementsInto.Count; i++) {
+                    qte += _ResourceElementsInto[i].Quantity;
                 }
                 return qte;
             }
@@ -57,8 +57,8 @@ namespace OSTData {
             // type de ressource.
             if (elem.Type == Type) {
                 ResourceElement newElement = elem.Split(elem.Quantity);
-                mResourceElementsInto.Add(newElement);
-                mResourceElementsInto.Sort( // Tris de la liste par date croissante (élément plus vieux en premier)
+                _ResourceElementsInto.Add(newElement);
+                _ResourceElementsInto.Sort( // Tris de la liste par date croissante (élément plus vieux en premier)
                     delegate (ResourceElement r1, ResourceElement r2) {
                         return r1.DateProd - r2.DateProd;
                     }
@@ -72,9 +72,9 @@ namespace OSTData {
         /// Retire un ResourceElement de ce stack.
         /// </summary>
         /// <param name="elem"> Le ResourceElement à retirer.</param>
-        public void Remove(ResourceElement elem) {
-            if (mResourceElementsInto.Contains(elem)) {
-                mResourceElementsInto.Remove(elem);
+        private void Remove(ResourceElement elem) {
+            if (_ResourceElementsInto.Contains(elem)) {
+                _ResourceElementsInto.Remove(elem);
             }
         }
 
@@ -85,9 +85,9 @@ namespace OSTData {
         /// <param name="stack">Le stack a ajouter</param>
         public void Add(ResourceStack stack) {
             if (stack.Type == Type) {
-                for (int i = 0; i < stack.mResourceElementsInto.Count; i++) {
-                    Add(stack.mResourceElementsInto[i]);
-                    stack.Remove(mResourceElementsInto[i]);
+                for (int i = 0; i < stack._ResourceElementsInto.Count; i++) {
+                    Add(stack._ResourceElementsInto[i]);
+                    stack.Remove(_ResourceElementsInto[i]);
                 }
             } else {
                 //Erreur
@@ -106,7 +106,7 @@ namespace OSTData {
             // de ce stack et les enlever de ce stack. Il ne faut pas garder de resourceElement vide
             if (qte > 0 && qte <= Qte) {
                 ResourceStack subStack = new ResourceStack(Type);
-                foreach(ResourceElement re in mResourceElementsInto) {
+                foreach(ResourceElement re in _ResourceElementsInto) {
                     if (subStack.Qte + re.Quantity < qte && re.Quantity > 0) {
                         subStack.Add(re); // On ajoute l'élément entier.
                     } else if (subStack.Qte < qte) {
@@ -114,9 +114,9 @@ namespace OSTData {
                     }
                 }
 
-                for (int i = mResourceElementsInto.Count-1; i>=0; i--) {
-                    if (mResourceElementsInto[i].Quantity == 0) {
-                        Remove(mResourceElementsInto[i]);
+                for (int i = _ResourceElementsInto.Count-1; i>=0; i--) {
+                    if (_ResourceElementsInto[i].Quantity == 0) {
+                        Remove(_ResourceElementsInto[i]);
                     }
                 }
                 return subStack;
@@ -132,7 +132,7 @@ namespace OSTData {
         /// <returns>Une list de reference vers les ResourceElement de ce Stack</returns>
         public List<ResourceElement> GetElements() {
             // Il faut retourner les ResourceElement de ce stack dans l'ordre de date de production.
-            return mResourceElementsInto; // La liste est déjà triée à chaque ajout.
+            return _ResourceElementsInto; // La liste est déjà triée à chaque ajout.
         }
         #endregion
     }

@@ -43,9 +43,9 @@ namespace OSTData {
         }
 
         /// <summary>
-        /// Permet d'ajouter un stack dans ce hangar. Le stack sera vide dans la transaction
+        /// Permet d'ajouter un stack dans ce hangar. Le stack sera vide dans la transaction.
         /// </summary>
-        /// <param name="stack">le stack a ajouter</param>
+        /// <param name="stack">Le stack a ajouter.</param>
         public void Add(ResourceStack stack) {
             ResourceStack inHangar = null;
             for (int i = 0; i < ResourceStacks.Count; i++) { //trouver si un stack de ce type existe, sinon en creer un
@@ -54,13 +54,10 @@ namespace OSTData {
                 }
             }
             if (inHangar == null) { // Il n'existait pas de stack dans le hangar.
-                inHangar = stack;
+                ResourceStacks.Add(stack.GetSubStack(stack.Qte)); // Fait une copie dans le hangar et vide l'ancien stack
             } else {
-
+                inHangar.Add(stack); // Combine les stacks
             }
-            //les combiner
-            //vider le stack
-            throw new System.NotImplementedException();
         }
     }
 
