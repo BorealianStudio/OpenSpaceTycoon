@@ -11,16 +11,16 @@ namespace OSTData.tst {
 
         [SetUp]
         public void Init() {
-            station = new Station();
+            station = new Station(Station.StationType.Agricultural,null, new OSTTools.Vector3D());
         }
 
         [Test, Description("test de la construction")]
         public void HangarConstruction() {
             Hangar h = new Hangar(station, corporation);
 
-            Assert.AreEqual(h.Station, station);
-            Assert.AreEqual(h.Corporation, corporation);
-            Assert.AreEqual(h.GetResourceQte(ResourceElement.ResourceType.Wastes), 0);            
+            Assert.AreEqual(station, h.Station);
+            Assert.AreEqual(corporation, h.Corporation);
+            Assert.AreEqual(0, h.GetResourceQte(ResourceElement.ResourceType.Wastes));
         }
 
         [Test, Description("test de transaction sur un hangar")]
@@ -31,16 +31,16 @@ namespace OSTData.tst {
             ResourceStack stack1 = new ResourceStack(elem1);
 
             h.Add(stack1);
-            Assert.AreEqual(h.GetResourceQte(ResourceElement.ResourceType.Wastes), 100);
-            Assert.AreEqual(stack1.Qte, 0);
+            Assert.AreEqual(100, h.GetResourceQte(ResourceElement.ResourceType.Wastes));
+            Assert.AreEqual(0, stack1.Qte);
 
             ResourceElement elem2 = new ResourceElement(ResourceElement.ResourceType.ToxicWaste, station, 50, 2);
             ResourceStack stack2 = new ResourceStack(elem2);
             h.Add(stack2);
-            Assert.AreEqual(h.GetResourceQte(ResourceElement.ResourceType.Wastes), 100);
-            Assert.AreEqual(stack1.Qte, 0);
-            Assert.AreEqual(h.GetResourceQte(ResourceElement.ResourceType.ToxicWaste), 50);
-            Assert.AreEqual(stack2.Qte, 0);
+            Assert.AreEqual(100, h.GetResourceQte(ResourceElement.ResourceType.Wastes));
+            Assert.AreEqual(0, stack1.Qte);
+            Assert.AreEqual(50, h.GetResourceQte(ResourceElement.ResourceType.ToxicWaste));
+            Assert.AreEqual(0, stack2.Qte);
         }
     }
 }
