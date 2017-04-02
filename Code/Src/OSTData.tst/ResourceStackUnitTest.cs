@@ -15,6 +15,7 @@ namespace OSTData.tst {
 
         [Test, Description("test de la construction")]
         public void StackConstruction() {
+
             //test d'un constructeur avec parametres
             ResourceStack stack = new ResourceStack(ResourceElement.ResourceType.Wastes);
 
@@ -23,8 +24,9 @@ namespace OSTData.tst {
 
             ResourceElement elem = new ResourceElement(ResourceElement.ResourceType.Water, station, 100, 200);
             ResourceStack stack2 = new ResourceStack(elem);
-            Assert.AreEqual(elem.Quantity, 100);
-            Assert.AreEqual(elem.Type, ResourceElement.ResourceType.Water);         
+            Assert.AreEqual(stack2.Qte, 100);
+            Assert.AreEqual(stack2.Type, ResourceElement.ResourceType.Water);
+            Assert.AreEqual(elem.Quantity, 0);
         }
 
         [Test, Description("test d'ajout d'elements")]
