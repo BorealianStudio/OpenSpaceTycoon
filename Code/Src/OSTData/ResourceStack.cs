@@ -49,7 +49,8 @@ namespace OSTData {
 
         #region methods
         /// <summary>
-        /// Ajout d'un ResourceElement à ce stack. 
+        /// Ajout d'un ResourceElement à ce stack.
+        /// Vide "elem" et crée une copie dans "_ResourceElementsInto".
         /// </summary>
         /// <param name="elem"> Le resourceElement a ajouter. </param>
         public void Add(ResourceElement elem) {
@@ -63,18 +64,6 @@ namespace OSTData {
                         return r1.DateProd - r2.DateProd;
                     }
                 );
-            } else {
-                //Erreur
-            }
-        }
-
-        /// <summary>
-        /// Retire un ResourceElement de ce stack.
-        /// </summary>
-        /// <param name="elem"> Le ResourceElement à retirer.</param>
-        private void Remove(ResourceElement elem) {
-            if (_ResourceElementsInto.Contains(elem)) {
-                _ResourceElementsInto.Remove(elem);
             }
         }
 
@@ -87,12 +76,9 @@ namespace OSTData {
             if (stack.Type == Type) {
                 for (int i = 0; i < stack._ResourceElementsInto.Count; i++) {
                     Add(stack._ResourceElementsInto[i]);
-                    stack.Remove(_ResourceElementsInto[i]);
                 }
-            } else {
-                //Erreur
-            }
-            
+                stack.CleanResourceElementList();
+            }            
         }
 
         /// <summary>
@@ -113,16 +99,23 @@ namespace OSTData {
                         subStack.Add(re.Split(qte - subStack.Qte));
                     }
                 }
-
-                for (int i = _ResourceElementsInto.Count-1; i>=0; i--) {
-                    if (_ResourceElementsInto[i].Quantity == 0) {
-                        Remove(_ResourceElementsInto[i]);
-                    }
-                }
+                CleanResourceElementList();
                 return subStack;
 
             } else {
                 return null;
+            }
+        }
+
+        /// <summary>
+        /// Permet de retirer les ResourceElements qui ont une quantité nulle de la liste.
+        /// </summary>
+        public void CleanResourceElementList() {
+            // Boucle dans le sens décroissant
+            for (int i = _ResourceElementsInto.Count - 1; i >= 0; i--) {
+                if (_ResourceElementsInto[i].Quantity == 0) {
+                    _ResourceElementsInto.RemoveAt(i);
+                }
             }
         }
 
