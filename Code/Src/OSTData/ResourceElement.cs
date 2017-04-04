@@ -11,18 +11,12 @@ namespace OSTData {
         /// Les different type de ressource present dans le jeu
         /// </summary>
         public enum ResourceType {
-
-            /// <summary> Valeur par defaut </summary>
+#pragma warning disable CS1591
             Unknown,
-
-            /// <summary> Eau</summary>
             Water,
-
-            /// <summary> Dechets </summary>
             Wastes,
-
-            /// <summary> dechets toxiques</summary>
             ToxicWaste
+#pragma warning restore CS1591
         }
 
         /// <summary>
