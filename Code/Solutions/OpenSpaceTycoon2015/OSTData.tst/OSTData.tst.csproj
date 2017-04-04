@@ -79,6 +79,10 @@
       <Project>{406cb778-6af6-45f6-9d19-163fecba6d08}</Project>
       <Name>OSTData</Name>
     </ProjectReference>
+    <ProjectReference Include="..\OSTTools\OSTTools.csproj">
+      <Project>{250e7b15-47a5-4c85-b660-be9f5e5abcc5}</Project>
+      <Name>OSTTools</Name>
+    </ProjectReference>
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

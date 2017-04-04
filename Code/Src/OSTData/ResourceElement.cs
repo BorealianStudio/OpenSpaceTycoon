@@ -30,27 +30,24 @@ namespace OSTData {
         /// <param name="productionDate"> la date ou cette ressource est produite </param>
         /// <returns>l'element retire </returns>
         public ResourceElement(ResourceType type, Station from, int qte, int productionDate) {
+            Type = type;
+            Station = from;
+            Quantity = qte;
+            DateProd = productionDate;
         }
 
         #region getters
         /// <summary> le type de ressource de cet element </summary>
-        public ResourceType Type{
-            get { throw new System.NotImplementedException(); }
-        }
+        public ResourceType Type { get; private set; }
+
         /// <summary> la station qui a produit les ressources de cet element</summary>
-        public Station Station {
-            get { throw new System.NotImplementedException(); }
-        }
+        public Station Station { get; private set; }
 
         /// <summary> la quantite de ressource dans cet element</summary>
-        public int Qte { 
-            get { throw new System.NotImplementedException(); }
-        }
+        public int Quantity { get; private set; }
 
         /// <summary> la date ou les ressource de cet element ont ete produites</summary>
-        public int DateProd { 
-            get { throw new System.NotImplementedException(); }
-        }
+        public int DateProd { get; private set; }
         #endregion
 
         #region methods
@@ -58,16 +55,20 @@ namespace OSTData {
         /// <summary>
         /// Permet de diviser un element en 2 elements en creant un nouveau ResourceElement
         /// et en enlevant la qte necessaire a cet element.
-        /// On ne peut pas diviser un element si cela aurait pour but de le vider
         /// </summary>
-        /// <param name="NewElementQte"> la quantite a retirer de l'element et mettre dans
+        /// <param name="newElementQte">La quantite a retirer de l'element et mettre dans
         /// l'element cree</param>
         /// <returns>Un nouveau ResourceElement avec la quantite demande dedans
         ///  ou null si l'operation n'est pas possible</returns>
-        public ResourceElement Split(int NewElementQte) {
-            throw new System.NotImplementedException();
+        public ResourceElement Split(int newElementQte) {
+            if (Quantity >= newElementQte && newElementQte > 0) {
+                Quantity -= newElementQte;
+                return new ResourceElement(Type, Station, newElementQte, DateProd);
+            } else {
+                return null;
+            }
         }
-
+        
         #endregion
 
         #region private
