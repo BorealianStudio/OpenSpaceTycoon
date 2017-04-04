@@ -1,9 +1,9 @@
 using NUnit.Framework;
 
 namespace OSTData.tst {
+
     [TestFixture]
     public class ResourceElementUnitTest {
-
         private Station station = null;
 
         [SetUp]
@@ -41,7 +41,7 @@ namespace OSTData.tst {
             ResourceElement elem2 = elem1.Split(200);
             Assert.AreEqual(null, elem2);
             Assert.AreEqual(100, elem1.Quantity);
-            
+
             //cas si qte impossible
             ResourceElement elem4 = elem1.Split(-1);
             Assert.AreEqual(null, elem4);

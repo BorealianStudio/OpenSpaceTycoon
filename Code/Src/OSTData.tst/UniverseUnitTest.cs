@@ -1,6 +1,7 @@
 using NUnit.Framework;
 
 namespace OSTData.tst {
+
     [TestFixture]
     public class UniverseTest {
 
@@ -13,7 +14,7 @@ namespace OSTData.tst {
         public void Construction1() {
             Universe universe = new Universe(0);
 
-            Assert.AreEqual(60,universe.GetStations().Count);
+            Assert.AreEqual(60, universe.GetStations().Count);
         }
     }
 }

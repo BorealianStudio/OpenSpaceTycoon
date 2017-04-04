@@ -2,7 +2,7 @@ namespace OSTData {
 
     /// <summary>
     /// cette classe représente un element de ressource.
-    /// Chaque element ne peut avoir qu'un type et etre compose de ressource 
+    /// Chaque element ne peut avoir qu'un type et etre compose de ressource
     /// provenant de la meme station et produite au meme moment.
     /// </summary>
     public class ResourceElement {
@@ -11,12 +11,16 @@ namespace OSTData {
         /// Les different type de ressource present dans le jeu
         /// </summary>
         public enum ResourceType {
+
             /// <summary> Valeur par defaut </summary>
             Unknown,
+
             /// <summary> Eau</summary>
             Water,
+
             /// <summary> Dechets </summary>
             Wastes,
+
             /// <summary> dechets toxiques</summary>
             ToxicWaste
         }
@@ -37,6 +41,7 @@ namespace OSTData {
         }
 
         #region getters
+
         /// <summary> le type de ressource de cet element </summary>
         public ResourceType Type { get; private set; }
 
@@ -48,7 +53,8 @@ namespace OSTData {
 
         /// <summary> la date ou les ressource de cet element ont ete produites</summary>
         public int DateProd { get; private set; }
-        #endregion
+
+        #endregion getters
 
         #region methods
 
@@ -68,11 +74,7 @@ namespace OSTData {
                 return null;
             }
         }
-        
-        #endregion
 
-        #region private
-
-        #endregion
+        #endregion methods
     }
 }

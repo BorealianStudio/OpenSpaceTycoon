@@ -1,11 +1,10 @@
+using NUnit.Framework;
 using System.Collections.Generic;
 
-using NUnit.Framework;
-
 namespace OSTData.tst {
+
     [TestFixture]
     public class ResourceStackUnitTest {
-
         private Station station = null;
 
         [SetUp]
@@ -15,7 +14,6 @@ namespace OSTData.tst {
 
         [Test, Description("test de la construction")]
         public void StackConstruction() {
-
             //test d'un constructeur avec parametres
             ResourceStack stack = new ResourceStack(ResourceElement.ResourceType.Wastes);
 
@@ -73,7 +71,7 @@ namespace OSTData.tst {
             ResourceStack stack3 = new ResourceStack(elem4);
             stack1.Add(stack3);
             Assert.AreEqual(175, stack1.Qte);
-            Assert.AreEqual(1, stack3.Qte);                
+            Assert.AreEqual(1, stack3.Qte);
         }
 
         [Test, Description("creation d'un substack")]
