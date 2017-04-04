@@ -39,6 +39,7 @@ namespace OSTData {
         #region getters
         /// <summary> le type de ressource de cet element </summary>
         public ResourceType Type { get; private set; }
+
         /// <summary> la station qui a produit les ressources de cet element</summary>
         public Station Station { get; private set; }
 
@@ -54,21 +55,20 @@ namespace OSTData {
         /// <summary>
         /// Permet de diviser un element en 2 elements en creant un nouveau ResourceElement
         /// et en enlevant la qte necessaire a cet element.
-        /// On ne peut pas diviser un element si cela aurait pour but de le vider
         /// </summary>
-        /// <param name="NewElementQte"> la quantite a retirer de l'element et mettre dans
+        /// <param name="newElementQte">La quantite a retirer de l'element et mettre dans
         /// l'element cree</param>
         /// <returns>Un nouveau ResourceElement avec la quantite demande dedans
         ///  ou null si l'operation n'est pas possible</returns>
-        public ResourceElement Split(int NewElementQte) {
-            if (Quantity > NewElementQte && NewElementQte > 0) {
-                Quantity -= NewElementQte;
-                return new ResourceElement(Type, Station, NewElementQte, DateProd);
+        public ResourceElement Split(int newElementQte) {
+            if (Quantity >= newElementQte && newElementQte > 0) {
+                Quantity -= newElementQte;
+                return new ResourceElement(Type, Station, newElementQte, DateProd);
             } else {
                 return null;
             }
         }
-
+        
         #endregion
 
         #region private
