@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 
 namespace OSTData {
+
     /// <summary>
     /// Cette classe represente un stack, un stack est un tas d'element du meme type
     /// Un stack peut donc contenir des elements de provenances diverse, mais tous du
@@ -27,7 +28,6 @@ namespace OSTData {
             Add(elem);
         }
 
-
         /// <summary> Le type de ressource dans ce Stack. </summary>
         public ResourceElement.ResourceType Type { get; private set; }
 
@@ -45,9 +45,8 @@ namespace OSTData {
             }
         }
 
-
-
         #region methods
+
         /// <summary>
         /// Ajout d'un ResourceElement à ce stack.
         /// Vide "elem" et crée une copie dans "_ResourceElementsInto".
@@ -68,7 +67,7 @@ namespace OSTData {
         }
 
         /// <summary>
-        /// Ajout d'un ResourceStac a ce stack. Le stack passe en parametre sera vide 
+        /// Ajout d'un ResourceStac a ce stack. Le stack passe en parametre sera vide
         /// dans l'operation si le type de ressource est le meme.
         /// </summary>
         /// <param name="stack">Le stack a ajouter</param>
@@ -78,7 +77,7 @@ namespace OSTData {
                     Add(stack._ResourceElementsInto[i]);
                 }
                 stack.CleanResourceElementList();
-            }            
+            }
         }
 
         /// <summary>
@@ -92,7 +91,7 @@ namespace OSTData {
             // de ce stack et les enlever de ce stack. Il ne faut pas garder de resourceElement vide
             if (qte > 0 && qte <= Qte) {
                 ResourceStack subStack = new ResourceStack(Type);
-                foreach(ResourceElement re in _ResourceElementsInto) {
+                foreach (ResourceElement re in _ResourceElementsInto) {
                     if (subStack.Qte + re.Quantity < qte && re.Quantity > 0) {
                         subStack.Add(re); // On ajoute l'élément entier.
                     } else if (subStack.Qte < qte) {
@@ -101,7 +100,6 @@ namespace OSTData {
                 }
                 CleanResourceElementList();
                 return subStack;
-
             } else {
                 return null;
             }
@@ -127,6 +125,7 @@ namespace OSTData {
             // Il faut retourner les ResourceElement de ce stack dans l'ordre de date de production.
             return _ResourceElementsInto; // La liste est déjà triée à chaque ajout.
         }
-        #endregion
+
+        #endregion methods
     }
 }

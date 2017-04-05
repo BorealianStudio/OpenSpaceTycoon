@@ -1,26 +1,22 @@
 namespace OSTData {
+
     /// <summary>
     /// Classe representant une station
     /// </summary>
     public class Station {
+
         /// <summary> les types que peuvent avoir les stations </summary>
         public enum StationType {
-            /// <summary> mine de roche</summary>
+#pragma warning disable CS1591
             Mine,
-            /// <summary> station agricole</summary>
             Agricultural,
-            /// <summary> citée habitée </summary>
             City,
-            /// <summary> Rafinerie d'uranium </summary>
             FuelRefinery,
-            /// <summary> Rafinerie de roche </summary>
             RockRefinery,
-            /// <summary> Traitement de dechets </summary>
             Reprocessing,
-            /// <summary> champs de glace</summary>
             IceField,
-            /// <summary> Chantier naval</summary>
             Shipyard
+#pragma warning restore CS1591
         }
 
         /// <summary> Constructeur par type </summary>
@@ -33,7 +29,7 @@ namespace OSTData {
         }
 
         /// <summary> Le type de cette station </summary>
-        public StationType Type { get; private set;}
+        public StationType Type { get; private set; }
 
         /// <summary> La position de la station dans ce systeme, en Unite astronomique</summary>
         public OSTTools.Vector3D Position { get; private set; }

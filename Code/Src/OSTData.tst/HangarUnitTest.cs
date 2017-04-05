@@ -1,17 +1,15 @@
-using System.Collections.Generic;
-
 using NUnit.Framework;
 
 namespace OSTData.tst {
+
     [TestFixture]
     public class HangarUnitTest {
-
         private Station station = null;
         private Corporation corporation = null;
 
         [SetUp]
         public void Init() {
-            station = new Station(Station.StationType.Agricultural,null, new OSTTools.Vector3D());
+            station = new Station(Station.StationType.Agricultural, null, new OSTTools.Vector3D());
         }
 
         [Test, Description("test de la construction")]
@@ -25,7 +23,7 @@ namespace OSTData.tst {
 
         [Test, Description("test de transaction sur un hangar")]
         public void HangarTransactions1() {
-            Hangar h = new Hangar(station,corporation);
+            Hangar h = new Hangar(station, corporation);
 
             ResourceElement elem1 = new ResourceElement(ResourceElement.ResourceType.Wastes, station, 100, 1);
             ResourceStack stack1 = new ResourceStack(elem1);

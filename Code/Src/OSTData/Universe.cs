@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 
 namespace OSTData {
+
     /// <summary>
     /// Cette classe represente l'univers du jeu. Tout dans le jeu survient dans un univers
     /// L'univer est capable de se serialiser pour etre sauve ou construit a partir d'un fichier
@@ -8,7 +9,7 @@ namespace OSTData {
     public class Universe {
 
         /// <summary> basic constructor </summary>
-        /// <param name="seed"></param>      
+        /// <param name="seed"></param>
         public Universe(int seed) {
             _Seed = seed;
             _Random = new System.Random(seed);
@@ -41,7 +42,6 @@ namespace OSTData {
             return new List<Station>(_Stations);
         }
 
-
         #region private
 
         private int _Seed = 0;
@@ -51,7 +51,7 @@ namespace OSTData {
         private int _NbMine = 6;
         private int _NbIceField = 2;
         private int _NbStation = 60;
-    
+
         /// <summary>
         /// Methode qui genere l'univers alleatoirement a partir du seed stocke
         /// </summary>
@@ -60,13 +60,13 @@ namespace OSTData {
 
             //creation des systemes
             Dictionary<int, StarSystem> systemes = new Dictionary<int, StarSystem>();
-            for(int i = 0; i < _NbSystemPerMap; i++) {
+            for (int i = 0; i < _NbSystemPerMap; i++) {
                 OSTTools.Vector3D pos = new OSTTools.Vector3D();
                 systemes.Add(i, new StarSystem(i, pos));
 
                 //creation d'une cite
                 OSTTools.Vector3D stationPos = new OSTTools.Vector3D();
-                Station s = new Station(Station.StationType.City,systemes[i], stationPos);
+                Station s = new Station(Station.StationType.City, systemes[i], stationPos);
                 _Stations.Add(s);
             }
 
@@ -95,7 +95,6 @@ namespace OSTData {
             return result;
         }
 
-        #endregion
-
+        #endregion private
     }
 }
