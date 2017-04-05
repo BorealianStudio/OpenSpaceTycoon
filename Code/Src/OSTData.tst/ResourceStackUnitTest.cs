@@ -14,7 +14,6 @@ namespace OSTData.tst {
         }
 
         [Test, Description("test de la construction")]
-        [Ignore("Issue#11")]
         public void StackConstruction() {
 
             //test d'un constructeur avec parametres
@@ -31,7 +30,6 @@ namespace OSTData.tst {
         }
 
         [Test, Description("test d'ajout d'elements")]
-        [Ignore("Issue#11")]
         public void StackAdd() {
             ResourceStack stack = new ResourceStack(ResourceElement.ResourceType.Wastes);
             ResourceElement elem1 = new ResourceElement(ResourceElement.ResourceType.Wastes, station, 100, 200);
@@ -55,7 +53,6 @@ namespace OSTData.tst {
         }
 
         [Test, Description("Ajout d'un stack a un stack")]
-        [Ignore("Issue#11")]
         public void StackAddStack() {
             ResourceStack stack1 = new ResourceStack(ResourceElement.ResourceType.Water);
             ResourceElement elem1 = new ResourceElement(ResourceElement.ResourceType.Water, station, 100, 1);
@@ -66,8 +63,9 @@ namespace OSTData.tst {
             ResourceStack stack2 = new ResourceStack(ResourceElement.ResourceType.Water);
             ResourceElement elem3 = new ResourceElement(ResourceElement.ResourceType.Water, station, 25, 3);
             stack2.Add(elem3);
-            
+
             stack1.Add(stack2);
+
             Assert.AreEqual(175, stack1.Qte);
             Assert.AreEqual(0, stack2.Qte);
 
@@ -79,11 +77,11 @@ namespace OSTData.tst {
         }
 
         [Test, Description("creation d'un substack")]
-        [Ignore("Issue#11")]
         public void StackSubStack() {
             ResourceElement elem1 = new ResourceElement(ResourceElement.ResourceType.Water, station, 100, 1);
             ResourceStack stack = new ResourceStack(elem1);
             ResourceElement elem2 = new ResourceElement(ResourceElement.ResourceType.Water, station, 100, 2);
+            stack.Add(elem2);
 
             ResourceStack s1 = stack.GetSubStack(25);
             Assert.AreEqual(25, s1.Qte);
