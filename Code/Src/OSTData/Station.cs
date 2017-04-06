@@ -29,6 +29,7 @@ namespace OSTData {
             Type = type;
             Position = position;
             Gates = new List<Portal>();
+            Name = "StationName";
         }
 
         /// <summary> Le type de cette station </summary>
@@ -36,6 +37,9 @@ namespace OSTData {
 
         /// <summary> La position de la station dans ce systeme, en Unite astronomique</summary>
         public OSTTools.Vector3D Position { get; private set; }
+
+        /// <summary> le nom de la station </summary>
+        public string Name { get; private set; }
 
         /// <summary> Liste des portails reliant cette station </summary>
         public List<Portal> Gates { get; set; }
