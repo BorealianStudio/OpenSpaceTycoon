@@ -29,13 +29,18 @@ namespace OSTData {
             return new List<Station>(_stations);
         }
 
+        public Dictionary<int, StarSystem> Systems { get; private set; }
+
+        /// <summary> List des portail de cet univers
+        ///
+        /// </summary>
+        public List<Portal> Portals { get; private set; }
+
         #region private
 
         private int _seed = 0;
         private System.Random _random = null;
         private List<Station> _stations = null;
-        private Dictionary<int, StarSystem> _systems = null;
-        private List<Portal> _portals = null;
         private int _nbSystemPerMap = 5; // nombre de systeme dans une map
         private int _nbMine = 6;
         private int _nbIceField = 2;
@@ -78,40 +83,39 @@ namespace OSTData {
 
         private void HardCordedBuildUniverse() {
             _stations = new List<Station>();
-            _systems = new Dictionary<int, StarSystem>();
-            _portals = new List<Portal>();
+            Systems = new Dictionary<int, StarSystem>();
+            Portals = new List<Portal>();
 
             //creation des systemes
             for (int i = 0; i < _nbSystemPerMap; i++) {
-                OSTTools.Vector3D pos = new OSTTools.Vector3D();
-                StarSystem sys = new StarSystem(i, pos);
+                StarSystem sys = new StarSystem(i, GetRandomSystemPosition());
                 sys.Name = "System " + (i + 1);
-                _systems.Add(i, sys);
+                Systems.Add(i, sys);
 
                 //creation d'une cite
                 OSTTools.Vector3D stationPos = new OSTTools.Vector3D();
-                Station s = new Station(Station.StationType.City, _systems[i], stationPos);
+                Station s = new Station(Station.StationType.City, Systems[i], stationPos);
                 _stations.Add(s);
-                _systems[i].Stations.Add(s);
+                Systems[i].Stations.Add(s);
             }
 
             //creation des stations mines
             for (int i = 0; i < _nbMine; i++) {
-                StarSystem sys = _systems[_random.Next(_nbSystemPerMap)];
+                StarSystem sys = Systems[_random.Next(_nbSystemPerMap)];
                 Station s = new Station(Station.StationType.Mine, sys, GetRandomStationPosition());
                 _stations.Add(s);
                 sys.Stations.Add(s);
             }
 
             for (int i = 0; i < _nbIceField; i++) {
-                StarSystem sys = _systems[_random.Next(_nbSystemPerMap)];
+                StarSystem sys = Systems[_random.Next(_nbSystemPerMap)];
                 Station s = new Station(Station.StationType.IceField, sys, GetRandomStationPosition());
                 _stations.Add(s);
                 sys.Stations.Add(s);
             }
 
             while (_stations.Count < _nbStation) {
-                StarSystem sys = _systems[_random.Next(_nbSystemPerMap)];
+                StarSystem sys = Systems[_random.Next(_nbSystemPerMap)];
                 Station.StationType type = Station.StationType.Agricultural;
                 Station s = new Station(type, sys, GetRandomStationPosition());
                 _stations.Add(s);
@@ -121,12 +125,12 @@ namespace OSTData {
             //creation des links entre systeme
             for (int i = 0; i < _nbSystemPerMap; i++) {
                 for (int j = i + 1; j < _nbSystemPerMap; j++) {
-                    Station from = _systems[i].Stations[_random.Next(_systems[i].Stations.Count)];
-                    Station to = _systems[j].Stations[_random.Next(_systems[j].Stations.Count)];
+                    Station from = Systems[i].Stations[_random.Next(Systems[i].Stations.Count)];
+                    Station to = Systems[j].Stations[_random.Next(Systems[j].Stations.Count)];
                     Portal p = new Portal(from, to);
                     from.Gates.Add(p);
                     to.Gates.Add(p);
-                    _portals.Add(p);
+                    Portals.Add(p);
                 }
             }
         }
@@ -136,6 +140,14 @@ namespace OSTData {
             result.X = (float)(_random.NextDouble() * 100.0);
             result.Y = 0.0f;
             result.Z = (float)(_random.NextDouble() * 100.0);
+            return result;
+        }
+
+        private OSTTools.Vector3D GetRandomSystemPosition() {
+            OSTTools.Vector3D result = new OSTTools.Vector3D();
+            result.X = (float)(_random.NextDouble() * 250.0) - 125.0f;
+            result.Y = 0.0f;
+            result.Z = (float)(_random.NextDouble() * 250.0) - 125.0f;
             return result;
         }
 
