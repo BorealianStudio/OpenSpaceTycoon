@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace OSTData {
 
     /// <summary>
@@ -26,6 +28,7 @@ namespace OSTData {
         public Station(StationType type, StarSystem starSystem, OSTTools.Vector3D position) {
             Type = type;
             Position = position;
+            Gates = new List<Portal>();
         }
 
         /// <summary> Le type de cette station </summary>
@@ -33,5 +36,8 @@ namespace OSTData {
 
         /// <summary> La position de la station dans ce systeme, en Unite astronomique</summary>
         public OSTTools.Vector3D Position { get; private set; }
+
+        /// <summary> Liste des portails reliant cette station </summary>
+        public List<Portal> Gates { get; set; }
     }
 }

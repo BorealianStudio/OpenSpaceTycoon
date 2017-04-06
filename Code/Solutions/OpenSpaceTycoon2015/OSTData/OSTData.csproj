@@ -44,8 +44,14 @@
     <Compile Include="..\..\..\Src\OSTData\Corporation.cs">
       <Link>Src\Corporation.cs</Link>
     </Compile>
+    <Compile Include="..\..\..\Src\OSTData\Game.cs">
+      <Link>Src\Game.cs</Link>
+    </Compile>
     <Compile Include="..\..\..\Src\OSTData\Hangar.cs">
       <Link>Src\Hangar.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Src\OSTData\Portal.cs">
+      <Link>Src\Portal.cs</Link>
     </Compile>
     <Compile Include="..\..\..\Src\OSTData\ResourceElement.cs">
       <Link>Src\ResourceElement.cs</Link>
