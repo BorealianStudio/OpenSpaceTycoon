@@ -9,7 +9,7 @@ namespace OSTData.tst {
 
         [SetUp]
         public void Init() {
-            station = new Station(Station.StationType.Agricultural, null, new OSTTools.Vector3D());
+            station = new Station(Station.StationType.Agricultural, null, new OSTTools.Vector3D(), 1);
         }
 
         [Test, Description("test de la construction")]

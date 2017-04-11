@@ -10,13 +10,13 @@ namespace OSTData {
         /// <summary> les types que peuvent avoir les stations </summary>
         public enum StationType {
 #pragma warning disable CS1591
-            Mine,
-            Agricultural,
             City,
+            Mine,
+            IceField,
+            Agricultural,
             FuelRefinery,
             RockRefinery,
             Reprocessing,
-            IceField,
             Shipyard
 #pragma warning restore CS1591
         }
@@ -25,23 +25,56 @@ namespace OSTData {
         /// <param name="type">le type de la station</param>
         /// <param name="starSystem">Le systeme qui contient cette station</param>
         /// <param name="position">La position de la station dans sons syteme, en AU</param>
-        public Station(StationType type, StarSystem starSystem, OSTTools.Vector3D position) {
+        /// <param name="iID">un identifiant pour cette station</param>
+        public Station(StationType type, StarSystem starSystem, OSTTools.Vector3D position, int iID) {
             Type = type;
             Position = position;
             Gates = new List<Portal>();
             Name = "StationName";
+            System = starSystem;
+            ID = iID;
         }
 
         /// <summary> Le type de cette station </summary>
         public StationType Type { get; private set; }
 
+        /// <summary> Le systeme solaire qui contient cette station </summary>
+        public StarSystem System { get; private set; }
+
+        /// <summary> L'identifiant de cette station </summary>
+        public int ID { get; private set; }
+
         /// <summary> La position de la station dans ce systeme, en Unite astronomique</summary>
         public OSTTools.Vector3D Position { get; private set; }
 
         /// <summary> le nom de la station </summary>
-        public string Name { get; private set; }
+        public string Name { get; set; }
 
         /// <summary> Liste des portails reliant cette station </summary>
-        public List<Portal> Gates { get; set; }
+        public List<Portal> Gates {
+            get { return new List<Portal>(_gates); }
+            set { _gates = value; }
+        }
+
+        /// <summary>
+        /// La liste des vaisseau dans la station au moment ou on la recupere
+        /// cette liste peut changer apres un update
+        /// </summary>
+        public List<Ship> Ships {
+            get { return new List<Ship>(_ships); }
+            private set { _ships = value; }
+        }
+
+        /// <summary> permet de creer un vaisseau dans cette station </summary>
+        /// <returns>le vaisseau cree</returns>
+        public Ship CreateShip() {
+            Ship result = new Ship(System.Universe.Ships.Count + 1);
+            System.Universe.Ships.Add(result);
+            _ships.Add(result);
+            return result;
+        }
+
+        private List<Ship> _ships = new List<Ship>();
+        private List<Portal> _gates = new List<Portal>();
     }
 }
