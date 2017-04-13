@@ -8,7 +8,7 @@ namespace OSTData {
     public class StarSystem {
 
         /// <summary> Constructeur par type </summary>
-        public StarSystem(int id, Universe universe, OSTTools.Vector3D position) {
+        public StarSystem(int id, Universe universe, OSTTools.Vector3 position) {
             ID = id;
             Position = position;
             Stations = new List<Station>();
@@ -28,6 +28,6 @@ namespace OSTData {
         public string Name { get; set; }
 
         /// <summary>La position de ce systeme par rapport au centre de l'univers en Annees lumieres</summary>
-        public OSTTools.Vector3D Position { get; private set; }
+        public OSTTools.Vector3 Position { get; private set; }
     }
 }

@@ -29,6 +29,14 @@ namespace OSTData.tst {
             Assert.AreEqual(1, u.Hour);
         }
 
+        [Test, Description("test de la cohérence des constructions")]
+        public void UniverseData1() {
+            Universe u = new Universe(0);
+            Portal p1 = u.Portals[0];
+            Assert.AreNotEqual(0, p1.Station1.Gates.Count);
+            Assert.AreNotEqual(0, p1.Station2.Gates.Count);
+        }
+
         [Test, Description("univers code en dur")]
         public void UniverseHardCode() {
             Universe universe = new Universe(0);

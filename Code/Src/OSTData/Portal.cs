@@ -1,3 +1,5 @@
+using OSTTools;
+
 namespace OSTData {
 
     /// <summary>
@@ -31,5 +33,33 @@ namespace OSTData {
 
         /// <summary> La station a l'autre extremite de ce portail</summary>
         public Station Station2 { get; private set; }
+
+        /// <summary>
+        /// Donne la position du portail adns la zone autour de la station
+        /// </summary>
+        /// <param name="station">la station utilise comme reference</param>
+        /// <returns>la position en m par rapport a station</returns>
+        public Vector3 Position(Station station) {
+            Station other = null;
+            if (station != Station1 && station != Station2)
+                return new Vector3();
+
+            if (Station1 == station)
+                other = Station2;
+            else
+                other = Station1;
+
+            switch (TypePortal) {
+                case PortalType.StarToStar: {
+                    Vector3 direction = other.System.Position - station.System.Position;
+                    return direction.Normalize() * 2000.0;
+                }
+                case PortalType.StationToStation: {
+                    Vector3 direction = other.Position - station.Position;
+                    return direction.Normalize() * 2000.0;
+                }
+            }
+            return new Vector3();
+        }
     }
 }

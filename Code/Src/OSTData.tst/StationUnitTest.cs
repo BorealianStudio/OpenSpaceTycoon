@@ -6,7 +6,7 @@ namespace OSTData.tst {
     public class StationUnitTest {
 
         [Test]
-        public void Construction1() {
+        public void StationConstruction() {
         }
     }
 }

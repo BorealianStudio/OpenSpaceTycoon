@@ -26,10 +26,10 @@ namespace OSTData {
         /// <param name="starSystem">Le systeme qui contient cette station</param>
         /// <param name="position">La position de la station dans sons syteme, en AU</param>
         /// <param name="iID">un identifiant pour cette station</param>
-        public Station(StationType type, StarSystem starSystem, OSTTools.Vector3D position, int iID) {
+        public Station(StationType type, StarSystem starSystem, OSTTools.Vector3 position, int iID) {
             Type = type;
             Position = position;
-            Gates = new List<Portal>();
+            _gates = new List<Portal>();
             Name = "StationName";
             System = starSystem;
             ID = iID;
@@ -45,7 +45,7 @@ namespace OSTData {
         public int ID { get; private set; }
 
         /// <summary> La position de la station dans ce systeme, en Unite astronomique</summary>
-        public OSTTools.Vector3D Position { get; private set; }
+        public OSTTools.Vector3 Position { get; private set; }
 
         /// <summary> le nom de la station </summary>
         public string Name { get; set; }
@@ -53,7 +53,13 @@ namespace OSTData {
         /// <summary> Liste des portails reliant cette station </summary>
         public List<Portal> Gates {
             get { return new List<Portal>(_gates); }
-            set { _gates = value; }
+        }
+
+        /// <summary> Ajoute un portal aux alentour de cette station </summary>
+        /// <param name="portal">le portail a ajouter </param>
+        public void AddGate(Portal portal) {
+            if (portal.Station1.ID == ID || portal.Station2.ID == ID)
+                _gates.Add(portal);
         }
 
         /// <summary>

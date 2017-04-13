@@ -41,6 +41,17 @@ namespace OSTData {
             return new List<Station>(_stations);
         }
 
+        /// <summary> Recuperer une station par son ID</summary>
+        /// <param name="ID">l'ID de la station a recuperer</param>
+        /// <returns>la station ou null si aucune ne correspond</returns>
+        public Station GetStation(int ID) {
+            foreach (Station s in _stations) {
+                if (s.ID == ID)
+                    return s;
+            }
+            return null;
+        }
+
         /// <summary> liste des vaisseaux dans l'univers </summary>
         public ICollection<Ship> Ships { get; set; }
 
@@ -119,7 +130,7 @@ namespace OSTData {
                 Systems.Add(i, sys);
 
                 //creation d'une cite
-                OSTTools.Vector3D stationPos = new OSTTools.Vector3D();
+                OSTTools.Vector3 stationPos = new OSTTools.Vector3();
                 Station s = new Station(Station.StationType.City, Systems[i], stationPos, _stations.Count + 1);
                 s.Name = "city " + i;
                 _stations.Add(s);
@@ -160,18 +171,18 @@ namespace OSTData {
                     Station from = Systems[i].Stations[_random.Next(Systems[i].Stations.Count)];
                     Station to = Systems[j].Stations[_random.Next(Systems[j].Stations.Count)];
                     Portal p = new Portal(from, to, Portal.PortalType.StarToStar);
-                    from.Gates.Add(p);
-                    to.Gates.Add(p);
+                    from.AddGate(p);
+                    to.AddGate(p);
                     Portals.Add(p);
                 }
                 //creer les liens internes
                 List<Station> connected = new List<Station>();
                 foreach (Station s in Systems[i].Stations) {
                     Station closest = null;
-                    float bestDist = 0.0f;
+                    double bestDist = 0.0;
                     foreach (Station s2 in connected) {
                         if (s2 != s) {
-                            float dist = (s2.Position.X - s.Position.X) * (s2.Position.X - s.Position.X) +
+                            double dist = (s2.Position.X - s.Position.X) * (s2.Position.X - s.Position.X) +
                                          (s2.Position.Y - s.Position.Y) * (s2.Position.Y - s.Position.Y) +
                                          (s2.Position.Z - s.Position.Z) * (s2.Position.Z - s.Position.Z);
                             if (closest == null || dist < bestDist) {
@@ -182,8 +193,8 @@ namespace OSTData {
                     }
                     if (closest != null) {
                         Portal p = new Portal(s, closest, Portal.PortalType.StationToStation);
-                        s.Gates.Add(p);
-                        closest.Gates.Add(p);
+                        s.AddGate(p);
+                        closest.AddGate(p);
                         Portals.Add(p);
                     }
                     connected.Add(s);
@@ -191,19 +202,17 @@ namespace OSTData {
             }
         }
 
-        private OSTTools.Vector3D GetRandomStationPosition() {
-            OSTTools.Vector3D result = new OSTTools.Vector3D();
-            result.X = (float)(_random.NextDouble() * 100.0) - 50.0f;
-            result.Y = 0.0f;
-            result.Z = (float)(_random.NextDouble() * 100.0) - 50.0f;
+        private OSTTools.Vector3 GetRandomStationPosition() {
+            OSTTools.Vector3 result = new OSTTools.Vector3((_random.NextDouble() * 100.0) - 50.0,
+                                                           0.0,
+                                                           (_random.NextDouble() * 100.0) - 50.0);
             return result;
         }
 
-        private OSTTools.Vector3D GetRandomSystemPosition() {
-            OSTTools.Vector3D result = new OSTTools.Vector3D();
-            result.X = (float)(_random.NextDouble() * 250.0) - 125.0f;
-            result.Y = 0.0f;
-            result.Z = (float)(_random.NextDouble() * 250.0) - 125.0f;
+        private OSTTools.Vector3 GetRandomSystemPosition() {
+            OSTTools.Vector3 result = new OSTTools.Vector3((_random.NextDouble() * 250.0) - 125.0,
+                                                           0.0,
+                                                           (_random.NextDouble() * 250.0) - 125.0f);
             return result;
         }
 

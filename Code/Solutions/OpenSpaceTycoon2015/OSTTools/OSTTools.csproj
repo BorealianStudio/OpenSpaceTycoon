@@ -36,8 +36,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\..\Src\OSTTools\Vector3D.cs">
-      <Link>Vector3D.cs</Link>
+    <Compile Include="..\..\..\Src\OSTTools\NormalizeVectorException.cs">
+      <Link>NormalizeVectorException.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Src\OSTTools\Vector3.cs">
+      <Link>Vector3.cs</Link>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
