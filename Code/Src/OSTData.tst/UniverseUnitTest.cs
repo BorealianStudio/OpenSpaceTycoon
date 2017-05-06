@@ -16,6 +16,27 @@ namespace OSTData.tst {
             Assert.AreEqual(60, universe.GetStations().Count);
         }
 
+        [Test, Description("test date")]
+        public void UniverseDate() {
+            Universe u = new Universe(0);
+            for (int i = 0; i < 10; i++) {
+                u.Update();
+            }
+            Assert.AreEqual(2, u.Day);
+            Assert.AreEqual(0, u.Hour);
+            u.Update();
+            Assert.AreEqual(2, u.Day);
+            Assert.AreEqual(1, u.Hour);
+        }
+
+        [Test, Description("test de la cohérence des constructions")]
+        public void UniverseData1() {
+            Universe u = new Universe(0);
+            Portal p1 = u.Portals[0];
+            Assert.AreNotEqual(0, p1.Station1.Gates.Count);
+            Assert.AreNotEqual(0, p1.Station2.Gates.Count);
+        }
+
         [Test, Description("univers code en dur")]
         public void UniverseHardCode() {
             Universe universe = new Universe(0);

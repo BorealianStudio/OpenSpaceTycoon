@@ -7,9 +7,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("OSTData")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("MICHELIN")]
+[assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("OSTData")]
-[assembly: AssemblyCopyright("Copyright © MICHELIN 2017")]
+[assembly: AssemblyCopyright("")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

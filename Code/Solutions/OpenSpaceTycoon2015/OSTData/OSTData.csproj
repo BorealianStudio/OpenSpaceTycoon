@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>OSTData</RootNamespace>
     <AssemblyName>OSTData</AssemblyName>
-    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
   </PropertyGroup>
@@ -33,12 +33,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
-    <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
@@ -54,11 +49,17 @@
     <Compile Include="..\..\..\Src\OSTData\Portal.cs">
       <Link>Src\Portal.cs</Link>
     </Compile>
+    <Compile Include="..\..\..\Src\OSTData\Receipe.cs">
+      <Link>Src\Receipe.cs</Link>
+    </Compile>
     <Compile Include="..\..\..\Src\OSTData\ResourceElement.cs">
       <Link>Src\ResourceElement.cs</Link>
     </Compile>
     <Compile Include="..\..\..\Src\OSTData\ResourceStack.cs">
       <Link>Src\ResourceStack.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Src\OSTData\Ship.cs">
+      <Link>Src\Ship.cs</Link>
     </Compile>
     <Compile Include="..\..\..\Src\OSTData\StarSystem.cs">
       <Link>Src\StarSystem.cs</Link>
