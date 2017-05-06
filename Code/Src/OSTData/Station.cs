@@ -51,7 +51,8 @@ namespace OSTData {
         public string Name { get; set; }
 
         /// <summary> Liste des portails reliant cette station </summary>
-        public List<Portal> Gates {
+        public List<Portal> Gates
+        {
             get { return new List<Portal>(_gates); }
         }
 
@@ -66,7 +67,8 @@ namespace OSTData {
         /// La liste des vaisseau dans la station au moment ou on la recupere
         /// cette liste peut changer apres un update
         /// </summary>
-        public List<Ship> Ships {
+        public List<Ship> Ships
+        {
             get { return new List<Ship>(_ships); }
             private set { _ships = value; }
         }
@@ -80,7 +82,33 @@ namespace OSTData {
             return result;
         }
 
+        /// <summary> Recupere la liste des ressource achetes par cette station </summary>
+        public HashSet<ResourceElement.ResourceType> Buyings
+        {
+            get { return new HashSet<ResourceElement.ResourceType>(_buyingPrices.Keys); }
+        }
+
+        /// <summary> ajuster le prix d'une ressource </summary>
+        /// <param name="type">le type de ressource a varier le prix</param>
+        /// <param name="newPrice">le nouveau prix d'achat</param>
+        public void SetBuyingPrice(ResourceElement.ResourceType type, int newPrice) {
+            if (!_buyingPrices.ContainsKey(type))
+                _buyingPrices.Add(type, newPrice);
+            else
+                _buyingPrices[type] = newPrice;
+        }
+
+        /// <summary> recuperer le prix d'achat actuel pour une ressource dans cette station</summary>
+        /// <param name="type">la type a verifier</param>
+        /// <returns>le prix d'achat actuel en ICU</returns>
+        public int GetBuyingPrice(ResourceElement.ResourceType type) {
+            if (_buyingPrices.ContainsKey(type))
+                return _buyingPrices[type];
+            return 0;
+        }
+
         private List<Ship> _ships = new List<Ship>();
         private List<Portal> _gates = new List<Portal>();
+        private Dictionary<ResourceElement.ResourceType, int> _buyingPrices = new Dictionary<ResourceElement.ResourceType, int>();
     }
 }
