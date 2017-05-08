@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 namespace OSTData {
@@ -6,6 +7,7 @@ namespace OSTData {
     /// Cette classe represente l'univers du jeu. Tout dans le jeu survient dans un univers
     /// L'univer est capable de se serialiser pour etre sauve ou construit a partir d'un fichier
     /// </summary>
+    [Serializable]
     public class Universe {
 
         /// <summary> basic constructor </summary>
@@ -70,7 +72,7 @@ namespace OSTData {
         #region private
 
         private int _seed = 0;
-        private System.Random _random = null;
+        private Random _random = null;
         private List<Station> _stations = null;
         private int _nbSystemPerMap = 5; // nombre de systeme dans une map
         private int _nbMine = 6;
@@ -154,7 +156,7 @@ namespace OSTData {
                 sys.Stations.Add(s);
             }
 
-            System.Array allTypes = System.Enum.GetValues(typeof(Station.StationType));
+            Array allTypes = Enum.GetValues(typeof(Station.StationType));
 
             while (_stations.Count < _nbStation) {
                 StarSystem sys = Systems[_random.Next(_nbSystemPerMap)];

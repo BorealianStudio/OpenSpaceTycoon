@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 namespace OSTData {
@@ -5,6 +6,7 @@ namespace OSTData {
     /// <summary>
     /// Classe representant un systeme solaire. Surtout utilisé pour gérer les positions
     /// </summary>
+    [Serializable]
     public class StarSystem {
 
         /// <summary> Constructeur par type </summary>
