@@ -1,3 +1,4 @@
+using System;
 using OSTTools;
 
 namespace OSTData {
@@ -5,6 +6,7 @@ namespace OSTData {
     /// <summary>
     /// Un portail entre 2 stations
     /// </summary>
+    [Serializable]
     public class Portal {
 
         /// <summary> Les types que peuvent avoir les portails </summary>

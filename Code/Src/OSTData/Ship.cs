@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 namespace OSTData {
@@ -6,6 +7,7 @@ namespace OSTData {
     /// C'est un vaisseau, il peut etre dans une station ou en deplacement
     /// dans l'espace
     /// </summary>
+    [Serializable]
     public class Ship {
 
         /// <summary> constructeur de base </summary>
@@ -22,7 +24,8 @@ namespace OSTData {
         }
 
         /// <summary> La liste ordonee des destinations de ce vaisseau </summary>
-        public List<Station> Destinations {
+        public List<Station> Destinations
+        {
             get { return new List<Station>(_dest); }
             private set { _dest = value; }
         }

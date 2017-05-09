@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 namespace OSTData {
@@ -5,6 +6,7 @@ namespace OSTData {
     /// <summary>
     /// Classe representant une station
     /// </summary>
+    [Serializable]
     public class Station {
 
         /// <summary> les types que peuvent avoir les stations </summary>
@@ -51,6 +53,7 @@ namespace OSTData {
         public string Name { get; set; }
 
         /// <summary> Liste des portails reliant cette station </summary>
+        [Newtonsoft.Json.JsonIgnore]
         public List<Portal> Gates
         {
             get { return new List<Portal>(_gates); }
