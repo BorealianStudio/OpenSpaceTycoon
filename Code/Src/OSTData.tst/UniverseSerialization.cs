@@ -17,7 +17,11 @@ namespace OSTData.tst {
 
             string s = JsonConvert.SerializeObject(universe, new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Serialize, Formatting = Formatting.Indented, PreserveReferencesHandling = PreserveReferencesHandling.All });
 
+            System.IO.File.WriteAllText("D:\\sandbox\\Debug.txt", s);
+
             Universe universe2 = JsonConvert.DeserializeObject<Universe>(s);
+
+            //            Assert.IsTrue(universe.Equals(universe2));
         }
     }
 }

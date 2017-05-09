@@ -35,6 +35,9 @@ namespace OSTData {
             Name = "StationName";
             System = starSystem;
             ID = iID;
+            Hangar h = new Hangar(this, null);
+            _hangars.Add(-1, h);
+            InitProduct();
         }
 
         /// <summary> Le type de cette station </summary>
@@ -85,6 +88,18 @@ namespace OSTData {
             return result;
         }
 
+        /// <summary>
+        /// Recuperer le hangar d'un joueur.
+        /// </summary>
+        /// <param name="playerID">l'id du joueur ou -1 pour récupérer le hangar de la station</param>
+        /// <returns>le hangar du joueur s'il exist, null sinon</returns>
+        public Hangar GetHangar(int playerID) {
+            if (_hangars.ContainsKey(playerID))
+                return _hangars[playerID];
+
+            return null;
+        }
+
         /// <summary> Recupere la liste des ressource achetes par cette station </summary>
         public HashSet<ResourceElement.ResourceType> Buyings
         {
@@ -112,6 +127,59 @@ namespace OSTData {
 
         private List<Ship> _ships = new List<Ship>();
         private List<Portal> _gates = new List<Portal>();
+
+        [Newtonsoft.Json.JsonProperty]
+        private Dictionary<int, Hangar> _hangars = new Dictionary<int, Hangar>();
+
+        [Newtonsoft.Json.JsonProperty]
+        private List<Receipe> _receipies = new List<Receipe>();
+
         private Dictionary<ResourceElement.ResourceType, int> _buyingPrices = new Dictionary<ResourceElement.ResourceType, int>();
+
+        private void InitProduct() {
+            switch (Type) {
+                case StationType.Agricultural:
+                break;
+
+                case StationType.City:
+                break;
+
+                case StationType.FuelRefinery:
+                break;
+
+                case StationType.IceField:
+                break;
+
+                case StationType.Mine: {
+                    Receipe r1 = new Receipe(1);
+                    r1.AddOutput(ResourceElement.ResourceType.Tobernite, 20);
+                    _receipies.Add(r1);
+
+                    Receipe r2 = new Receipe(13);
+                    r2.AddInput(ResourceElement.ResourceType.MechanicalPart, 10);
+                    r2.AddOutput(ResourceElement.ResourceType.Tobernite, 10);
+                    _receipies.Add(r2);
+
+                    Receipe r3 = new Receipe(1);
+                    r3.AddOutput(ResourceElement.ResourceType.Tennantite, 20);
+                    _receipies.Add(r3);
+
+                    Receipe r4 = new Receipe(13);
+                    r4.AddInput(ResourceElement.ResourceType.MechanicalPart, 10);
+                    r4.AddOutput(ResourceElement.ResourceType.Tennantite, 10);
+                    _receipies.Add(r4);
+                }
+                break;
+
+                case StationType.Reprocessing:
+                break;
+
+                case StationType.RockRefinery:
+                break;
+
+                case StationType.Shipyard:
+                break;
+            }
+        }
     }
 }

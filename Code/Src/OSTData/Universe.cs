@@ -69,6 +69,19 @@ namespace OSTData {
         /// <summary> nombre d'heure ecoule dans le jour en cours</summary>
         public int Hour { get; private set; }
 
+        /// <summary>
+        /// Compare si deux object sont identique.
+        /// </summary>
+        /// <param name="obj">l'autre objet a comparer</param>
+        /// <returns></returns>
+        public override bool Equals(object obj) {
+            Universe other = obj as Universe;
+            if (null != other)
+                return base.Equals(obj);
+
+            return false;
+        }
+
         #region private
 
         private int _seed = 0;

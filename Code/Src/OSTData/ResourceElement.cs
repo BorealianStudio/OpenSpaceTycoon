@@ -12,10 +12,13 @@ namespace OSTData {
         /// </summary>
         public enum ResourceType {
 #pragma warning disable CS1591
+            MechanicalPart,
             Unknown,
             Water,
             Wastes,
-            ToxicWaste
+            ToxicWaste,
+            Tennantite,
+            Tobernite
 #pragma warning restore CS1591
         }
 
