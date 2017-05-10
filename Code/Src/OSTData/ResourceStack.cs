@@ -35,14 +35,24 @@ namespace OSTData {
         private List<ResourceElement> _ResourceElementsInto;
 
         /// <summary> La quantite total de ressource dans ce Stack en m3. </summary>
-        public int Qte {
-            get {
+        public int Qte
+        {
+            get
+            {
                 int qte = 0;
                 for (int i = 0; i < _ResourceElementsInto.Count; i++) {
                     qte += _ResourceElementsInto[i].Quantity;
                 }
                 return qte;
             }
+        }
+
+        /// <summary>
+        /// override de ToString
+        /// </summary>
+        /// <returns>l'affichage string de cet objet</returns>
+        public override string ToString() {
+            return Qte.ToString() + " of " + Type.ToString();
         }
 
         #region methods

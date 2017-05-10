@@ -125,6 +125,20 @@ namespace OSTData {
             return 0;
         }
 
+        /// <summary>
+        /// Indique a la station d'effectuer le travail qu'elle doit faire a la fin d'une journee
+        /// </summary>
+        public void EndDays() {
+            Hangar stationHangar = GetHangar(-1);
+
+            foreach (Receipe r in _receipies) {
+                for (int qte = 0; qte < r.MaxFreq; qte++) {
+                    if (!r.ProduceOneBatch(this))
+                        break;
+                }
+            }
+        }
+
         private List<Ship> _ships = new List<Ship>();
         private List<Portal> _gates = new List<Portal>();
 
@@ -141,7 +155,29 @@ namespace OSTData {
                 case StationType.Agricultural:
                 break;
 
-                case StationType.City:
+                case StationType.City: {
+                    Receipe r1 = new Receipe(1);
+                    r1.AddInput(ResourceElement.ResourceType.Water, 50);
+                    _receipies.Add(r1);
+
+                    Receipe r2 = new Receipe(1);
+                    r2.AddInput(ResourceElement.ResourceType.Food, 100);
+                    _receipies.Add(r2);
+
+                    Receipe r3 = new Receipe(1);
+                    r3.AddOutput(ResourceElement.ResourceType.Wastes, 100);
+                    _receipies.Add(r3);
+
+                    Receipe r4 = new Receipe(10);
+                    r4.AddInput(ResourceElement.ResourceType.Iron, 10);
+                    r4.AddOutput(ResourceElement.ResourceType.MechanicalPart, 10);
+                    _receipies.Add(r4);
+
+                    Receipe r5 = new Receipe(10);
+                    r5.AddInput(ResourceElement.ResourceType.Iron, 10);
+                    r5.AddOutput(ResourceElement.ResourceType.Electronics, 10);
+                    _receipies.Add(r5);
+                }
                 break;
 
                 case StationType.FuelRefinery:

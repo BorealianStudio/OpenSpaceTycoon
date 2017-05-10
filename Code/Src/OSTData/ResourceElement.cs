@@ -12,6 +12,9 @@ namespace OSTData {
         /// </summary>
         public enum ResourceType {
 #pragma warning disable CS1591
+            Electronics,
+            Food,
+            Iron,
             MechanicalPart,
             Unknown,
             Water,

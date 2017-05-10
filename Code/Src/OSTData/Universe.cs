@@ -10,11 +10,25 @@ namespace OSTData {
     [Serializable]
     public class Universe {
 
+        #region Events
+
+        /// <summary>
+        /// type de callback sans parametres
+        /// </summary>
+        public delegate void noParamAction();
+
+        /// <summary>
+        /// Event leve quand la fin d'une journée survient
+        /// </summary>
+        public event noParamAction onDayEnd = delegate { };
+
+        #endregion Events
+
         /// <summary> basic constructor </summary>
         /// <param name="seed"></param>
         public Universe(int seed) {
             _seed = seed;
-            _random = new System.Random(seed);
+            _random = new Random(seed);
 
             HardCordedBuildUniverse();
 
@@ -30,6 +44,7 @@ namespace OSTData {
             if (Hour >= _hourPerDay) {
                 Day++;
                 Hour -= _hourPerDay;
+                EndDay();
             }
 
             foreach (Ship s in Ships) {
@@ -229,6 +244,13 @@ namespace OSTData {
                                                            0.0,
                                                            (_random.NextDouble() * 250.0) - 125.0f);
             return result;
+        }
+
+        private void EndDay() {
+            foreach (Station s in _stations) {
+                s.EndDays();
+            }
+            onDayEnd();
         }
 
         #endregion private

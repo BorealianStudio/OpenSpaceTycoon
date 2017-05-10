@@ -43,6 +43,27 @@ namespace OSTData {
         }
 
         /// <summary>
+        /// retire une certaine quantite d'une ressource dans un hangar. Les resources retirees sont toujours celles des
+        /// stacks les plus anciens.
+        /// </summary>
+        /// <param name="type">le type de resource a retirer</param>
+        /// <param name="qte"></param>
+        /// <returns>un stack qui contient la qte de resource du type si possible, null sinon</returns>
+        public ResourceStack GetStack(ResourceElement.ResourceType type, int qte) {
+            if (GetResourceQte(type) < qte)
+                return null;
+
+            ResourceStack currentStack = null;
+            foreach (ResourceStack s in ResourceStacks) {
+                if (s.Type == type)
+                    currentStack = s;
+            }
+
+            ResourceStack result = currentStack.GetSubStack(qte);
+            return result;
+        }
+
+        /// <summary>
         /// Permet d'ajouter un stack dans ce hangar. Le stack sera vide dans la transaction.
         /// </summary>
         /// <param name="stack">Le stack a ajouter.</param>

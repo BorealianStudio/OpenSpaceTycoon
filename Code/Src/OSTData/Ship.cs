@@ -52,8 +52,8 @@ namespace OSTData {
         /// <summary> Les stations a rejoindres /// </summary>
         private List<Station> _dest = new List<Station>();
 
-        /// <summary> l'index dans _dest de la cible en cours </summary>
-        private int currentDest = -1;
+        //        /// <summary> l'index dans _dest de la cible en cours </summary>
+        //        private int currentDest = -1;
 
         //cette methode lance le calcul du chemin qui sera parcouru par le vaisseau.
         private void PreparePath() {

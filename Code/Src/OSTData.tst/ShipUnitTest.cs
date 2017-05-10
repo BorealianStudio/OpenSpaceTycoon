@@ -4,7 +4,6 @@ namespace OSTData.tst {
 
     [TestFixture]
     public class ShipUnitTest {
-        private Universe u = null;
         private Station s1 = null;
         private Station s2 = null;
 

@@ -40,6 +40,30 @@ namespace OSTData {
             _outputs[type] = qte;
         }
 
+        /// <summary>
+        /// Demande a la recette de s'executer pour une station donnee
+        /// </summary>
+        /// <param name="station"></param>
+        public bool ProduceOneBatch(Station station) {
+            Hangar homeHangar = station.GetHangar(-1);
+
+            foreach (ResourceElement.ResourceType e in _inputs.Keys) {
+                if (homeHangar.GetResourceQte(e) < _inputs[e])
+                    return false;
+            }
+            //toutes les inputs sont presentes
+            foreach (ResourceElement.ResourceType e in _inputs.Keys) {
+                ResourceStack stack = homeHangar.GetStack(e, _inputs[e]);
+            }
+
+            foreach (ResourceElement.ResourceType e in _outputs.Keys) {
+                ResourceElement elem = new ResourceElement(e, station, _outputs[e], 0);
+                ResourceStack stack = new ResourceStack(elem);
+                homeHangar.Add(stack);
+            }
+            return true;
+        }
+
         /// <summary> le nombre de fois maximum que peut etre effectue une recette par jour </summary>
         public int MaxFreq { get; private set; }
 
