@@ -79,11 +79,17 @@
     <Compile Include="..\..\..\Src\OSTData.tst\ResourceStackUnitTest.cs">
       <Link>Src\ResourceStackUnitTest.cs</Link>
     </Compile>
+    <Compile Include="..\..\..\Src\OSTData.tst\ShipDestinationUnitTest.cs">
+      <Link>Src\ShipDestinationUnitTest.cs</Link>
+    </Compile>
     <Compile Include="..\..\..\Src\OSTData.tst\ShipLoading.cs">
       <Link>Src\ShipLoading.cs</Link>
     </Compile>
     <Compile Include="..\..\..\Src\OSTData.tst\ShipUnitTest.cs">
       <Link>Src\ShipUnitTest.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Src\OSTData.tst\StationStandingTest.cs">
+      <Link>Src\StationStandingTest.cs</Link>
     </Compile>
     <Compile Include="..\..\..\Src\OSTData.tst\StationUnitTest.cs">
       <Link>Src\StationUnitTest.cs</Link>

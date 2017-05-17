@@ -9,6 +9,10 @@ namespace OSTData {
     /// </summary>
     public class ResourceStack {
 
+        public delegate void ResourceStackAction(ResourceStack stack);
+
+        public event ResourceStackAction onChange = delegate { };
+
         /// <summary>
         /// Constructeur de base.
         /// </summary>
@@ -74,6 +78,7 @@ namespace OSTData {
                     }
                 );
             }
+            onChange(this);
         }
 
         /// <summary>
@@ -88,6 +93,7 @@ namespace OSTData {
                 }
                 stack.CleanResourceElementList();
             }
+            onChange(this);
         }
 
         /// <summary>
@@ -109,6 +115,7 @@ namespace OSTData {
                     }
                 }
                 CleanResourceElementList();
+                onChange(this);
                 return subStack;
             } else {
                 return null;

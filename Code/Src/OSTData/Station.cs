@@ -8,6 +8,7 @@ namespace OSTData {
     /// </summary>
     [Serializable]
     public class Station {
+        private const float defaultStanding = 50.0f;
 
         /// <summary> les types que peuvent avoir les stations </summary>
         public enum StationType {
@@ -54,6 +55,15 @@ namespace OSTData {
 
         /// <summary> le nom de la station </summary>
         public string Name { get; set; }
+
+        /// <summary>
+        /// methode utilise par un vaisseau pour indiquer qu'il est en train de s echarger d'un certain type de ressource
+        /// </summary>
+        /// <param name="ship">le vaisseau qui se charge</param>
+        /// <param name="type">le type de ressource qu'il charge</param>
+        public void InformLoading(Ship ship, ResourceElement.ResourceType type) {
+            throw new NotImplementedException("InformLoading");
+        }
 
         /// <summary> Liste des portails reliant cette station </summary>
         [Newtonsoft.Json.JsonIgnore]
@@ -126,14 +136,30 @@ namespace OSTData {
         }
 
         /// <summary>
+        /// permet de recuperer le standing d'une corporation pour une ressource donnee dans cette station
+        /// </summary>
+        /// <param name="type">le type de ressource</param>
+        /// <param name="corporationID">l'ID de la corporation dont on veut le standing</param>
+        /// <returns>le standing de la corporation pour le type de ressource, -1.0f si pas de standing</returns>
+        public float GetStanding(ResourceElement.ResourceType type, int corporationID) {
+            if (_standings.ContainsKey(type)) {
+                if (_standings[type].ContainsKey(corporationID)) {
+                    return _standings[type][corporationID];
+                }
+            }
+            return -1.0f;
+        }
+
+        /// <summary>
         /// Indique a la station d'effectuer le travail qu'elle doit faire a la fin d'une journee
         /// </summary>
-        public void EndDays() {
+        /// <param name="timestamp">le timestamp en cours</param>
+        public void EndDays(int timestamp) {
             Hangar stationHangar = GetHangar(-1);
 
             foreach (Receipe r in _receipies) {
                 for (int qte = 0; qte < r.MaxFreq; qte++) {
-                    if (!r.ProduceOneBatch(this))
+                    if (!r.ProduceOneBatch(this, timestamp))
                         break;
                 }
             }
@@ -149,6 +175,7 @@ namespace OSTData {
         private List<Receipe> _receipies = new List<Receipe>();
 
         private Dictionary<ResourceElement.ResourceType, int> _buyingPrices = new Dictionary<ResourceElement.ResourceType, int>();
+        private Dictionary<ResourceElement.ResourceType, Dictionary<int, float>> _standings = new Dictionary<ResourceElement.ResourceType, Dictionary<int, float>>();
 
         private void InitProduct() {
             switch (Type) {

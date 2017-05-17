@@ -6,21 +6,14 @@ namespace OSTData.tst {
     public class ShipUnitTest {
         private Station s1 = null;
         private Station s2 = null;
+        private Station s3 = null;
 
         [SetUp]
         public void Init() {
             Universe u = new Universe(0);
-            foreach (Station s in u.GetStations()) {
-                if (null == s1) {
-                    s1 = s;
-                    continue;
-                }
-                if (null == s2) {
-                    s2 = s;
-                    continue;
-                }
-                break;
-            }
+            s1 = u.GetStation(1);
+            s2 = u.GetStation(2);
+            s3 = u.GetStation(3);
         }
 
         [Test, Description("construction")]
@@ -31,11 +24,12 @@ namespace OSTData.tst {
         public void ShipDestinations() {
             Ship ship = s1.CreateShip();
             ship.AddDestination(s1);
+            ship.AddDestination(s2);
+            ship.AddDestination(s3, 1);
 
-            ship.AddDestination(s2, 0);
-            Assert.AreEqual(s2, ship.Destinations[0]);
-            Assert.AreEqual(s1, ship.Destinations[1]);
-            Assert.AreEqual(2, ship.Destinations.Count);
+            Assert.AreEqual(s1.ID, ship.GetDestinations(0).Destination.ID);
+            Assert.AreEqual(s3.ID, ship.GetDestinations(1).Destination.ID);
+            Assert.AreEqual(s2.ID, ship.GetDestinations(2).Destination.ID);
         }
 
         [Test, Description("gestion destinations quand en route")]

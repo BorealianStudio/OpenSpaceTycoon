@@ -76,5 +76,9 @@ namespace OSTData {
         }
 
         #endregion methods
+
+        public override string ToString() {
+            return Quantity + " of " + Type + " time : " + DateProd;
+        }
     }
 }

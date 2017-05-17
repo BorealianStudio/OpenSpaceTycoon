@@ -44,7 +44,7 @@ namespace OSTData {
             if (Hour >= _hourPerDay) {
                 Day++;
                 Hour -= _hourPerDay;
-                EndDay();
+                EndDay(Day);
             }
 
             foreach (Ship s in Ships) {
@@ -246,9 +246,9 @@ namespace OSTData {
             return result;
         }
 
-        private void EndDay() {
+        private void EndDay(int timestamp) {
             foreach (Station s in _stations) {
-                s.EndDays();
+                s.EndDays(timestamp);
             }
             onDayEnd();
         }

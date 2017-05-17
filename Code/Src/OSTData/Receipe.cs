@@ -44,7 +44,8 @@ namespace OSTData {
         /// Demande a la recette de s'executer pour une station donnee
         /// </summary>
         /// <param name="station"></param>
-        public bool ProduceOneBatch(Station station) {
+        /// <param name="timestamp">l'heure en cours</param>
+        public bool ProduceOneBatch(Station station, int timestamp) {
             Hangar homeHangar = station.GetHangar(-1);
 
             foreach (ResourceElement.ResourceType e in _inputs.Keys) {
@@ -57,7 +58,7 @@ namespace OSTData {
             }
 
             foreach (ResourceElement.ResourceType e in _outputs.Keys) {
-                ResourceElement elem = new ResourceElement(e, station, _outputs[e], 0);
+                ResourceElement elem = new ResourceElement(e, station, _outputs[e], timestamp);
                 ResourceStack stack = new ResourceStack(elem);
                 homeHangar.Add(stack);
             }
