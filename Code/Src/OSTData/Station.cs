@@ -90,15 +90,6 @@ namespace OSTData {
         }
 
         /// <summary>
-        /// La liste des vaisseau dans la station au moment ou on la recupere
-        /// cette liste peut changer apres un update
-        /// </summary>
-        public List<Ship> Ships {
-            get { return new List<Ship>(_ships); }
-            private set { _ships = value; }
-        }
-
-        /// <summary>
         /// creer un hangar dans la station pour la owner donne, ou retourner celui existant
         /// s'il existe deja
         /// </summary>
