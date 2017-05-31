@@ -10,11 +10,25 @@ namespace OSTData {
     [Serializable]
     public class Universe {
 
+        #region Events
+
+        /// <summary>
+        /// type de callback sans parametres
+        /// </summary>
+        public delegate void noParamAction();
+
+        /// <summary>
+        /// Event leve quand la fin d'une journée survient
+        /// </summary>
+        public event noParamAction onDayEnd = delegate { };
+
+        #endregion Events
+
         /// <summary> basic constructor </summary>
         /// <param name="seed"></param>
         public Universe(int seed) {
             _seed = seed;
-            _random = new System.Random(seed);
+            _random = new Random(seed);
 
             HardCordedBuildUniverse();
 
@@ -30,6 +44,7 @@ namespace OSTData {
             if (Hour >= _hourPerDay) {
                 Day++;
                 Hour -= _hourPerDay;
+                EndDay(Day);
             }
 
             foreach (Ship s in Ships) {
@@ -68,6 +83,27 @@ namespace OSTData {
 
         /// <summary> nombre d'heure ecoule dans le jour en cours</summary>
         public int Hour { get; private set; }
+
+        /// <summary>
+        /// Compare si deux object sont identique.
+        /// </summary>
+        /// <param name="obj">l'autre objet a comparer</param>
+        /// <returns></returns>
+        public override bool Equals(object obj) {
+            Universe other = obj as Universe;
+            if (null != other)
+                return base.Equals(obj);
+
+            return false;
+        }
+
+        /// <summary>
+        /// override du GetHashCode pour eviter le warning
+        /// </summary>
+        /// <returns></returns>
+        public override int GetHashCode() {
+            return base.GetHashCode();
+        }
 
         #region private
 
@@ -216,6 +252,13 @@ namespace OSTData {
                                                            0.0,
                                                            (_random.NextDouble() * 250.0) - 125.0f);
             return result;
+        }
+
+        private void EndDay(int timestamp) {
+            foreach (Station s in _stations) {
+                s.EndDays(timestamp);
+            }
+            onDayEnd();
         }
 
         #endregion private

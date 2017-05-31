@@ -59,11 +59,20 @@
     <Compile Include="..\..\..\Src\OSTData\ResourceElement.cs">
       <Link>Src\ResourceElement.cs</Link>
     </Compile>
+    <Compile Include="..\..\..\Src\OSTData\ResourceHolder.cs">
+      <Link>Src\ResourceHolder.cs</Link>
+    </Compile>
     <Compile Include="..\..\..\Src\OSTData\ResourceStack.cs">
       <Link>Src\ResourceStack.cs</Link>
     </Compile>
     <Compile Include="..\..\..\Src\OSTData\Ship.cs">
       <Link>Src\Ship.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Src\OSTData\ShipCargo.cs">
+      <Link>Src\ShipCargo.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Src\OSTData\ShipDestination.cs">
+      <Link>Src\ShipDestination.cs</Link>
     </Compile>
     <Compile Include="..\..\..\Src\OSTData\StarSystem.cs">
       <Link>Src\StarSystem.cs</Link>
