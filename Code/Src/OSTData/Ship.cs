@@ -12,9 +12,11 @@ namespace OSTData {
 
         /// <summary> constructeur de base </summary>
         /// <param name="id">l'id unique de ce vaisseau</param>
-        public Ship(int id) {
+        /// <param name="owner">la corporation qui possede ce vaisseau</param>
+        public Ship(int id, Corporation owner) {
             ID = id;
             Cargo = new ShipCargo(this);
+            Owner = owner;
         }
 
         /// <summary> l'identifiant unique de ce vaisseau </summary>
@@ -22,6 +24,12 @@ namespace OSTData {
 
         /// <summary> C'est la zone qui contient les ressources dans le vaisseau </summary>
         public ShipCargo Cargo { get; private set; }
+
+        /// <summary> The corporation owning this ship </summary>
+        public Corporation Owner { get; private set; }
+
+        /// <summary> la station ou est actuellement le vaisseau, null si dans l'espace </summary>
+        public Station CurrentStation { get; set; }
 
         /// <summary> mettre a jour le  vaisseau en faisant avancer d'un frame (1/5e de jour)</summary>
         public void Update() {

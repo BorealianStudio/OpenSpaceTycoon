@@ -57,18 +57,28 @@ namespace OSTData {
         public string Name { get; set; }
 
         /// <summary>
+        /// appele une fois par frame, quand les updates des vaisseaux sont fini.
+        /// </summary>
+        public void Update() {
+            //todo gerer les standing
+            _currentLoaders.Clear();
+        }
+
+        /// <summary>
         /// methode utilise par un vaisseau pour indiquer qu'il est en train de s echarger d'un certain type de ressource
         /// </summary>
         /// <param name="ship">le vaisseau qui se charge</param>
         /// <param name="type">le type de ressource qu'il charge</param>
         public void InformLoading(Ship ship, ResourceElement.ResourceType type) {
-            throw new NotImplementedException("InformLoading");
+            if (!_currentLoaders.ContainsKey(ship.Owner.ID)) {
+                _currentLoaders.Add(ship.Owner.ID, new HashSet<ResourceElement.ResourceType>());
+            }
+            _currentLoaders[ship.Owner.ID].Add(type);
         }
 
         /// <summary> Liste des portails reliant cette station </summary>
         [Newtonsoft.Json.JsonIgnore]
-        public List<Portal> Gates
-        {
+        public List<Portal> Gates {
             get { return new List<Portal>(_gates); }
         }
 
@@ -83,16 +93,33 @@ namespace OSTData {
         /// La liste des vaisseau dans la station au moment ou on la recupere
         /// cette liste peut changer apres un update
         /// </summary>
-        public List<Ship> Ships
-        {
+        public List<Ship> Ships {
             get { return new List<Ship>(_ships); }
             private set { _ships = value; }
         }
 
+        /// <summary>
+        /// creer un hangar dans la station pour la owner donne, ou retourner celui existant
+        /// s'il existe deja
+        /// </summary>
+        /// <param name="owner">la corporation a qui appartient ce hangar</param>
+        /// <returns>le hangar creer, ou celui qui existait deja</returns>
+        public Hangar CreateHangar(Corporation owner) {
+            Hangar result = GetHangar(owner.ID);
+            if (null == result) {
+                result = new Hangar(this, owner);
+                _hangars.Add(owner.ID, result);
+            }
+
+            return result;
+        }
+
         /// <summary> permet de creer un vaisseau dans cette station </summary>
+        /// <param name="corp">la corporation proprietaire de ce vaisseau</param>
         /// <returns>le vaisseau cree</returns>
-        public Ship CreateShip() {
-            Ship result = new Ship(System.Universe.Ships.Count + 1);
+        public Ship CreateShip(Corporation corp) {
+            Ship result = new Ship(System.Universe.Ships.Count + 1, corp);
+            result.CurrentStation = this;
             System.Universe.Ships.Add(result);
             _ships.Add(result);
             return result;
@@ -111,8 +138,7 @@ namespace OSTData {
         }
 
         /// <summary> Recupere la liste des ressource achetes par cette station </summary>
-        public HashSet<ResourceElement.ResourceType> Buyings
-        {
+        public HashSet<ResourceElement.ResourceType> Buyings {
             get { return new HashSet<ResourceElement.ResourceType>(_buyingPrices.Keys); }
         }
 
@@ -167,6 +193,7 @@ namespace OSTData {
 
         private List<Ship> _ships = new List<Ship>();
         private List<Portal> _gates = new List<Portal>();
+        private Dictionary<int, HashSet<ResourceElement.ResourceType>> _currentLoaders = new Dictionary<int, HashSet<ResourceElement.ResourceType>>();
 
         [Newtonsoft.Json.JsonProperty]
         private Dictionary<int, Hangar> _hangars = new Dictionary<int, Hangar>();

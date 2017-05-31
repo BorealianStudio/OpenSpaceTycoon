@@ -13,7 +13,8 @@ namespace OSTData.tst {
         public void StandingTest1() {
             Universe universe = new Universe(0);
             Station s = universe.GetStation(1);
-            Ship ship = s.CreateShip();
+            Corporation corp = new Corporation(1);
+            Ship ship = s.CreateShip(corp);
 
             Assert.IsTrue(s.Type == Station.StationType.City);
             Assert.IsTrue(s.GetStanding(ResourceElement.ResourceType.Water, 1) < 0.0);

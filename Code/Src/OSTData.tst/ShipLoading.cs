@@ -9,7 +9,11 @@ namespace OSTData.tst {
         public void ShipLoading1() {
             Universe u = new Universe(0);
             Station s = u.GetStation(1);
-            Ship ship = s.CreateShip();
+            Corporation corp = new Corporation(1);
+            Ship ship = s.CreateShip(corp);
+            Hangar h = s.CreateHangar(corp);
+            ResourceElement e = new ResourceElement(ResourceElement.ResourceType.Wastes, s, 100, 1);
+            h.Add(new ResourceStack(e));
 
             ShipDestination dest = ship.AddDestination(s);
             dest.AddLoad(ResourceElement.ResourceType.Wastes, 100);
@@ -20,7 +24,7 @@ namespace OSTData.tst {
                 u.Update();
             }
 
-            Assert.AreEqual(100, ship.Cargo.GetResourceQte(ResourceElement.ResourceType.Wastes));
+            Assert.AreEqual(50, ship.Cargo.GetResourceQte(ResourceElement.ResourceType.Wastes));
         }
     }
 }

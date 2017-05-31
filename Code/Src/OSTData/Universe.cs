@@ -97,6 +97,14 @@ namespace OSTData {
             return false;
         }
 
+        /// <summary>
+        /// override du GetHashCode pour eviter le warning
+        /// </summary>
+        /// <returns></returns>
+        public override int GetHashCode() {
+            return base.GetHashCode();
+        }
+
         #region private
 
         private int _seed = 0;

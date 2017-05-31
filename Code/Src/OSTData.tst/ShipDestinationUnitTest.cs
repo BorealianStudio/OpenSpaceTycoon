@@ -9,7 +9,8 @@ namespace OSTData.tst {
         public void ShipDestinationCreation() {
             Universe u = new Universe(0);
             Station s = u.GetStation(1);
-            Ship ship = s.CreateShip();
+            Corporation corp = new Corporation(1);
+            Ship ship = s.CreateShip(corp);
 
             ShipDestination dest = ship.AddDestination(s);
 

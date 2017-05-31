@@ -9,8 +9,11 @@ namespace OSTData {
     /// </summary>
     public class ResourceStack {
 
+        /// <summary> format delegate avec un stack en param </summary>
+        /// <param name="stack">le parametre stack</param>
         public delegate void ResourceStackAction(ResourceStack stack);
 
+        /// <summary> Event triggered quand ce ResourceStack change </summary>
         public event ResourceStackAction onChange = delegate { };
 
         /// <summary>
@@ -39,10 +42,8 @@ namespace OSTData {
         private List<ResourceElement> _ResourceElementsInto;
 
         /// <summary> La quantite total de ressource dans ce Stack en m3. </summary>
-        public int Qte
-        {
-            get
-            {
+        public int Qte {
+            get {
                 int qte = 0;
                 for (int i = 0; i < _ResourceElementsInto.Count; i++) {
                     qte += _ResourceElementsInto[i].Quantity;

@@ -22,7 +22,8 @@ namespace OSTData.tst {
 
         [Test, Description("destination ajout")]
         public void ShipDestinations() {
-            Ship ship = s1.CreateShip();
+            Corporation corp = new Corporation(1);
+            Ship ship = s1.CreateShip(corp);
             ship.AddDestination(s1);
             ship.AddDestination(s2);
             ship.AddDestination(s3, 1);

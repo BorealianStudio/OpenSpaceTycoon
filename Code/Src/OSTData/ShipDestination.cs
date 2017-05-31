@@ -103,8 +103,28 @@ namespace OSTData {
         /// ou quand il sera plein.
         /// </summary>
         private void Load() {
+            Station station = Ship.CurrentStation;
+            if (null == station)
+                return;
+
+            Hangar myHangarInStation = station.GetHangar(Ship.Owner.ID);
+            if (null == myHangarInStation)
+                return;
+
+            int qteLoaded = 0;
             foreach (LoadData l in _loads) {
-                Destination.InformLoading(Ship, l.type);
+                int present = myHangarInStation.GetResourceQte(l.type);
+                int toLoad = Math.Min(present, 5);//todo magicnumber
+
+                if (toLoad > 0) {
+                    Ship.Cargo.Add(myHangarInStation.GetStack(l.type, toLoad));
+                    Destination.InformLoading(Ship, l.type);
+                    qteLoaded += toLoad;
+                }
+            }
+
+            if (qteLoaded == 0) {
+                throw new NotImplementedException("ends of loading not implemented");
             }
         }
     }

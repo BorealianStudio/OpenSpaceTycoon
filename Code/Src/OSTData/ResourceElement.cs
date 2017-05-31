@@ -77,6 +77,10 @@ namespace OSTData {
 
         #endregion methods
 
+        /// <summary>
+        /// override du tostring classique
+        /// </summary>
+        /// <returns>une lecture simple de ce resourceElement</returns>
         public override string ToString() {
             return Quantity + " of " + Type + " time : " + DateProd;
         }
