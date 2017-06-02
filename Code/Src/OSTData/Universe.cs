@@ -61,6 +61,10 @@ namespace OSTData {
             return new List<Station>(_stations.Values);
         }
 
+        public Random Random {
+            get { return _random; }
+        }
+
         /// <summary> Recuperer une station par son ID</summary>
         /// <param name="ID">l'ID de la station a recuperer</param>
         /// <returns>la station ou null si aucune ne correspond</returns>
@@ -70,6 +74,7 @@ namespace OSTData {
             return null;
         }
 
+        /// <summary> C'est la corp NPC, unique pour le moment </summary>
         public Corporation npcCorp = new Corporation(0);
 
         /// <summary> Les systemes contenus dans cet univers </summary>        ///
@@ -142,8 +147,6 @@ namespace OSTData {
 
         #region private
 
-        private int _seed = 0;
-
         [Newtonsoft.Json.JsonProperty]
         private Random _random = null;
 
@@ -161,38 +164,7 @@ namespace OSTData {
         /// Methode qui genere l'univers alleatoirement a partir du seed stocke
         /// </summary>
         private void BuildUniverse() {
-            throw new System.NotImplementedException();
-            /*
-                        _stations = new List<Station>();
-
-                        //creation des systemes
-                        Dictionary<int, StarSystem> systemes = new Dictionary<int, StarSystem>();
-                        for (int i = 0; i < _nbSystemPerMap; i++) {
-                            OSTTools.Vector3D pos = new OSTTools.Vector3D();
-                            systemes.Add(i, new StarSystem(i, pos));
-
-                            //creation d'une cite
-                            OSTTools.Vector3D stationPos = new OSTTools.Vector3D();
-                            Station s = new Station(Station.StationType.City, systemes[i], stationPos);
-                            _stations.Add(s);
-                        }
-
-                        //creation des stations mines
-                        for (int i = 0; i < _nbMine; i++) {
-                            Station s = new Station(Station.StationType.Mine, systemes[_random.Next(_nbSystemPerMap)], GetRandomStationPosition());
-                            _stations.Add(s);
-                        }
-                        for (int i = 0; i < _nbIceField; i++) {
-                            Station s = new Station(Station.StationType.IceField, systemes[_random.Next(_nbSystemPerMap)], GetRandomStationPosition());
-                            _stations.Add(s);
-                        }
-
-                        while (_stations.Count < _nbStation) {
-                            Station.StationType type = Station.StationType.Agricultural;
-                            Station s = new Station(type, systemes[_random.Next(_nbSystemPerMap)], GetRandomStationPosition());
-                            _stations.Add(s);
-                        }
-            */
+            throw new NotImplementedException();
         }
 
         private void HardCordedBuildUniverse() {
