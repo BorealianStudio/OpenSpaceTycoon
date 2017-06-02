@@ -11,11 +11,13 @@ namespace OSTData {
         /// </summary>
         public Game() {
             _Universe = new Universe(0);
+            foreach (Station s in _Universe.GetStations()) {
+                s.InitProduct();
+            }
         }
 
         /// <summary>Get the universe in this game </summary>
-        public Universe Universe
-        {
+        public Universe Universe {
             get { return _Universe; }
         }
 

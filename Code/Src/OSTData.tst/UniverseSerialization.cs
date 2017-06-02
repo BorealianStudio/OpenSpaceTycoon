@@ -13,15 +13,30 @@ namespace OSTData.tst {
 
         [Test, Description("savegame1")]
         public void UniverseSave1() {
-            Universe universe = new Universe(0);
+            Universe universe = new Universe(1);
 
-            string s = JsonConvert.SerializeObject(universe, new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Serialize, Formatting = Formatting.Indented, PreserveReferencesHandling = PreserveReferencesHandling.All });
+            string s = JsonConvert.SerializeObject(universe, new JsonSerializerSettings {
+                ReferenceLoopHandling = ReferenceLoopHandling.Serialize,
+                Formatting = Formatting.Indented,
+                PreserveReferencesHandling = PreserveReferencesHandling.All,
+                ObjectCreationHandling = ObjectCreationHandling.Replace
+            });
 
-            //            System.IO.File.WriteAllText("D:\\sandbox\\Debug.txt", s);
+            System.IO.File.WriteAllText("c:\\sandbox\\Debug.txt", s);
 
-            Universe universe2 = JsonConvert.DeserializeObject<Universe>(s);
+            Newtonsoft.Json.Serialization.MemoryTraceWriter traceWriter = new Newtonsoft.Json.Serialization.MemoryTraceWriter();
+            traceWriter.LevelFilter = System.Diagnostics.TraceLevel.Info;
 
-            //            Assert.IsTrue(universe.Equals(universe2));
+            Universe universe2 = JsonConvert.DeserializeObject<Universe>(s, new JsonSerializerSettings {
+                ReferenceLoopHandling = ReferenceLoopHandling.Serialize,
+                Formatting = Formatting.Indented,
+                PreserveReferencesHandling = PreserveReferencesHandling.All,
+                ConstructorHandling = ConstructorHandling.AllowNonPublicDefaultConstructor,
+                TraceWriter = traceWriter
+            });
+            Assert.IsTrue(universe.Equals(universe2));
+
+            //            System.IO.File.WriteAllText("c:\\sandbox\\output.txt", traceWriter.ToString());
         }
     }
 }

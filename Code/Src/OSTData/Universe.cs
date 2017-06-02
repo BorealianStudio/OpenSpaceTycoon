@@ -24,6 +24,9 @@ namespace OSTData {
 
         #endregion Events
 
+        private Universe() {
+        }
+
         /// <summary> basic constructor </summary>
         /// <param name="seed"></param>
         public Universe(int seed) {
@@ -55,28 +58,28 @@ namespace OSTData {
         /// <summary> Recuperer la liste de toutes les stations de l'univers </summary>
         /// <returns>Une collection de reference sur les stations</returns>
         public ICollection<Station> GetStations() {
-            return new List<Station>(_stations);
+            return new List<Station>(_stations.Values);
         }
 
         /// <summary> Recuperer une station par son ID</summary>
         /// <param name="ID">l'ID de la station a recuperer</param>
         /// <returns>la station ou null si aucune ne correspond</returns>
         public Station GetStation(int ID) {
-            foreach (Station s in _stations) {
-                if (s.ID == ID)
-                    return s;
-            }
+            if (_stations.ContainsKey(ID))
+                return _stations[ID];
             return null;
         }
 
-        /// <summary> liste des vaisseaux dans l'univers </summary>
-        public ICollection<Ship> Ships { get; set; }
+        public Corporation npcCorp = new Corporation(0);
 
-        /// <summary> Les systemes contenus dans cet univers </summary>
-        public Dictionary<int, StarSystem> Systems { get; private set; }
+        /// <summary> Les systemes contenus dans cet univers </summary>        ///
+        public Dictionary<int, StarSystem> Systems { get; set; }
+
+        /// <summary> liste des vaisseaux dans l'univers </summary>
+        public List<Ship> Ships { get; set; }
 
         /// <summary> List des portail de cet univers </summary>
-        public List<Portal> Portals { get; private set; }
+        public List<Portal> Portals { get; set; }
 
         /// <summary> nombre de jour ecoule depuis le debut du jeu </summary>
         public int Day { get; private set; }
@@ -91,10 +94,42 @@ namespace OSTData {
         /// <returns></returns>
         public override bool Equals(object obj) {
             Universe other = obj as Universe;
-            if (null != other)
-                return base.Equals(obj);
+            if (null == other)
+                return false;
 
-            return false;
+            //date
+            if (other.Day != Day || other.Hour != Hour)
+                return false;
+
+            //tester la map (Systems + stations + portals)
+            if (Systems.Count != other.Systems.Count)
+                return false;
+            for (int i = 0; i < Systems.Count; i++) {
+                if (!Systems[i].Equals(other.Systems[i]))
+                    return false;
+            }
+
+            if (_stations.Count != other._stations.Count)
+                return false;
+            foreach (int i in _stations.Keys) {
+                if (!_stations[i].Equals(other._stations[i]))
+                    return false;
+            }
+
+            if (Portals.Count != other.Portals.Count)
+                return false;
+            for (int i = 0; i < Portals.Count; i++) {
+                if (!Portals[i].Equals(other.Portals[i]))
+                    return false;
+            }
+
+            if (Ships.Count != other.Ships.Count)
+                return false;
+            for (int i = 0; i < Ships.Count; i++) {
+                if (!Ships[i].Equals(other.Ships[i]))
+                    return false;
+            }
+            return true;
         }
 
         /// <summary>
@@ -108,8 +143,13 @@ namespace OSTData {
         #region private
 
         private int _seed = 0;
+
+        [Newtonsoft.Json.JsonProperty]
         private Random _random = null;
-        private List<Station> _stations = null;
+
+        [Newtonsoft.Json.JsonProperty]
+        private Dictionary<int, Station> _stations = null;
+
         private int _nbSystemPerMap = 5; // nombre de systeme dans une map
         private int _nbMine = 6;
         private int _nbIceField = 2;
@@ -156,7 +196,7 @@ namespace OSTData {
         }
 
         private void HardCordedBuildUniverse() {
-            _stations = new List<Station>();
+            _stations = new Dictionary<int, Station>();
             Systems = new Dictionary<int, StarSystem>();
             Portals = new List<Portal>();
             Ships = new List<Ship>();
@@ -168,10 +208,10 @@ namespace OSTData {
                 Systems.Add(i, sys);
 
                 //creation d'une cite
-                OSTTools.Vector3 stationPos = new OSTTools.Vector3();
+                OSTTools.Vector3 stationPos = new OSTTools.Vector3(1.0, 1.0, 1.0);
                 Station s = new Station(Station.StationType.City, Systems[i], stationPos, _stations.Count + 1);
                 s.Name = "city " + i;
-                _stations.Add(s);
+                _stations.Add(s.ID, s);
                 Systems[i].Stations.Add(s);
             }
 
@@ -180,7 +220,7 @@ namespace OSTData {
                 StarSystem sys = Systems[_random.Next(_nbSystemPerMap)];
                 Station s = new Station(Station.StationType.Mine, sys, GetRandomStationPosition(), _stations.Count + 1);
                 s.Name = "mine " + i;
-                _stations.Add(s);
+                _stations.Add(s.ID, s);
                 sys.Stations.Add(s);
             }
 
@@ -188,7 +228,7 @@ namespace OSTData {
                 StarSystem sys = Systems[_random.Next(_nbSystemPerMap)];
                 Station s = new Station(Station.StationType.IceField, sys, GetRandomStationPosition(), _stations.Count + 1);
                 s.Name = "ice field " + i;
-                _stations.Add(s);
+                _stations.Add(s.ID, s);
                 sys.Stations.Add(s);
             }
 
@@ -199,7 +239,7 @@ namespace OSTData {
                 Station.StationType type = (Station.StationType)allTypes.GetValue(_random.Next(allTypes.Length - 3) + 3);
                 Station s = new Station(type, sys, GetRandomStationPosition(), _stations.Count + 1);
                 s.Name = type.ToString() + " " + (_stations.Count + 1);
-                _stations.Add(s);
+                _stations.Add(s.ID, s);
                 sys.Stations.Add(s);
             }
 
@@ -255,7 +295,7 @@ namespace OSTData {
         }
 
         private void EndDay(int timestamp) {
-            foreach (Station s in _stations) {
+            foreach (Station s in _stations.Values) {
                 s.EndDays(timestamp);
             }
             onDayEnd();

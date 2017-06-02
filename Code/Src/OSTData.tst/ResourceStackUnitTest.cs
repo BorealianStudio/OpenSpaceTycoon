@@ -9,7 +9,8 @@ namespace OSTData.tst {
 
         [SetUp]
         public void Init() {
-            station = new Station(Station.StationType.Agricultural, null, new OSTTools.Vector3(), 1);
+            Universe u = new Universe(0);
+            station = u.GetStation(1);
         }
 
         [Test, Description("test de la construction")]
