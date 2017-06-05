@@ -30,8 +30,7 @@ namespace OSTData {
         /// <summary> basic constructor </summary>
         /// <param name="seed"></param>
         public Universe(int seed) {
-            _seed = seed;
-            _random = new Random(seed);
+            _random = new OSTTools.Random(seed);
 
             HardCordedBuildUniverse();
 
@@ -61,7 +60,7 @@ namespace OSTData {
             return new List<Station>(_stations.Values);
         }
 
-        public Random Random {
+        public OSTTools.Random Random {
             get { return _random; }
         }
 
@@ -148,7 +147,7 @@ namespace OSTData {
         #region private
 
         [Newtonsoft.Json.JsonProperty]
-        private Random _random = null;
+        private OSTTools.Random _random = null;
 
         [Newtonsoft.Json.JsonProperty]
         private Dictionary<int, Station> _stations = null;
