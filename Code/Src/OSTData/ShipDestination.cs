@@ -35,18 +35,30 @@ namespace OSTData {
         public ShipDestination(Ship ship, Station destination) {
             Destination = destination;
             Ship = ship;
+            Done = true;
         }
 
         /// <summary>
         /// update cette destination
         /// </summary>
         public void Update() {
-            //approche de la station
+            Ship.CurrentStation = Destination;
+
+            if (_travelDone < 1.0f) {
+                _travelDone = Math.Min(_travelDone + 0.1f, 1.0f);    //todo magicnumber
+                if (_travelDone < 1.0f) {
+                    Ship.CurrentStation = null;
+                }
+                return;
+            }
+
+            int m3toMove = 10;//todo magicnumber
 
             //dechargement
+            m3toMove -= Unload(m3toMove);
 
             //chargement
-            Load();
+            Load(m3toMove);
         }
 
         /// <summary>
@@ -58,6 +70,24 @@ namespace OSTData {
         /// Le vaisseau a qui appartient cette destination
         /// </summary>
         public Ship Ship { get; private set; }
+
+        /// <summary> permet de savoir si cette tache est terminee </summary>
+        public bool Done { get; private set; }
+
+        /// <summary>
+        /// methode a appeler quand on change de destination, sur la nouvelle destination
+        /// </summary>
+        public void Start() {
+            _travelDone = 0.0f;
+            _loaded.Clear();
+            _unloaded.Clear();
+
+            if (Ship.CurrentStation.ID == Destination.ID) {
+                _travelDone = 1.0f;
+            } else {
+                Done = false;
+            }
+        }
 
         /// <summary>
         /// indique au vaisseau qu'une fois a cette destination, charger une certaine qte d'une certaine ressource
@@ -97,34 +127,56 @@ namespace OSTData {
 
         private List<LoadData> _loads = new List<LoadData>();
         private List<LoadData> _unloads = new List<LoadData>();
+        private Dictionary<ResourceElement.ResourceType, int> _loaded = new Dictionary<ResourceElement.ResourceType, int>();
+        private Dictionary<ResourceElement.ResourceType, int> _unloaded = new Dictionary<ResourceElement.ResourceType, int>();
+        private float _travelDone = 0.0f;
+
+        /// <summary>
+        /// le vaisseau decharge sa cargaison avant de pouvoir en charger.
+        /// </summary>
+        /// <param name="possibleUnload">nombre de m3 qu'on peut decharger cette fois</param>
+        /// <returns>le nombre de m3 decharge</returns>
+        private int Unload(int possibleUnload) {
+            return 0;
+        }
 
         /// <summary>
         /// le vaisseau est en train de se charger dans la station. Il partira quand il aura fini de charger ce qu'il doit
         /// ou quand il sera plein.
+        /// <param name="possibleLoad">nombre de m3 qu'on peut charger cette fois</param>
         /// </summary>
-        private void Load() {
+        private void Load(int possibleLoad) {
             Station station = Ship.CurrentStation;
             if (null == station)
                 return;
 
-            Hangar myHangarInStation = station.GetHangar(Ship.Owner.ID);
-            if (null == myHangarInStation)
-                return;
-
             int qteLoaded = 0;
-            foreach (LoadData l in _loads) {
-                int present = myHangarInStation.GetResourceQte(l.type);
-                int toLoad = Math.Min(present, 5);//todo magicnumber
+            int qteLeft = 0;
 
-                if (toLoad > 0) {
-                    Ship.Cargo.Add(myHangarInStation.GetStack(l.type, toLoad));
-                    Destination.InformLoading(Ship, l.type);
-                    qteLoaded += toLoad;
+            Hangar myHangarInStation = station.GetHangar(Ship.Owner.ID);
+            if (null != myHangarInStation) {
+                foreach (LoadData l in _loads) {
+                    if (!_loaded.ContainsKey(l.type)) {
+                        _loaded.Add(l.type, 0);
+                    }
+                    int present = myHangarInStation.GetResourceQte(l.type);
+                    int toLoad = Math.Min(present, l.qte - _loaded[l.type]);
+                    toLoad = Math.Min(toLoad, possibleLoad);
+
+                    if (toLoad > 0) {
+                        Ship.Cargo.Add(myHangarInStation.GetStack(l.type, toLoad));
+                        Destination.InformLoading(Ship, l.type);
+                        qteLoaded += toLoad;
+                        _loaded[l.type] += toLoad;
+                        possibleLoad -= toLoad;
+                    }
+                    qteLeft += l.qte - _loaded[l.type];
                 }
             }
 
-            if (qteLoaded == 0) {
-                throw new NotImplementedException("ends of loading not implemented");
+            if (qteLoaded == 0 || qteLeft == 0) {
+                Done = true;
+                Ship.NextDestination();
             }
         }
     }

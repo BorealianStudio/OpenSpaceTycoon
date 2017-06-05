@@ -28,12 +28,15 @@ namespace OSTData {
         }
 
         /// <summary> le type de ce portail </summary>
+        [Newtonsoft.Json.JsonProperty]
         public PortalType TypePortal { get; private set; }
 
         /// <summary> La station a la 1ere extremite de ce portail</summary>
+        [Newtonsoft.Json.JsonProperty]
         public Station Station1 { get; private set; }
 
         /// <summary> La station a l'autre extremite de ce portail</summary>
+        [Newtonsoft.Json.JsonProperty]
         public Station Station2 { get; private set; }
 
         /// <summary>
@@ -62,6 +65,25 @@ namespace OSTData {
                 }
             }
             return new Vector3();
+        }
+
+        /// <summary>
+        /// tester si deux portals sont egaux (meme ID de station aux extremites)
+        /// </summary>
+        /// <param name="obj">l'autre Portal</param>
+        /// <returns>true si les portals sont identiques</returns>
+        public override bool Equals(object obj) {
+            Portal other = obj as Portal;
+            if (null == other)
+                return false;
+
+            if (Station1.ID != other.Station1.ID || Station2.ID != other.Station2.ID)
+                return false;
+
+            if (TypePortal != other.TypePortal)
+                return false;
+
+            return true;
         }
     }
 }

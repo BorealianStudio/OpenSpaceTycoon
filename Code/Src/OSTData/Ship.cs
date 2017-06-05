@@ -48,6 +48,19 @@ namespace OSTData {
             if (_dest.Count > 0) {
                 _currentDest = 0;
             }
+            _dest[_currentDest].Start();
+        }
+
+        /// <summary>
+        /// permet de demander au vaisseau de passer a la prochaine destinatin de sa liste
+        /// </summary>
+        public void NextDestination() {
+            if (_dest[_currentDest].Done) {
+                _currentDest++;
+                if (_currentDest > _dest.Count)
+                    _currentDest = 0;
+                _dest[_currentDest].Start();
+            }
         }
 
         /// <summary>

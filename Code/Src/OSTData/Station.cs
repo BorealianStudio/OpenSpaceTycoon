@@ -36,22 +36,27 @@ namespace OSTData {
             Name = "StationName";
             System = starSystem;
             ID = iID;
-            Hangar h = new Hangar(this, null);
+            Hangar h = new Hangar(this, starSystem.Universe.npcCorp);
             _hangars.Add(-1, h);
-            InitProduct();
         }
 
+        private Station() {}
+
         /// <summary> Le type de cette station </summary>
+        [Newtonsoft.Json.JsonProperty]
         public StationType Type { get; private set; }
 
         /// <summary> Le systeme solaire qui contient cette station </summary>
+        [Newtonsoft.Json.JsonProperty]
         public StarSystem System { get; private set; }
 
         /// <summary> L'identifiant de cette station </summary>
+        [Newtonsoft.Json.JsonProperty]
         public int ID { get; private set; }
 
         /// <summary> La position de la station dans ce systeme, en Unite astronomique</summary>
-        public OSTTools.Vector3 Position { get; private set; }
+        [Newtonsoft.Json.JsonProperty]
+        public OSTTools.Vector3 Position;// { get; private set; }
 
         /// <summary> le nom de la station </summary>
         public string Name { get; set; }
@@ -90,15 +95,6 @@ namespace OSTData {
         }
 
         /// <summary>
-        /// La liste des vaisseau dans la station au moment ou on la recupere
-        /// cette liste peut changer apres un update
-        /// </summary>
-        public List<Ship> Ships {
-            get { return new List<Ship>(_ships); }
-            private set { _ships = value; }
-        }
-
-        /// <summary>
         /// creer un hangar dans la station pour la owner donne, ou retourner celui existant
         /// s'il existe deja
         /// </summary>
@@ -121,7 +117,6 @@ namespace OSTData {
             Ship result = new Ship(System.Universe.Ships.Count + 1, corp);
             result.CurrentStation = this;
             System.Universe.Ships.Add(result);
-            _ships.Add(result);
             return result;
         }
 
@@ -191,7 +186,22 @@ namespace OSTData {
             }
         }
 
-        private List<Ship> _ships = new List<Ship>();
+        /// <summary>
+        /// Override du equals, test si les stations sont identique
+        /// </summary>
+        /// <param name="obj">autre station</param>
+        /// <returns>true si les attributs sont identiques</returns>
+        public override bool Equals(object obj) {
+            Station other = obj as Station;
+            if (null == other)
+                return false;
+
+            if (ID != other.ID || Type != other.Type || Name != other.Name || Position.Distance(other.Position) > 0.1)
+                return false;
+
+            return true;
+        }
+
         private List<Portal> _gates = new List<Portal>();
         private Dictionary<int, HashSet<ResourceElement.ResourceType>> _currentLoaders = new Dictionary<int, HashSet<ResourceElement.ResourceType>>();
 
@@ -204,7 +214,7 @@ namespace OSTData {
         private Dictionary<ResourceElement.ResourceType, int> _buyingPrices = new Dictionary<ResourceElement.ResourceType, int>();
         private Dictionary<ResourceElement.ResourceType, Dictionary<int, float>> _standings = new Dictionary<ResourceElement.ResourceType, Dictionary<int, float>>();
 
-        private void InitProduct() {
+        public void InitProduct() {
             switch (Type) {
                 case StationType.Agricultural:
                 break;

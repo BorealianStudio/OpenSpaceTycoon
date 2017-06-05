@@ -17,7 +17,11 @@ namespace OSTData {
             Universe = universe;
         }
 
+        private StarSystem() {
+        }
+
         /// <summary>L'id de ce systeme, doit être unique dans son univers </summary>
+        [Newtonsoft.Json.JsonProperty]
         public int ID { get; private set; }
 
         /// <summary> l'univers dans lequel se situe ce systeme </summary>
@@ -31,5 +35,28 @@ namespace OSTData {
 
         /// <summary>La position de ce systeme par rapport au centre de l'univers en Annees lumieres</summary>
         public OSTTools.Vector3 Position { get; private set; }
+
+        public override bool Equals(object obj) {
+            StarSystem other = obj as StarSystem;
+            if (null == other)
+                return false;
+
+            if (ID != other.ID)
+                return false;
+
+            if (Stations.Count != other.Stations.Count)
+                return false;
+
+            for (int i = 0; i < Stations.Count; i++) {
+                if (!Stations[i].Equals(other.Stations[i]))
+                    return false;
+            }
+
+            return true;
+        }
+
+        public override int GetHashCode() {
+            return ID;
+        }
     }
 }
