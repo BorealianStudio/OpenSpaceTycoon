@@ -30,7 +30,7 @@ namespace OSTData.tst {
 
             Assert.IsTrue(universe.Equals(universe2));
 
-            System.IO.File.WriteAllText("d:\\sandbox\\Debug.txt", s);
+            //System.IO.File.WriteAllText("d:\\sandbox\\Debug.txt", s);
             //System.IO.File.WriteAllText("c:\\sandbox\\output.txt", traceWriter.ToString());
         }
 

@@ -16,6 +16,7 @@ namespace OSTData.tst {
             ResourceElement e = new ResourceElement(ResourceElement.ResourceType.Wastes, s, 100, 1);
             h.Add(new ResourceStack(e));
 
+            s.CreateHangar(corp);
             ShipDestination dest = ship.AddDestination(s);
             dest.AddLoad(ResourceElement.ResourceType.Wastes, 100);
 
