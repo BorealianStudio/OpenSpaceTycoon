@@ -253,7 +253,22 @@ namespace OSTData {
         /// </summary>
         public void InitProduct() {
             switch (Type) {
-                case StationType.Agricultural:
+                case StationType.Agricultural: {
+                    Receipe r1 = new Receipe(1);
+                    r1.AddOutput(ResourceElement.ResourceType.Food, 10);
+                    _receipies.Add(r1);
+
+                    Receipe r2 = new Receipe(9);
+                    r2.AddInput(ResourceElement.ResourceType.Water, 10);
+                    r2.AddOutput(ResourceElement.ResourceType.Food, 10);
+                    _receipies.Add(r2);
+
+                    Receipe r3 = new Receipe(9);
+                    r3.AddInput(ResourceElement.ResourceType.Water, 10);
+                    r3.AddInput(ResourceElement.ResourceType.Fertilizer, 10);
+                    r3.AddOutput(ResourceElement.ResourceType.Food, 20);
+                    _receipies.Add(r3);
+                }
                 break;
 
                 case StationType.City: {
@@ -281,10 +296,25 @@ namespace OSTData {
                 }
                 break;
 
-                case StationType.FuelRefinery:
+                case StationType.FuelRefinery: {
+                    Receipe r1 = new Receipe(300);
+                    r1.AddInput(ResourceElement.ResourceType.Uranium, 2);
+                    r1.AddOutput(ResourceElement.ResourceType.Batteries, 1);
+                    r1.AddOutput(ResourceElement.ResourceType.ToxicWaste, 2);
+                    _receipies.Add(r1);
+                }
                 break;
 
-                case StationType.IceField:
+                case StationType.IceField: {
+                    Receipe r1 = new Receipe(1);
+                    r1.AddOutput(ResourceElement.ResourceType.Water, 20);
+                    _receipies.Add(r1);
+
+                    Receipe r2 = new Receipe(30);
+                    r2.AddInput(ResourceElement.ResourceType.MechanicalPart, 5);
+                    r2.AddOutput(ResourceElement.ResourceType.Water, 10);
+                    _receipies.Add(r2);
+                }
                 break;
 
                 case StationType.Mine: {
@@ -308,13 +338,38 @@ namespace OSTData {
                 }
                 break;
 
-                case StationType.Reprocessing:
+                case StationType.Reprocessing: {
+                    Receipe r1 = new Receipe(100);
+                    r1.AddInput(ResourceElement.ResourceType.ToxicWaste, 2);
+                    r1.AddOutput(ResourceElement.ResourceType.Fertilizer, 1);
+                    _receipies.Add(r1);
+
+                    Receipe r2 = new Receipe(100);
+                    r2.AddInput(ResourceElement.ResourceType.Wastes, 2);
+                    r2.AddOutput(ResourceElement.ResourceType.Fertilizer, 2);
+                    _receipies.Add(r2);
+                }
                 break;
 
-                case StationType.RockRefinery:
+                case StationType.RockRefinery: {
+                    Receipe r1 = new Receipe(150);
+                    r1.AddInput(ResourceElement.ResourceType.Tobernite, 10);
+                    r1.AddOutput(ResourceElement.ResourceType.Uranium, 1);
+                    _receipies.Add(r1);
+
+                    Receipe r2 = new Receipe(150);
+                    r2.AddInput(ResourceElement.ResourceType.Tennantite, 10);
+                    r2.AddOutput(ResourceElement.ResourceType.Iron, 1);
+                    _receipies.Add(r2);
+                }
                 break;
 
-                case StationType.Shipyard:
+                case StationType.Shipyard: {
+                    Receipe r2 = new Receipe(50);
+                    r2.AddInput(ResourceElement.ResourceType.Electronics, 1);
+                    r2.AddInput(ResourceElement.ResourceType.Iron, 6);
+                    _receipies.Add(r2);
+                }
                 break;
             }
         }
