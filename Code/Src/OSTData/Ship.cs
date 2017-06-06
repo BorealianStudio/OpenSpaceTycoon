@@ -57,7 +57,7 @@ namespace OSTData {
         public void NextDestination() {
             if (_dest[_currentDest].Done) {
                 _currentDest++;
-                if (_currentDest > _dest.Count)
+                if (_currentDest >= _dest.Count)
                     _currentDest = 0;
                 _dest[_currentDest].Start();
             }

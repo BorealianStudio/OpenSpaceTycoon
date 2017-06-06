@@ -8,7 +8,7 @@ namespace OSTData {
     /// </summary>
     [Serializable]
     public class Station {
-        private const float defaultStanding = 50.0f;
+        public const float defaultStanding = 0.0f;
 
         /// <summary> les types que peuvent avoir les stations </summary>
         public enum StationType {
@@ -36,11 +36,12 @@ namespace OSTData {
             Name = "StationName";
             System = starSystem;
             ID = iID;
-            Hangar h = new Hangar(this, starSystem.Universe.npcCorp);
+            Hangar h = new Hangar(this, starSystem.Universe.GetCorporation(-1));
             _hangars.Add(-1, h);
         }
 
-        private Station() {}
+        private Station() {
+        }
 
         /// <summary> Le type de cette station </summary>
         [Newtonsoft.Json.JsonProperty]
@@ -65,8 +66,6 @@ namespace OSTData {
         /// appele une fois par frame, quand les updates des vaisseaux sont fini.
         /// </summary>
         public void Update() {
-            //todo gerer les standing
-            _currentLoaders.Clear();
         }
 
         /// <summary>
@@ -161,14 +160,28 @@ namespace OSTData {
         /// </summary>
         /// <param name="type">le type de ressource</param>
         /// <param name="corporationID">l'ID de la corporation dont on veut le standing</param>
-        /// <returns>le standing de la corporation pour le type de ressource, -1.0f si pas de standing</returns>
+        /// <returns>le standing de la corporation pour le type de ressource, defaultStanding si pas de standing</returns>
         public float GetStanding(ResourceElement.ResourceType type, int corporationID) {
             if (_standings.ContainsKey(type)) {
                 if (_standings[type].ContainsKey(corporationID)) {
                     return _standings[type][corporationID];
                 }
             }
-            return -1.0f;
+            return defaultStanding;
+        }
+
+        /// <summary>
+        /// permet de modifier le standing d'une corporation en rapport a un type de ressource donne
+        /// </summary>
+        /// <param name="type">le type de ressource en question</param>
+        /// <param name="corporationID">le corpotation pour lequel le standing doit etre modifie</param>
+        /// <param name="standing">le nouveau standing de la corporation</param>
+        public void SetStanding(ResourceElement.ResourceType type, int corporationID, float standing) {
+            if (!_standings.ContainsKey(type))
+                _standings.Add(type, new Dictionary<int, float>());
+            if (!_standings[type].ContainsKey(corporationID))
+                _standings[type].Add(corporationID, defaultStanding);
+            _standings[type][corporationID] = standing;
         }
 
         /// <summary>
@@ -184,6 +197,19 @@ namespace OSTData {
                         break;
                 }
             }
+
+            //pour tout les corp qui ont chargé dans ce jour une certaine ressources, on leur boost leur standing
+            foreach (int i in _currentLoaders.Keys) {
+                foreach (ResourceElement.ResourceType t in _currentLoaders[i]) {
+                    Corporation corp = System.Universe.GetCorporation(i);
+                    if (null != corp) {
+                        float oldStanding = GetStanding(t, i);
+                        float newStanding = oldStanding + (1.0f - oldStanding) * 0.05f;
+                        SetStanding(t, i, newStanding);
+                    }
+                }
+            }
+            _currentLoaders.Clear();
         }
 
         /// <summary>
@@ -202,6 +228,14 @@ namespace OSTData {
             return true;
         }
 
+        /// <summary>
+        /// custom hash code
+        /// </summary>
+        /// <returns></returns>
+        public override int GetHashCode() {
+            return ID;
+        }
+
         private List<Portal> _gates = new List<Portal>();
         private Dictionary<int, HashSet<ResourceElement.ResourceType>> _currentLoaders = new Dictionary<int, HashSet<ResourceElement.ResourceType>>();
 
@@ -214,6 +248,9 @@ namespace OSTData {
         private Dictionary<ResourceElement.ResourceType, int> _buyingPrices = new Dictionary<ResourceElement.ResourceType, int>();
         private Dictionary<ResourceElement.ResourceType, Dictionary<int, float>> _standings = new Dictionary<ResourceElement.ResourceType, Dictionary<int, float>>();
 
+        /// <summary>
+        /// demande a la station de preparer les recette de base en fonction de son type
+        /// </summary>
         public void InitProduct() {
             switch (Type) {
                 case StationType.Agricultural:

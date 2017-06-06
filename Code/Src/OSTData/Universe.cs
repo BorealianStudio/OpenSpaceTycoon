@@ -60,6 +60,9 @@ namespace OSTData {
             return new List<Station>(_stations.Values);
         }
 
+        /// <summary>
+        /// Le générateur aléatoire de cet univers.
+        /// </summary>
         public OSTTools.Random Random {
             get { return _random; }
         }
@@ -72,9 +75,6 @@ namespace OSTData {
                 return _stations[ID];
             return null;
         }
-
-        /// <summary> C'est la corp NPC, unique pour le moment </summary>
-        public Corporation npcCorp = new Corporation(0);
 
         /// <summary> Les systemes contenus dans cet univers </summary>        ///
         public Dictionary<int, StarSystem> Systems { get; set; }
@@ -90,6 +90,31 @@ namespace OSTData {
 
         /// <summary> nombre d'heure ecoule dans le jour en cours</summary>
         public int Hour { get; private set; }
+
+        /// <summary>
+        /// recuperer une corporation par son ID
+        /// </summary>
+        /// <param name="corpID">l'identifiant de la corporation</param>
+        /// <returns>la corporation si elle existe, null sinon</returns>
+        public Corporation GetCorporation(int corpID) {
+            if (_corporations.ContainsKey(corpID))
+                return _corporations[corpID];
+            return null;
+        }
+
+        /// <summary>
+        /// permet de creer une nouvelle corporation dans l'univers
+        /// </summary>
+        /// <param name="ID">l'identifiant unique de la corp</param>
+        /// <returns>la corporation creer si l'id etait libre, null sinon</returns>
+        public Corporation CreateCorp(int ID) {
+            if (_corporations.ContainsKey(ID))
+                return null;
+
+            Corporation corp = new Corporation(ID);
+            _corporations.Add(ID, corp);
+            return corp;
+        }
 
         /// <summary>
         /// Compare si deux object sont identique.
@@ -152,6 +177,9 @@ namespace OSTData {
         [Newtonsoft.Json.JsonProperty]
         private Dictionary<int, Station> _stations = null;
 
+        [Newtonsoft.Json.JsonProperty]
+        private Dictionary<int, Corporation> _corporations = null;
+
         private int _nbSystemPerMap = 5; // nombre de systeme dans une map
         private int _nbMine = 6;
         private int _nbIceField = 2;
@@ -168,9 +196,15 @@ namespace OSTData {
 
         private void HardCordedBuildUniverse() {
             _stations = new Dictionary<int, Station>();
+            _corporations = new Dictionary<int, Corporation>();
             Systems = new Dictionary<int, StarSystem>();
             Portals = new List<Portal>();
             Ships = new List<Ship>();
+
+            //creaction de la corp NPC
+
+            Corporation npcCorp = new Corporation(-1);
+            _corporations.Add(-1, npcCorp);
 
             //creation des systemes
             for (int i = 0; i < _nbSystemPerMap; i++) {
