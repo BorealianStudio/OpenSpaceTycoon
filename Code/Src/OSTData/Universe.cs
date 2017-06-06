@@ -60,6 +60,9 @@ namespace OSTData {
             return new List<Station>(_stations.Values);
         }
 
+        /// <summary>
+        /// Le générateur aléatoire de cet univers.
+        /// </summary>
         public OSTTools.Random Random {
             get { return _random; }
         }

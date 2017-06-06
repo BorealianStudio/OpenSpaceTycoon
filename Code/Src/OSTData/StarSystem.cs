@@ -36,6 +36,11 @@ namespace OSTData {
         /// <summary>La position de ce systeme par rapport au centre de l'univers en Annees lumieres</summary>
         public OSTTools.Vector3 Position { get; private set; }
 
+        /// <summary>
+        /// comparaisons de deux systeme solaires.
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns>true si les deux sont identiques</returns>
         public override bool Equals(object obj) {
             StarSystem other = obj as StarSystem;
             if (null == other)
@@ -55,6 +60,10 @@ namespace OSTData {
             return true;
         }
 
+        /// <summary>
+        /// custom hash code
+        /// </summary>
+        /// <returns></returns>
         public override int GetHashCode() {
             return ID;
         }

@@ -40,7 +40,8 @@ namespace OSTData {
             _hangars.Add(-1, h);
         }
 
-        private Station() {}
+        private Station() {
+        }
 
         /// <summary> Le type de cette station </summary>
         [Newtonsoft.Json.JsonProperty]
@@ -202,6 +203,14 @@ namespace OSTData {
             return true;
         }
 
+        /// <summary>
+        /// custom hash code
+        /// </summary>
+        /// <returns></returns>
+        public override int GetHashCode() {
+            return ID;
+        }
+
         private List<Portal> _gates = new List<Portal>();
         private Dictionary<int, HashSet<ResourceElement.ResourceType>> _currentLoaders = new Dictionary<int, HashSet<ResourceElement.ResourceType>>();
 
@@ -214,6 +223,9 @@ namespace OSTData {
         private Dictionary<ResourceElement.ResourceType, int> _buyingPrices = new Dictionary<ResourceElement.ResourceType, int>();
         private Dictionary<ResourceElement.ResourceType, Dictionary<int, float>> _standings = new Dictionary<ResourceElement.ResourceType, Dictionary<int, float>>();
 
+        /// <summary>
+        /// demande a la station de preparer les recette de base en fonction de son type
+        /// </summary>
         public void InitProduct() {
             switch (Type) {
                 case StationType.Agricultural:

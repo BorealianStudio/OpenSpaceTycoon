@@ -85,5 +85,13 @@ namespace OSTData {
 
             return true;
         }
+
+        /// <summary>
+        /// custom hash code
+        /// </summary>
+        /// <returns></returns>
+        public override int GetHashCode() {
+            return Station1.ID + (Station2.ID << 8);
+        }
     }
 }
