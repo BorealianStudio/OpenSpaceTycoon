@@ -20,11 +20,14 @@ namespace OSTData.tst {
             Hangar h1 = city1.GetHangar(-1);
             Assert.NotNull(h1);
 
+            //100 update = 20 jours
             for (int i = 0; i < 100; i++) {
                 g.Update();
             }
 
-            Assert.AreEqual(2000, city1.GetHangar(-1).GetResourceQte(ResourceElement.ResourceType.Wastes));
+            //100 waste par jour, = 2000 en 20 jours. Les gens present recoivent les ressources
+            Assert.AreEqual(0, city1.GetHangar(-1).GetResourceQte(ResourceElement.ResourceType.Wastes));
+            ///todo add a load for player
 
             return;
         }

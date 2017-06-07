@@ -70,9 +70,17 @@ namespace OSTData {
             }
 
             foreach (ResourceElement.ResourceType e in _outputs.Keys) {
-                ResourceElement elem = new ResourceElement(e, station, _outputs[e], timestamp);
-                ResourceStack stack = new ResourceStack(elem);
-                homeHangar.Add(stack);
+                //trouver tout les gens qui ont un standing
+                HashSet<int> withStanding = station.GetCordWithStanding(e);
+                int qteToProd = _outputs[e];
+                foreach (int i in withStanding) {
+                    Hangar hisHangar = station.GetHangar(i);
+                    if (null != hisHangar) {
+                        ResourceElement elem = new ResourceElement(e, station, qteToProd, timestamp);
+                        ResourceStack stack = new ResourceStack(elem);
+                        hisHangar.Add(stack);
+                    }
+                }
             }
             return true;
         }

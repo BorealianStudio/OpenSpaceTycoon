@@ -163,9 +163,9 @@ namespace OSTData {
                     int toLoad = Math.Min(present, l.qte - _loaded[l.type]);
                     toLoad = Math.Min(toLoad, possibleLoad);
 
+                    Destination.InformLoading(Ship, l.type);
                     if (toLoad > 0) {
                         Ship.Cargo.Add(myHangarInStation.GetStack(l.type, toLoad));
-                        Destination.InformLoading(Ship, l.type);
                         qteLoaded += toLoad;
                         _loaded[l.type] += toLoad;
                         possibleLoad -= toLoad;

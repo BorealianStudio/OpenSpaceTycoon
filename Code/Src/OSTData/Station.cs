@@ -86,6 +86,24 @@ namespace OSTData {
             get { return new List<Portal>(_gates); }
         }
 
+        /// <summary>
+        /// permet de connaitre toutes les corps qui ont un standing > 0.01 sur un certain type de ressource
+        /// </summary>
+        /// <param name="type">la ressource a tester</param>
+        /// <returns>une liste d'ID de corp</returns>
+        public HashSet<int> GetCordWithStanding(ResourceElement.ResourceType type) {
+            HashSet<int> result = new HashSet<int>();
+
+            if (_standings.ContainsKey(type)) {
+                foreach (int k in _standings[type].Keys) {
+                    if (_standings[type][k] > 0.01) {
+                        result.Add(k);
+                    }
+                }
+            }
+            return result;
+        }
+
         /// <summary> Ajoute un portal aux alentour de cette station </summary>
         /// <param name="portal">le portail a ajouter </param>
         public void AddGate(Portal portal) {
