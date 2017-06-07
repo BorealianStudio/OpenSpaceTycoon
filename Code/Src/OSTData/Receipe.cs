@@ -30,6 +30,18 @@ namespace OSTData {
         }
 
         /// <summary>
+        /// recuperer les besoins totaux pour un type de ressource pour cette recette
+        /// </summary>
+        /// <param name="type">le type de ressource demande</param>
+        /// <returns>la quantite necessaire</returns>
+        public int GetResourceNeed(ResourceElement.ResourceType type) {
+            if (_inputs.ContainsKey(type)) {
+                return _inputs[type];
+            }
+            return 0;
+        }
+
+        /// <summary>
         /// Ajouter un output a cette recette. C'est a dire qu'une fois complete c'est qu'une quantite de ressource sera produite
         /// </summary>
         /// <param name="type">le type de ressource a produire</param>

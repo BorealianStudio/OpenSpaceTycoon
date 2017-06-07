@@ -210,6 +210,9 @@ namespace OSTData {
                 }
             }
             _currentLoaders.Clear();
+
+            //mettre a jour les prix d'achats
+            UpdateBuyingPrices();
         }
 
         /// <summary>
@@ -247,6 +250,29 @@ namespace OSTData {
 
         private Dictionary<ResourceElement.ResourceType, int> _buyingPrices = new Dictionary<ResourceElement.ResourceType, int>();
         private Dictionary<ResourceElement.ResourceType, Dictionary<int, float>> _standings = new Dictionary<ResourceElement.ResourceType, Dictionary<int, float>>();
+
+        private void UpdateBuyingPrices() {
+            Dictionary<ResourceElement.ResourceType, int> needs = new Dictionary<ResourceElement.ResourceType, int>();
+            foreach (Receipe r in _receipies) {
+                foreach (ResourceElement.ResourceType t in Enum.GetValues(typeof(ResourceElement.ResourceType))) {
+                    int need = r.GetResourceNeed(t);
+                    if (!needs.ContainsKey(t))
+                        needs.Add(t, 0);
+                    needs[t] += need;
+                }
+            }
+            _buyingPrices.Clear();
+            foreach (ResourceElement.ResourceType t in Enum.GetValues(typeof(ResourceElement.ResourceType))) {
+                if (needs[t] > 0) {
+                    //NouveauPrix = prixBase * ((-1 / Log(qteMax)) * Log(Min(qte + 1, qteMax)) + 1.5)                    )
+                    int qte = GetHangar(-1).GetResourceQte(t);
+                    int qteMax = 1000;
+                    double price = 100.0 * ((1.0 - Math.Log(qteMax)) * Math.Log(Math.Min(qte + 1.0, qteMax)) + 1.5);
+                    int priceEntier = Convert.ToInt32(Math.Floor(price));
+                    _buyingPrices.Add(t, priceEntier);
+                }
+            }
+        }
 
         /// <summary>
         /// demande a la station de preparer les recette de base en fonction de son type
@@ -372,6 +398,8 @@ namespace OSTData {
                 }
                 break;
             }
+            //avec les recettes, on updates les besoins
+            UpdateBuyingPrices();
         }
     }
 }
