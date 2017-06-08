@@ -104,6 +104,17 @@ namespace OSTData {
             return _dest[index];
         }
 
+        /// <summary>
+        /// Permet de connaitre une chaine qui indique l'etat du vaisseau
+        /// </summary>
+        /// <returns>La tache en cours du vaisseau</returns>
+        public string GetState() {
+            if (_running) {
+                return _dest[_currentDest].GetState();
+            }
+            return "stopped";
+        }
+
         /// <summary> Les stations a rejoindres /// </summary>
         private List<ShipDestination> _dest = new List<ShipDestination>();
 

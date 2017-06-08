@@ -90,6 +90,18 @@ namespace OSTData {
         }
 
         /// <summary>
+        /// Recuperer une chaine indiquant l'etat de cette "tache"
+        /// </summary>
+        /// <returns></returns>
+        public string GetState() {
+            if(_travelDone < 1.0f) {
+                return "Moving (" + (_travelDone * 100.0f) + "%";
+            }
+            
+            return "Unloading";
+        }
+
+        /// <summary>
         /// indique au vaisseau qu'une fois a cette destination, charger une certaine qte d'une certaine ressource
         /// </summary>
         /// <param name="type">le type de ressource</param>
