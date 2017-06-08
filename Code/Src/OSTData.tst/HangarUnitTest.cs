@@ -23,6 +23,22 @@ namespace OSTData.tst {
             Assert.AreEqual(0, h.GetResourceQte(ResourceElement.ResourceType.Wastes));
         }
 
+        [Test, Description("test de la suppression d'un stack quand vide")]
+        public void HangarStackRemove() {
+            Hangar h = new Hangar(station, corporation);
+
+            ResourceElement elem1 = new ResourceElement(ResourceElement.ResourceType.Wastes, station, 100, 1);
+            ResourceStack stack1 = new ResourceStack(elem1);
+
+            bool eventTrigered = false;
+            h.Add(stack1);
+            h.onRemoveStack += (s) => { eventTrigered = true; };
+            h.GetStack(ResourceElement.ResourceType.Wastes, 100);
+
+            Assert.IsTrue(eventTrigered);
+            Assert.AreEqual(0, h.ResourceStacks.Count);
+        }
+
         [Test, Description("test de transaction sur un hangar")]
         public void HangarTransactions1() {
             Hangar h = new Hangar(station, corporation);

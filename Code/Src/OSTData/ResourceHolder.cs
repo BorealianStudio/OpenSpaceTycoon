@@ -7,6 +7,20 @@ namespace OSTData {
     /// </summary>
     public class ResourceHolder {
 
+        #region events
+
+        /// <summary> format delegate avec un stack en param </summary>
+        /// <param name="stack">le parametre stack</param>
+        public delegate void ResourceStackAction(ResourceStack stack);
+
+        /// <summary> Event triggered quand un nouveau stack apparait dans ce holder</summary>
+        public event ResourceStackAction onNewStack = delegate { };
+
+        /// <summary> Event triggered un stack present disparait</summary>
+        public event ResourceStackAction onRemoveStack = delegate { };
+
+        #endregion events
+
         /// <summary>
         /// Constructeur de base
         /// </summary>
@@ -49,6 +63,10 @@ namespace OSTData {
             }
 
             ResourceStack result = currentStack.GetSubStack(qte);
+            if (currentStack.Qte == 0) {
+                onRemoveStack(currentStack);
+                ResourceStacks.Remove(currentStack);
+            }
             return result;
         }
 
@@ -65,6 +83,7 @@ namespace OSTData {
             }
             if (inHangar == null) { // Il n'existait pas de stack dans le hangar.
                 ResourceStacks.Add(stack.GetSubStack(stack.Qte)); // Fait une copie dans le hangar et vide l'ancien stack
+                onNewStack(stack);
             } else {
                 inHangar.Add(stack); // Combine les stacks
             }
