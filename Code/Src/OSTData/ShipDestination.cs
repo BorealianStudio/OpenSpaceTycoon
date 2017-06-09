@@ -58,7 +58,8 @@ namespace OSTData {
             m3toMove -= Unload(m3toMove);
 
             //chargement
-            Load(m3toMove);
+            if (m3toMove > 0)
+                Load(m3toMove);
         }
 
         /// <summary>
@@ -94,10 +95,10 @@ namespace OSTData {
         /// </summary>
         /// <returns></returns>
         public string GetState() {
-            if(_travelDone < 1.0f) {
+            if (_travelDone < 1.0f) {
                 return "Moving (" + (_travelDone * 100.0f) + "%";
             }
-            
+
             return "Unloading";
         }
 
@@ -149,7 +150,32 @@ namespace OSTData {
         /// <param name="possibleUnload">nombre de m3 qu'on peut decharger cette fois</param>
         /// <returns>le nombre de m3 decharge</returns>
         private int Unload(int possibleUnload) {
-            return 0;
+            int result = 0;
+            Station station = Ship.CurrentStation;
+            if (null == station)
+                return result;
+
+            int qteUnloaded = 0;
+
+            Hangar myHangarInStation = station.GetHangar(Ship.Owner.ID);
+            if (null != myHangarInStation) {
+                foreach (LoadData l in _unloads) {
+                    if (!_unloaded.ContainsKey(l.type)) {
+                        _unloaded.Add(l.type, 0);
+                    }
+                    int present = Ship.Cargo.GetResourceQte(l.type);
+                    int toLoad = Math.Min(present, l.qte - _unloaded[l.type]);
+                    toLoad = Math.Min(toLoad, possibleUnload);
+
+                    if (toLoad > 0) {
+                        myHangarInStation.Add(Ship.Cargo.GetStack(l.type, toLoad));
+                        qteUnloaded += toLoad;
+                        _unloaded[l.type] += toLoad;
+                        possibleUnload -= toLoad;
+                    }
+                }
+            }
+            return qteUnloaded;
         }
 
         /// <summary>
