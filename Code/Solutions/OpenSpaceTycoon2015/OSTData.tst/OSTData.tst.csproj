@@ -58,6 +58,9 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="..\..\..\Src\OSTData.tst\GameProductionTests.cs">
+      <Link>Src\GameProductionTests.cs</Link>
+    </Compile>
     <Compile Include="..\..\..\Src\OSTData.tst\GameUnitTest.cs">
       <Link>Src\GameUnitTest.cs</Link>
     </Compile>
@@ -67,17 +70,29 @@
     <Compile Include="..\..\..\Src\OSTData.tst\PortalUnitTest.cs">
       <Link>Src\PortalUnitTest.cs</Link>
     </Compile>
+    <Compile Include="..\..\..\Src\OSTData.tst\ReceipeUnitTest.cs">
+      <Link>Src\ReceipeUnitTest.cs</Link>
+    </Compile>
     <Compile Include="..\..\..\Src\OSTData.tst\ResourceElementUnitTest.cs">
       <Link>Src\ResourceElementUnitTest.cs</Link>
     </Compile>
     <Compile Include="..\..\..\Src\OSTData.tst\ResourceStackUnitTest.cs">
       <Link>Src\ResourceStackUnitTest.cs</Link>
     </Compile>
+    <Compile Include="..\..\..\Src\OSTData.tst\ShipDestinationUnitTest.cs">
+      <Link>Src\ShipDestinationUnitTest.cs</Link>
+    </Compile>
     <Compile Include="..\..\..\Src\OSTData.tst\ShipLoading.cs">
       <Link>Src\ShipLoading.cs</Link>
     </Compile>
+    <Compile Include="..\..\..\Src\OSTData.tst\ShipMovingTest.cs">
+      <Link>Src\ShipMovingTest.cs</Link>
+    </Compile>
     <Compile Include="..\..\..\Src\OSTData.tst\ShipUnitTest.cs">
       <Link>Src\ShipUnitTest.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Src\OSTData.tst\StationStandingTest.cs">
+      <Link>Src\StationStandingTest.cs</Link>
     </Compile>
     <Compile Include="..\..\..\Src\OSTData.tst\StationUnitTest.cs">
       <Link>Src\StationUnitTest.cs</Link>

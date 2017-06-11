@@ -9,6 +9,13 @@ namespace OSTData {
     /// </summary>
     public class ResourceStack {
 
+        /// <summary> format delegate avec un stack en param </summary>
+        /// <param name="stack">le parametre stack</param>
+        public delegate void ResourceStackAction(ResourceStack stack);
+
+        /// <summary> Event triggered quand ce ResourceStack change </summary>
+        public event ResourceStackAction onChange = delegate { };
+
         /// <summary>
         /// Constructeur de base.
         /// </summary>
@@ -45,6 +52,14 @@ namespace OSTData {
             }
         }
 
+        /// <summary>
+        /// override de ToString
+        /// </summary>
+        /// <returns>l'affichage string de cet objet</returns>
+        public override string ToString() {
+            return Qte.ToString() + " of " + Type.ToString();
+        }
+
         #region methods
 
         /// <summary>
@@ -64,6 +79,7 @@ namespace OSTData {
                     }
                 );
             }
+            onChange(this);
         }
 
         /// <summary>
@@ -78,6 +94,7 @@ namespace OSTData {
                 }
                 stack.CleanResourceElementList();
             }
+            onChange(this);
         }
 
         /// <summary>
@@ -99,6 +116,7 @@ namespace OSTData {
                     }
                 }
                 CleanResourceElementList();
+                onChange(this);
                 return subStack;
             } else {
                 return null;

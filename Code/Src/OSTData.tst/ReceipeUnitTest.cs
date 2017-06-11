@@ -3,17 +3,17 @@ using NUnit.Framework;
 namespace OSTData.tst {
 
     [TestFixture]
-    public class GameUnitTest {
+    public class ReceipeUnitTest {
 
         [SetUp]
         public void Init() {
         }
 
         [Test, Description("Creation")]
-        public void GameConstruction1() {
-            Game g = new Game();
+        public void UniverseConstruction() {
+            Receipe r = new Receipe(10);
 
-            Assert.AreNotEqual(null, g.Universe);
+            Assert.AreEqual(10, r.MaxFreq);
         }
     }
 }

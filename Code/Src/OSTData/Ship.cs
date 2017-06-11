@@ -12,51 +12,107 @@ namespace OSTData {
 
         /// <summary> constructeur de base </summary>
         /// <param name="id">l'id unique de ce vaisseau</param>
-        public Ship(int id) {
+        /// <param name="owner">la corporation qui possede ce vaisseau</param>
+        public Ship(int id, Corporation owner) {
             ID = id;
+            Cargo = new ShipCargo(this);
+            Owner = owner;
         }
 
         /// <summary> l'identifiant unique de ce vaisseau </summary>
         public int ID { get; private set; }
 
+        /// <summary> C'est la zone qui contient les ressources dans le vaisseau </summary>
+        public ShipCargo Cargo { get; private set; }
+
+        /// <summary> The corporation owning this ship </summary>
+        public Corporation Owner { get; private set; }
+
+        /// <summary> la station ou est actuellement le vaisseau, null si dans l'espace </summary>
+        public Station CurrentStation { get; set; }
+
         /// <summary> mettre a jour le  vaisseau en faisant avancer d'un frame (1/5e de jour)</summary>
         public void Update() {
+            if (_running) {
+                if (_currentDest >= 0) {
+                    _dest[_currentDest].Update();
+                }
+            }
         }
 
-        /// <summary> La liste ordonee des destinations de ce vaisseau </summary>
-        public List<Station> Destinations
-        {
-            get { return new List<Station>(_dest); }
-            private set { _dest = value; }
+        /// <summary>
+        /// demande au vaisseau de commencer(ou reprendre) le travail
+        /// </summary>
+        public void Start() {
+            _running = true;
+            if (_dest.Count > 0) {
+                _currentDest = 0;
+            }
+            _dest[_currentDest].Start();
+        }
+
+        /// <summary>
+        /// permet de demander au vaisseau de passer a la prochaine destinatin de sa liste
+        /// </summary>
+        public void NextDestination() {
+            if (_dest[_currentDest].Done) {
+                _currentDest++;
+                if (_currentDest >= _dest.Count)
+                    _currentDest = 0;
+                _dest[_currentDest].Start();
+            }
         }
 
         /// <summary>
         /// Ajouter une destination a la fin de la liste des destinatinos
         /// </summary>
         /// <param name="station">la destination a ajouter</param>
-        public void AddDestination(Station station) {
-            _dest.Add(station);
+        public ShipDestination AddDestination(Station station) {
+            ShipDestination dest = new ShipDestination(this, station);
+            _dest.Add(dest);
+            return dest;
         }
 
         /// <summary>
-        /// permet d'ajouter une destination dans la liste de destination
+        /// Ajouter une destination a un index precis de la liste en cours
         /// </summary>
-        /// <param name="station">la station a rejoindre</param>
-        /// <param name="index">l'ordre dans la liste de destination</param>
-        public void AddDestination(Station station, int index) {
-            if (index < 0 || index > _dest.Count)
-                return;
-            _dest.Insert(index, station);
+        /// <param name="station">la destination</param>
+        /// <param name="index">l'index ou l'ajouter, 0 au debut</param>
+        public ShipDestination AddDestination(Station station, int index) {
+            if (index < 0)
+                return null;
+            else if (index >= _dest.Count) {
+                ShipDestination dest = new ShipDestination(this, station);
+                _dest.Add(dest);
+                return dest;
+            } else {
+                ShipDestination dest = new ShipDestination(this, station);
+                _dest.Insert(index, dest);
+                return dest;
+            }
+        }
+
+        /// <summary>
+        /// Recuperer la destion a l'index donnee (index base 0)
+        /// </summary>
+        /// <param name="index">l'index, doit etre entre 0 et le nombre de destination - 1</param>
+        /// <returns>la destination ou null si pas de reponse</returns>
+        public ShipDestination GetDestinations(int index) {
+            if (index < 0 || index >= _dest.Count)
+                return null;
+
+            return _dest[index];
         }
 
         /// <summary> Les stations a rejoindres /// </summary>
-        private List<Station> _dest = new List<Station>();
+        private List<ShipDestination> _dest = new List<ShipDestination>();
 
-        /// <summary> l'index dans _dest de la cible en cours </summary>
-        private int currentDest = -1;
+        /// <summary>
+        /// index dans _dest qui est la destination en cours
+        /// </summary>
+        private int _currentDest = -1;
 
-        //cette methode lance le calcul du chemin qui sera parcouru par le vaisseau.
-        private void PreparePath() {
-        }
+        /// <summary> indique si le vaisseau est en marche (false indique qu'il est a l'arret ou qu'on a demandé son arret a la prochaine station) </summary>
+        private bool _running = false;
     }
 }

@@ -9,6 +9,14 @@ namespace OSTData.tst {
         public void StationConstruction() {
         }
 
+        [Test, Description("construction d'une station")]
+        public void StationConstruction1() {
+            Universe u = new Universe(0);
+            Station s = u.GetStation(1);
+
+            Assert.NotNull(s.GetHangar(-1));
+        }
+
         [Test, Description("test des prix de ressources")]
         public void StationPrices1() {
             Universe u = new Universe(0);

@@ -12,10 +12,16 @@ namespace OSTData {
         /// </summary>
         public enum ResourceType {
 #pragma warning disable CS1591
+            Electronics,
+            Food,
+            Iron,
+            MechanicalPart,
             Unknown,
             Water,
             Wastes,
-            ToxicWaste
+            ToxicWaste,
+            Tennantite,
+            Tobernite
 #pragma warning restore CS1591
         }
 
@@ -70,5 +76,13 @@ namespace OSTData {
         }
 
         #endregion methods
+
+        /// <summary>
+        /// override du tostring classique
+        /// </summary>
+        /// <returns>une lecture simple de ce resourceElement</returns>
+        public override string ToString() {
+            return Quantity + " of " + Type + " time : " + DateProd;
+        }
     }
 }

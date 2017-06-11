@@ -9,7 +9,9 @@ namespace OSTData.tst {
 
         [SetUp]
         public void Init() {
-            station = new Station(Station.StationType.Agricultural, null, new OSTTools.Vector3(), 1);
+            Universe universe = new Universe(0);
+            StarSystem system = new StarSystem(1, universe, new OSTTools.Vector3());
+            station = new Station(Station.StationType.Agricultural, system, new OSTTools.Vector3(), 1);
         }
 
         [Test, Description("test de la construction")]
@@ -39,6 +41,27 @@ namespace OSTData.tst {
             Assert.AreEqual(0, stack1.Qte);
             Assert.AreEqual(50, h.GetResourceQte(ResourceElement.ResourceType.ToxicWaste));
             Assert.AreEqual(0, stack2.Qte);
+        }
+
+        [Test, Description("test pour retirer des ressources")]
+        public void HangarRemoveResources() {
+            Hangar h = new Hangar(station, corporation);
+
+            ResourceElement elem1 = new ResourceElement(ResourceElement.ResourceType.Wastes, station, 100, 1);
+            ResourceStack stack1 = new ResourceStack(elem1);
+            h.Add(stack1);
+
+            ResourceElement elem2 = new ResourceElement(ResourceElement.ResourceType.Wastes, station, 100, 2);
+            ResourceElement elem3 = new ResourceElement(ResourceElement.ResourceType.Wastes, station, 100, 3);
+            ResourceStack stack2 = new ResourceStack(elem2);
+            stack2.Add(elem3);
+            h.Add(stack2);
+
+            ResourceStack outStack = h.GetStack(ResourceElement.ResourceType.Wastes, 50);
+            Assert.NotNull(outStack);
+            Assert.AreEqual(50, outStack.Qte);
+            Assert.AreEqual(ResourceElement.ResourceType.Wastes, outStack.Type);
+            Assert.AreEqual(250, h.GetResourceQte(ResourceElement.ResourceType.Wastes));
         }
     }
 }
