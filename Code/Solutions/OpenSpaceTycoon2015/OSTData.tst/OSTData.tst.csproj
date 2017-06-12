@@ -58,6 +58,9 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="..\..\..\Src\OSTData.tst\CorporationUnitTest.cs">
+      <Link>Src\CorporationUnitTest.cs</Link>
+    </Compile>
     <Compile Include="..\..\..\Src\OSTData.tst\GameProductionTests.cs">
       <Link>Src\GameProductionTests.cs</Link>
     </Compile>

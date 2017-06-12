@@ -43,6 +43,14 @@ namespace OSTData {
         private Station() {
         }
 
+        /// <summary>
+        /// Surcharge du toString
+        /// </summary>
+        /// <returns></returns>
+        public override string ToString() {
+            return Name;
+        }
+
         /// <summary> Le type de cette station </summary>
         [Newtonsoft.Json.JsonProperty]
         public StationType Type { get; private set; }

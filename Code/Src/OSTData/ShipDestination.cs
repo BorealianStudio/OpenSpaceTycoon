@@ -36,6 +36,7 @@ namespace OSTData {
             Destination = destination;
             Ship = ship;
             Done = true;
+            UnloadDone = false;
         }
 
         /// <summary>
@@ -55,11 +56,22 @@ namespace OSTData {
             int m3toMove = 10;//todo magicnumber
 
             //dechargement
-            m3toMove -= Unload(m3toMove);
+            if (!UnloadDone) {
+                int qteUnloaded = Unload(m3toMove);
+                m3toMove -= qteUnloaded;
+                if (0 == qteUnloaded) {
+                    UnloadDone = true;
+                }
+            }
 
             //chargement
             if (m3toMove > 0)
-                Load(m3toMove);
+                m3toMove -= Load(m3toMove);
+
+            if (m3toMove == 10) { // si on a rien chargé, on passe a l'etape suivante
+                Done = true;
+                Ship.NextDestination();
+            }
         }
 
         /// <summary>
@@ -75,6 +87,9 @@ namespace OSTData {
         /// <summary> permet de savoir si cette tache est terminee </summary>
         public bool Done { get; private set; }
 
+        /// <summary> Savoir si la phase de dechargement cette destination est faite </summary>
+        public bool UnloadDone { get; private set; }
+
         /// <summary>
         /// methode a appeler quand on change de destination, sur la nouvelle destination
         /// </summary>
@@ -82,6 +97,7 @@ namespace OSTData {
             _travelDone = 0.0f;
             _loaded.Clear();
             _unloaded.Clear();
+            UnloadDone = false;
 
             if (Ship.CurrentStation.ID == Destination.ID) {
                 _travelDone = 1.0f;
@@ -96,10 +112,12 @@ namespace OSTData {
         /// <returns></returns>
         public string GetState() {
             if (_travelDone < 1.0f) {
-                return "Moving (" + (_travelDone * 100.0f) + "%";
+                return "Moving to " + Destination.Name + " " + (_travelDone * 100.0f).ToString("N0") + "%";
             }
+            if (!UnloadDone)
+                return "Unloading";
 
-            return "Unloading";
+            return "Loading";
         }
 
         /// <summary>
@@ -160,6 +178,13 @@ namespace OSTData {
             Hangar myHangarInStation = station.GetHangar(Ship.Owner.ID);
             if (null != myHangarInStation) {
                 foreach (LoadData l in _unloads) {
+                    Hangar targetHangar = myHangarInStation;
+                    bool buying = false;
+                    if (Ship.CurrentStation.Buyings.Contains(l.type)) {
+                        targetHangar = station.GetHangar(-1);
+                        buying = true;
+                    }
+
                     if (!_unloaded.ContainsKey(l.type)) {
                         _unloaded.Add(l.type, 0);
                     }
@@ -168,7 +193,11 @@ namespace OSTData {
                     toLoad = Math.Min(toLoad, possibleUnload);
 
                     if (toLoad > 0) {
-                        myHangarInStation.Add(Ship.Cargo.GetStack(l.type, toLoad));
+                        targetHangar.Add(Ship.Cargo.GetStack(l.type, toLoad));
+                        if (buying) {
+                            int total = toLoad * station.GetBuyingPrice(l.type);
+                            Ship.Owner.AddICU(total, "selling stuff");
+                        }
                         qteUnloaded += toLoad;
                         _unloaded[l.type] += toLoad;
                         possibleUnload -= toLoad;
@@ -183,13 +212,12 @@ namespace OSTData {
         /// ou quand il sera plein.
         /// <param name="possibleLoad">nombre de m3 qu'on peut charger cette fois</param>
         /// </summary>
-        private void Load(int possibleLoad) {
+        /// <returns>le nombre de m3 charge</returns>
+        private int Load(int possibleLoad) {
+            int qteLoaded = 0;
             Station station = Ship.CurrentStation;
             if (null == station)
-                return;
-
-            int qteLoaded = 0;
-            int qteLeft = 0;
+                return qteLoaded;
 
             Hangar myHangarInStation = station.GetHangar(Ship.Owner.ID);
             if (null != myHangarInStation) {
@@ -208,14 +236,10 @@ namespace OSTData {
                         _loaded[l.type] += toLoad;
                         possibleLoad -= toLoad;
                     }
-                    qteLeft += l.qte - _loaded[l.type];
                 }
             }
 
-            if (qteLoaded == 0 || qteLeft == 0) {
-                Done = true;
-                Ship.NextDestination();
-            }
+            return qteLoaded;
         }
     }
 }

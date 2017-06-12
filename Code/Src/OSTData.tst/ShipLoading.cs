@@ -30,7 +30,8 @@ namespace OSTData.tst {
 
             Assert.AreEqual(100, ship.Cargo.GetResourceQte(ResourceElement.ResourceType.Wastes));
 
-            u.Update();
+            u.Update();//chargerment
+            u.Update();//sortie
             Assert.IsNull(ship.CurrentStation);
         }
 

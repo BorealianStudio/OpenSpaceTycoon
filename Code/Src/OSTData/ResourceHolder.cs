@@ -82,8 +82,9 @@ namespace OSTData {
                 }
             }
             if (inHangar == null) { // Il n'existait pas de stack dans le hangar.
-                ResourceStacks.Add(stack.GetSubStack(stack.Qte)); // Fait une copie dans le hangar et vide l'ancien stack
-                onNewStack(stack);
+                ResourceStack s = stack.GetSubStack(stack.Qte);
+                ResourceStacks.Add(s); // Fait une copie dans le hangar et vide l'ancien stack
+                onNewStack(s);
             } else {
                 inHangar.Add(stack); // Combine les stacks
             }
