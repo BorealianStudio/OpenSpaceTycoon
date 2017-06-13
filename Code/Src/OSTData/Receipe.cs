@@ -30,6 +30,18 @@ namespace OSTData {
         }
 
         /// <summary>
+        /// recuperer les besoins totaux pour un type de ressource pour cette recette
+        /// </summary>
+        /// <param name="type">le type de ressource demande</param>
+        /// <returns>la quantite necessaire</returns>
+        public int GetResourceNeed(ResourceElement.ResourceType type) {
+            if (_inputs.ContainsKey(type)) {
+                return _inputs[type];
+            }
+            return 0;
+        }
+
+        /// <summary>
         /// Ajouter un output a cette recette. C'est a dire qu'une fois complete c'est qu'une quantite de ressource sera produite
         /// </summary>
         /// <param name="type">le type de ressource a produire</param>
@@ -58,15 +70,32 @@ namespace OSTData {
             }
 
             foreach (ResourceElement.ResourceType e in _outputs.Keys) {
-                ResourceElement elem = new ResourceElement(e, station, _outputs[e], timestamp);
-                ResourceStack stack = new ResourceStack(elem);
-                homeHangar.Add(stack);
+                //trouver tout les gens qui ont un standing
+                HashSet<int> withStanding = station.GetCorpWithStanding(e);
+                int qteToProd = _outputs[e];
+                foreach (int i in withStanding) {
+                    Hangar hisHangar = station.GetHangar(i);
+                    if (null != hisHangar) {
+                        ResourceElement elem = new ResourceElement(e, station, qteToProd, timestamp);
+                        ResourceStack stack = new ResourceStack(elem);
+                        hisHangar.Add(stack);
+                    }
+                }
             }
             return true;
         }
 
         /// <summary> le nombre de fois maximum que peut etre effectue une recette par jour </summary>
         public int MaxFreq { get; private set; }
+
+        /// <summary>
+        /// permet de connaitre si des outputs de cette recette produise un certain type de ressource
+        /// </summary>
+        /// <param name="type">la ressource a tester</param>
+        /// <returns>true si la recette peut produire ce type de ressource </returns>
+        public bool IsProducing(ResourceElement.ResourceType type) {
+            return _outputs.ContainsKey(type);
+        }
 
         [Newtonsoft.Json.JsonProperty]
         private Dictionary<ResourceElement.ResourceType, int> _inputs = new Dictionary<ResourceElement.ResourceType, int>();

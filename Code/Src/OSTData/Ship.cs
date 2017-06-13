@@ -10,6 +10,16 @@ namespace OSTData {
     [Serializable]
     public class Ship {
 
+        #region events
+
+        /// <summary> format delegate sans parametre</summary>
+        public delegate void voidAction();
+
+        /// <summary> Event triggered quand un nouveau stack apparait dans ce holder</summary>
+        public event voidAction onDestinationChange = delegate { };
+
+        #endregion events
+
         /// <summary> constructeur de base </summary>
         /// <param name="id">l'id unique de ce vaisseau</param>
         /// <param name="owner">la corporation qui possede ce vaisseau</param>
@@ -52,6 +62,18 @@ namespace OSTData {
         }
 
         /// <summary>
+        /// la destination en cours, ou null si arrete
+        /// </summary>
+        public ShipDestination CurrentDestination {
+            get {
+                if (_running)
+                    return _dest[_currentDest];
+                else
+                    return null;
+            }
+        }
+
+        /// <summary>
         /// permet de demander au vaisseau de passer a la prochaine destinatin de sa liste
         /// </summary>
         public void NextDestination() {
@@ -70,7 +92,23 @@ namespace OSTData {
         public ShipDestination AddDestination(Station station) {
             ShipDestination dest = new ShipDestination(this, station);
             _dest.Add(dest);
+            onDestinationChange();
             return dest;
+        }
+
+        /// <summary>
+        /// permet de supprimer une destination de la liste de destination.
+        /// on ne peux pas supprimer la destination en cours.
+        /// </summary>
+        /// <param name="dest">la destination a supprimer</param>
+        public void RemoveDestination(ShipDestination dest) {
+            int index = _dest.IndexOf(dest);
+            if (index != -1 && index != _currentDest) {
+                if (index < _currentDest)
+                    _currentDest--;
+                _dest.RemoveAt(index);
+                onDestinationChange();
+            }
         }
 
         /// <summary>
@@ -84,10 +122,12 @@ namespace OSTData {
             else if (index >= _dest.Count) {
                 ShipDestination dest = new ShipDestination(this, station);
                 _dest.Add(dest);
+                onDestinationChange();
                 return dest;
             } else {
                 ShipDestination dest = new ShipDestination(this, station);
                 _dest.Insert(index, dest);
+                onDestinationChange();
                 return dest;
             }
         }
@@ -97,11 +137,30 @@ namespace OSTData {
         /// </summary>
         /// <param name="index">l'index, doit etre entre 0 et le nombre de destination - 1</param>
         /// <returns>la destination ou null si pas de reponse</returns>
-        public ShipDestination GetDestinations(int index) {
+        public ShipDestination GetDestination(int index) {
             if (index < 0 || index >= _dest.Count)
                 return null;
 
             return _dest[index];
+        }
+
+        /// <summary>
+        /// recuperer une liste ordonnee des destinations actuelle du vaisseau
+        /// </summary>
+        /// <returns> une copie de liste des destinations</returns>
+        public List<ShipDestination> GetDestinations() {
+            return new List<ShipDestination>(_dest);
+        }
+
+        /// <summary>
+        /// Permet de connaitre une chaine qui indique l'etat du vaisseau
+        /// </summary>
+        /// <returns>La tache en cours du vaisseau</returns>
+        public string GetState() {
+            if (_running) {
+                return _dest[_currentDest].GetState();
+            }
+            return "stopped";
         }
 
         /// <summary> Les stations a rejoindres /// </summary>

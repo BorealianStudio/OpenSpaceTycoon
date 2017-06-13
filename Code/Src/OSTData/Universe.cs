@@ -32,10 +32,22 @@ namespace OSTData {
         public Universe(int seed) {
             _random = new OSTTools.Random(seed);
 
-            HardCordedBuildUniverse();
+            Build();
 
             Day = 0;
             Hour = 0;
+        }
+
+        /// <summary>
+        /// demande a l'univers de se creer les entitées necessaires.
+        /// ne pas faire plus d'une fois, et pas besoin apres une deserialization
+        /// </summary>
+        public void Build() {
+            HardCordedBuildUniverse();
+
+            foreach (Station s in _stations.Values) {
+                s.InitProduct();
+            }
         }
 
         /// <summary>
@@ -113,6 +125,7 @@ namespace OSTData {
 
             Corporation corp = new Corporation(ID);
             _corporations.Add(ID, corp);
+            corp.AddICU(100, "starting");
             return corp;
         }
 

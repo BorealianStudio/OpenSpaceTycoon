@@ -36,6 +36,7 @@ namespace OSTData {
             Destination = destination;
             Ship = ship;
             Done = true;
+            UnloadDone = false;
         }
 
         /// <summary>
@@ -55,10 +56,23 @@ namespace OSTData {
             int m3toMove = 10;//todo magicnumber
 
             //dechargement
-            m3toMove -= Unload(m3toMove);
+            if (!UnloadDone) {
+                int qteUnloaded = Unload(m3toMove);
+                m3toMove -= qteUnloaded;
+                if (0 == qteUnloaded) {
+                    Sell();
+                    UnloadDone = true;
+                }
+            }
 
             //chargement
-            Load(m3toMove);
+            if (m3toMove > 0)
+                m3toMove -= Load(m3toMove);
+
+            if (m3toMove == 10) { // si on a rien chargé, on passe a l'etape suivante
+                Done = true;
+                Ship.NextDestination();
+            }
         }
 
         /// <summary>
@@ -74,6 +88,9 @@ namespace OSTData {
         /// <summary> permet de savoir si cette tache est terminee </summary>
         public bool Done { get; private set; }
 
+        /// <summary> Savoir si la phase de dechargement cette destination est faite </summary>
+        public bool UnloadDone { get; private set; }
+
         /// <summary>
         /// methode a appeler quand on change de destination, sur la nouvelle destination
         /// </summary>
@@ -81,12 +98,27 @@ namespace OSTData {
             _travelDone = 0.0f;
             _loaded.Clear();
             _unloaded.Clear();
+            UnloadDone = false;
 
             if (Ship.CurrentStation.ID == Destination.ID) {
                 _travelDone = 1.0f;
             } else {
                 Done = false;
             }
+        }
+
+        /// <summary>
+        /// Recuperer une chaine indiquant l'etat de cette "tache"
+        /// </summary>
+        /// <returns></returns>
+        public string GetState() {
+            if (_travelDone < 1.0f) {
+                return "Moving to " + Destination.Name + " " + (_travelDone * 100.0f).ToString("N0") + "%";
+            }
+            if (!UnloadDone)
+                return "Unloading";
+
+            return "Loading";
         }
 
         /// <summary>
@@ -137,7 +169,52 @@ namespace OSTData {
         /// <param name="possibleUnload">nombre de m3 qu'on peut decharger cette fois</param>
         /// <returns>le nombre de m3 decharge</returns>
         private int Unload(int possibleUnload) {
-            return 0;
+            int result = 0;
+            Station station = Ship.CurrentStation;
+            if (null == station)
+                return result;
+
+            int qteUnloaded = 0;
+
+            Hangar myHangarInStation = station.GetHangar(Ship.Owner.ID);
+            if (null != myHangarInStation) {
+                foreach (LoadData l in _unloads) {
+                    if (!_unloaded.ContainsKey(l.type)) {
+                        _unloaded.Add(l.type, 0);
+                    }
+                    int present = Ship.Cargo.GetResourceQte(l.type);
+                    int toLoad = Math.Min(present, l.qte - _unloaded[l.type]);
+                    toLoad = Math.Min(toLoad, possibleUnload);
+
+                    if (toLoad > 0) {
+                        myHangarInStation.Add(Ship.Cargo.GetStack(l.type, toLoad));
+                        qteUnloaded += toLoad;
+                        _unloaded[l.type] += toLoad;
+                        possibleUnload -= toLoad;
+                    }
+                }
+            }
+            return qteUnloaded;
+        }
+
+        /// <summary>
+        /// demande de vendre tout ce qui peut l'etre sans depasser la quantite qu'on a decharge
+        /// </summary>
+        private void Sell() {
+            Hangar myHangar = Ship.CurrentStation.GetHangar(Ship.Owner.ID);
+            Hangar stationHangar = Ship.CurrentStation.GetHangar(-1);
+
+            foreach (ResourceElement.ResourceType t in _unloaded.Keys) {
+                if (Ship.CurrentStation.Buyings.Contains(t)) {
+                    int qteToSell = Math.Min(_unloaded[t], myHangar.GetResourceQte(t));
+                    if (qteToSell > 0) {
+                        ResourceStack s = myHangar.GetStack(t, qteToSell);
+                        stationHangar.Add(s);
+                        int qte = Ship.CurrentStation.GetBuyingPrice(t) * qteToSell;
+                        Ship.Owner.AddICU(qte, "selling stuff");
+                    }
+                }
+            }
         }
 
         /// <summary>
@@ -145,13 +222,12 @@ namespace OSTData {
         /// ou quand il sera plein.
         /// <param name="possibleLoad">nombre de m3 qu'on peut charger cette fois</param>
         /// </summary>
-        private void Load(int possibleLoad) {
+        /// <returns>le nombre de m3 charge</returns>
+        private int Load(int possibleLoad) {
+            int qteLoaded = 0;
             Station station = Ship.CurrentStation;
             if (null == station)
-                return;
-
-            int qteLoaded = 0;
-            int qteLeft = 0;
+                return qteLoaded;
 
             Hangar myHangarInStation = station.GetHangar(Ship.Owner.ID);
             if (null != myHangarInStation) {
@@ -163,21 +239,17 @@ namespace OSTData {
                     int toLoad = Math.Min(present, l.qte - _loaded[l.type]);
                     toLoad = Math.Min(toLoad, possibleLoad);
 
+                    Destination.InformLoading(Ship, l.type);
                     if (toLoad > 0) {
                         Ship.Cargo.Add(myHangarInStation.GetStack(l.type, toLoad));
-                        Destination.InformLoading(Ship, l.type);
                         qteLoaded += toLoad;
                         _loaded[l.type] += toLoad;
                         possibleLoad -= toLoad;
                     }
-                    qteLeft += l.qte - _loaded[l.type];
                 }
             }
 
-            if (qteLoaded == 0 || qteLeft == 0) {
-                Done = true;
-                Ship.NextDestination();
-            }
+            return qteLoaded;
         }
     }
 }
