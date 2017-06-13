@@ -60,6 +60,7 @@ namespace OSTData {
                 int qteUnloaded = Unload(m3toMove);
                 m3toMove -= qteUnloaded;
                 if (0 == qteUnloaded) {
+                    Sell();
                     UnloadDone = true;
                 }
             }
@@ -178,13 +179,6 @@ namespace OSTData {
             Hangar myHangarInStation = station.GetHangar(Ship.Owner.ID);
             if (null != myHangarInStation) {
                 foreach (LoadData l in _unloads) {
-                    Hangar targetHangar = myHangarInStation;
-                    bool buying = false;
-                    if (Ship.CurrentStation.Buyings.Contains(l.type)) {
-                        targetHangar = station.GetHangar(-1);
-                        buying = true;
-                    }
-
                     if (!_unloaded.ContainsKey(l.type)) {
                         _unloaded.Add(l.type, 0);
                     }
@@ -193,11 +187,7 @@ namespace OSTData {
                     toLoad = Math.Min(toLoad, possibleUnload);
 
                     if (toLoad > 0) {
-                        targetHangar.Add(Ship.Cargo.GetStack(l.type, toLoad));
-                        if (buying) {
-                            int total = toLoad * station.GetBuyingPrice(l.type);
-                            Ship.Owner.AddICU(total, "selling stuff");
-                        }
+                        myHangarInStation.Add(Ship.Cargo.GetStack(l.type, toLoad));
                         qteUnloaded += toLoad;
                         _unloaded[l.type] += toLoad;
                         possibleUnload -= toLoad;
@@ -205,6 +195,26 @@ namespace OSTData {
                 }
             }
             return qteUnloaded;
+        }
+
+        /// <summary>
+        /// demande de vendre tout ce qui peut l'etre sans depasser la quantite qu'on a decharge
+        /// </summary>
+        private void Sell() {
+            Hangar myHangar = Ship.CurrentStation.GetHangar(Ship.Owner.ID);
+            Hangar stationHangar = Ship.CurrentStation.GetHangar(-1);
+
+            foreach (ResourceElement.ResourceType t in _unloaded.Keys) {
+                if (Ship.CurrentStation.Buyings.Contains(t)) {
+                    int qteToSell = Math.Min(_unloaded[t], myHangar.GetResourceQte(t));
+                    if (qteToSell > 0) {
+                        ResourceStack s = myHangar.GetStack(t, qteToSell);
+                        stationHangar.Add(s);
+                        int qte = Ship.CurrentStation.GetBuyingPrice(t) * qteToSell;
+                        Ship.Owner.AddICU(qte, "selling stuff");
+                    }
+                }
+            }
         }
 
         /// <summary>

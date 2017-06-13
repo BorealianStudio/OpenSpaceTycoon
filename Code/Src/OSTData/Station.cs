@@ -99,7 +99,7 @@ namespace OSTData {
         /// </summary>
         /// <param name="type">la ressource a tester</param>
         /// <returns>une liste d'ID de corp</returns>
-        public HashSet<int> GetCordWithStanding(ResourceElement.ResourceType type) {
+        public HashSet<int> GetCorpWithStanding(ResourceElement.ResourceType type) {
             HashSet<int> result = new HashSet<int>();
 
             if (_standings.ContainsKey(type)) {
@@ -139,9 +139,14 @@ namespace OSTData {
         /// <param name="corp">la corporation proprietaire de ce vaisseau</param>
         /// <returns>le vaisseau cree</returns>
         public Ship CreateShip(Corporation corp) {
+            if (corp.ICU < 100)
+                return null;
+
             Ship result = new Ship(System.Universe.Ships.Count + 1, corp);
             result.CurrentStation = this;
             System.Universe.Ships.Add(result);
+            corp.RemoveICU(100, "buying ship");
+
             return result;
         }
 
@@ -208,6 +213,19 @@ namespace OSTData {
             if (!_standings[type].ContainsKey(corporationID))
                 _standings[type].Add(corporationID, defaultStanding);
             _standings[type][corporationID] = standing;
+        }
+
+        /// <summary>
+        /// permet de savoir si une recette presente dans cette station produit des ressource du type donne
+        /// </summary>
+        /// <param name="type">le type a tester </param>
+        /// <returns>true si au moins une ressource produit de cette ressource</returns>
+        public bool IsProducing(ResourceElement.ResourceType type) {
+            foreach (Receipe r in _receipies) {
+                if (r.IsProducing(type))
+                    return true;
+            }
+            return false;
         }
 
         /// <summary>

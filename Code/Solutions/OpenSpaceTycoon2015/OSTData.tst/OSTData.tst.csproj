@@ -82,6 +82,9 @@
     <Compile Include="..\..\..\Src\OSTData.tst\ResourceStackUnitTest.cs">
       <Link>Src\ResourceStackUnitTest.cs</Link>
     </Compile>
+    <Compile Include="..\..\..\Src\OSTData.tst\ShipCreationTest.cs">
+      <Link>Src\ShipCreationTest.cs</Link>
+    </Compile>
     <Compile Include="..\..\..\Src\OSTData.tst\ShipDestinationUnitTest.cs">
       <Link>Src\ShipDestinationUnitTest.cs</Link>
     </Compile>

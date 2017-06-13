@@ -71,7 +71,7 @@ namespace OSTData {
 
             foreach (ResourceElement.ResourceType e in _outputs.Keys) {
                 //trouver tout les gens qui ont un standing
-                HashSet<int> withStanding = station.GetCordWithStanding(e);
+                HashSet<int> withStanding = station.GetCorpWithStanding(e);
                 int qteToProd = _outputs[e];
                 foreach (int i in withStanding) {
                     Hangar hisHangar = station.GetHangar(i);
@@ -87,6 +87,15 @@ namespace OSTData {
 
         /// <summary> le nombre de fois maximum que peut etre effectue une recette par jour </summary>
         public int MaxFreq { get; private set; }
+
+        /// <summary>
+        /// permet de connaitre si des outputs de cette recette produise un certain type de ressource
+        /// </summary>
+        /// <param name="type">la ressource a tester</param>
+        /// <returns>true si la recette peut produire ce type de ressource </returns>
+        public bool IsProducing(ResourceElement.ResourceType type) {
+            return _outputs.ContainsKey(type);
+        }
 
         [Newtonsoft.Json.JsonProperty]
         private Dictionary<ResourceElement.ResourceType, int> _inputs = new Dictionary<ResourceElement.ResourceType, int>();

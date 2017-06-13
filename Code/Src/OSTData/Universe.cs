@@ -125,6 +125,7 @@ namespace OSTData {
 
             Corporation corp = new Corporation(ID);
             _corporations.Add(ID, corp);
+            corp.AddICU(100, "starting");
             return corp;
         }
 
