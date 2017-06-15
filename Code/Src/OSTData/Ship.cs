@@ -15,7 +15,7 @@ namespace OSTData {
         /// <summary> format delegate sans parametre</summary>
         public delegate void voidAction();
 
-        /// <summary> Event triggered quand un nouveau stack apparait dans ce holder</summary>
+        /// <summary> event quand on ajoute, supprime une destination ou change la destination actuelle</summary>
         public event voidAction onDestinationChange = delegate { };
 
         #endregion events
@@ -82,6 +82,7 @@ namespace OSTData {
                 if (_currentDest >= _dest.Count)
                     _currentDest = 0;
                 _dest[_currentDest].Start();
+                onDestinationChange();
             }
         }
 
