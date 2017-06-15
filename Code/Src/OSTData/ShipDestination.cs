@@ -121,6 +121,10 @@ namespace OSTData {
             return "Loading";
         }
 
+        /// <summary>
+        /// indiquer a la destination quelle est la station a utiliser a compter de maintenant
+        /// </summary>
+        /// <param name="newDest">la nouvelle destination </param>
         public void ChangeDestination(Station newDest) {
             Destination = newDest;
         }
