@@ -122,6 +122,14 @@ namespace OSTData {
         }
 
         /// <summary>
+        /// indiquer a la destination quelle est la station a utiliser a compter de maintenant
+        /// </summary>
+        /// <param name="newDest">la nouvelle destination </param>
+        public void ChangeDestination(Station newDest) {
+            Destination = newDest;
+        }
+
+        /// <summary>
         /// indique au vaisseau qu'une fois a cette destination, charger une certaine qte d'une certaine ressource
         /// </summary>
         /// <param name="type">le type de ressource</param>
@@ -132,6 +140,13 @@ namespace OSTData {
         }
 
         /// <summary>
+        /// recuperer une liste des chargement demande pour cette destination
+        /// </summary>
+        public List<LoadData> Loads {
+            get { return new List<LoadData>(_loads); }
+        }
+
+        /// <summary>
         /// indique au vaisseau qu'une fois a cette destination, il devra decharger une certaine quantite de ressource
         /// </summary>
         /// <param name="type">le type de ressource</param>
@@ -139,6 +154,13 @@ namespace OSTData {
         public void AddUnload(ResourceElement.ResourceType type, int qte) {
             LoadData l = new LoadData(type, qte);
             _unloads.Add(l);
+        }
+
+        /// <summary>
+        /// recupere une liste des taches de dechargement pour cette destination
+        /// </summary>
+        public List<LoadData> Unloads {
+            get { return new List<LoadData>(_unloads); }
         }
 
         /// <summary>
