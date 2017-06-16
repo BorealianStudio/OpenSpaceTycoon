@@ -43,6 +43,14 @@ namespace OSTData {
         private Station() {
         }
 
+        /// <summary>
+        /// Surcharge du toString
+        /// </summary>
+        /// <returns></returns>
+        public override string ToString() {
+            return Name;
+        }
+
         /// <summary> Le type de cette station </summary>
         [Newtonsoft.Json.JsonProperty]
         public StationType Type { get; private set; }
@@ -86,6 +94,24 @@ namespace OSTData {
             get { return new List<Portal>(_gates); }
         }
 
+        /// <summary>
+        /// permet de connaitre toutes les corps qui ont un standing > 0.01 sur un certain type de ressource
+        /// </summary>
+        /// <param name="type">la ressource a tester</param>
+        /// <returns>une liste d'ID de corp</returns>
+        public HashSet<int> GetCorpWithStanding(ResourceElement.ResourceType type) {
+            HashSet<int> result = new HashSet<int>();
+
+            if (_standings.ContainsKey(type)) {
+                foreach (int k in _standings[type].Keys) {
+                    if (_standings[type][k] > 0.01) {
+                        result.Add(k);
+                    }
+                }
+            }
+            return result;
+        }
+
         /// <summary> Ajoute un portal aux alentour de cette station </summary>
         /// <param name="portal">le portail a ajouter </param>
         public void AddGate(Portal portal) {
@@ -113,9 +139,14 @@ namespace OSTData {
         /// <param name="corp">la corporation proprietaire de ce vaisseau</param>
         /// <returns>le vaisseau cree</returns>
         public Ship CreateShip(Corporation corp) {
+            if (corp.ICU < 100)
+                return null;
+
             Ship result = new Ship(System.Universe.Ships.Count + 1, corp);
             result.CurrentStation = this;
             System.Universe.Ships.Add(result);
+            corp.RemoveICU(100, "buying ship");
+
             return result;
         }
 
@@ -185,6 +216,19 @@ namespace OSTData {
         }
 
         /// <summary>
+        /// permet de savoir si une recette presente dans cette station produit des ressource du type donne
+        /// </summary>
+        /// <param name="type">le type a tester </param>
+        /// <returns>true si au moins une ressource produit de cette ressource</returns>
+        public bool IsProducing(ResourceElement.ResourceType type) {
+            foreach (Receipe r in _receipies) {
+                if (r.IsProducing(type))
+                    return true;
+            }
+            return false;
+        }
+
+        /// <summary>
         /// Indique a la station d'effectuer le travail qu'elle doit faire a la fin d'une journee
         /// </summary>
         /// <param name="timestamp">le timestamp en cours</param>
@@ -210,6 +254,9 @@ namespace OSTData {
                 }
             }
             _currentLoaders.Clear();
+
+            //mettre a jour les prix d'achats
+            UpdateBuyingPrices();
         }
 
         /// <summary>
@@ -248,12 +295,50 @@ namespace OSTData {
         private Dictionary<ResourceElement.ResourceType, int> _buyingPrices = new Dictionary<ResourceElement.ResourceType, int>();
         private Dictionary<ResourceElement.ResourceType, Dictionary<int, float>> _standings = new Dictionary<ResourceElement.ResourceType, Dictionary<int, float>>();
 
+        private void UpdateBuyingPrices() {
+            Dictionary<ResourceElement.ResourceType, int> needs = new Dictionary<ResourceElement.ResourceType, int>();
+            foreach (Receipe r in _receipies) {
+                foreach (ResourceElement.ResourceType t in Enum.GetValues(typeof(ResourceElement.ResourceType))) {
+                    int need = r.GetResourceNeed(t);
+                    if (!needs.ContainsKey(t))
+                        needs.Add(t, 0);
+                    needs[t] += need;
+                }
+            }
+            _buyingPrices.Clear();
+            foreach (ResourceElement.ResourceType t in Enum.GetValues(typeof(ResourceElement.ResourceType))) {
+                if (needs[t] > 0) {
+                    //NouveauPrix = prixBase * ((-1 / Log(qteMax)) * Log(Min(qte + 1, qteMax)) + 1.5)                    )
+                    int qte = GetHangar(-1).GetResourceQte(t);
+                    int qteMax = 1000;
+                    double price = 100.0 * ((1.0 - Math.Log(qteMax)) * Math.Log(Math.Min(qte + 1.0, qteMax)) + 1.5);
+                    int priceEntier = Convert.ToInt32(Math.Floor(price));
+                    _buyingPrices.Add(t, priceEntier);
+                }
+            }
+        }
+
         /// <summary>
         /// demande a la station de preparer les recette de base en fonction de son type
         /// </summary>
         public void InitProduct() {
             switch (Type) {
-                case StationType.Agricultural:
+                case StationType.Agricultural: {
+                    Receipe r1 = new Receipe(1);
+                    r1.AddOutput(ResourceElement.ResourceType.Food, 10);
+                    _receipies.Add(r1);
+
+                    Receipe r2 = new Receipe(9);
+                    r2.AddInput(ResourceElement.ResourceType.Water, 10);
+                    r2.AddOutput(ResourceElement.ResourceType.Food, 10);
+                    _receipies.Add(r2);
+
+                    Receipe r3 = new Receipe(9);
+                    r3.AddInput(ResourceElement.ResourceType.Water, 10);
+                    r3.AddInput(ResourceElement.ResourceType.Fertilizer, 10);
+                    r3.AddOutput(ResourceElement.ResourceType.Food, 20);
+                    _receipies.Add(r3);
+                }
                 break;
 
                 case StationType.City: {
@@ -281,10 +366,25 @@ namespace OSTData {
                 }
                 break;
 
-                case StationType.FuelRefinery:
+                case StationType.FuelRefinery: {
+                    Receipe r1 = new Receipe(300);
+                    r1.AddInput(ResourceElement.ResourceType.Uranium, 2);
+                    r1.AddOutput(ResourceElement.ResourceType.Batteries, 1);
+                    r1.AddOutput(ResourceElement.ResourceType.ToxicWaste, 2);
+                    _receipies.Add(r1);
+                }
                 break;
 
-                case StationType.IceField:
+                case StationType.IceField: {
+                    Receipe r1 = new Receipe(1);
+                    r1.AddOutput(ResourceElement.ResourceType.Water, 20);
+                    _receipies.Add(r1);
+
+                    Receipe r2 = new Receipe(30);
+                    r2.AddInput(ResourceElement.ResourceType.MechanicalPart, 5);
+                    r2.AddOutput(ResourceElement.ResourceType.Water, 10);
+                    _receipies.Add(r2);
+                }
                 break;
 
                 case StationType.Mine: {
@@ -308,15 +408,42 @@ namespace OSTData {
                 }
                 break;
 
-                case StationType.Reprocessing:
+                case StationType.Reprocessing: {
+                    Receipe r1 = new Receipe(100);
+                    r1.AddInput(ResourceElement.ResourceType.ToxicWaste, 2);
+                    r1.AddOutput(ResourceElement.ResourceType.Fertilizer, 1);
+                    _receipies.Add(r1);
+
+                    Receipe r2 = new Receipe(100);
+                    r2.AddInput(ResourceElement.ResourceType.Wastes, 2);
+                    r2.AddOutput(ResourceElement.ResourceType.Fertilizer, 2);
+                    _receipies.Add(r2);
+                }
                 break;
 
-                case StationType.RockRefinery:
+                case StationType.RockRefinery: {
+                    Receipe r1 = new Receipe(150);
+                    r1.AddInput(ResourceElement.ResourceType.Tobernite, 10);
+                    r1.AddOutput(ResourceElement.ResourceType.Uranium, 1);
+                    _receipies.Add(r1);
+
+                    Receipe r2 = new Receipe(150);
+                    r2.AddInput(ResourceElement.ResourceType.Tennantite, 10);
+                    r2.AddOutput(ResourceElement.ResourceType.Iron, 1);
+                    _receipies.Add(r2);
+                }
                 break;
 
-                case StationType.Shipyard:
+                case StationType.Shipyard: {
+                    Receipe r2 = new Receipe(50);
+                    r2.AddInput(ResourceElement.ResourceType.Electronics, 1);
+                    r2.AddInput(ResourceElement.ResourceType.Iron, 6);
+                    _receipies.Add(r2);
+                }
                 break;
             }
+            //avec les recettes, on updates les besoins
+            UpdateBuyingPrices();
         }
     }
 }

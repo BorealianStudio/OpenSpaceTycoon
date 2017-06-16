@@ -22,15 +22,16 @@ namespace OSTData.tst {
 
         [Test, Description("destination ajout")]
         public void ShipDestinations() {
-            Corporation corp = new Corporation(1);
+            Universe u = new Universe(0);
+            Corporation corp = u.CreateCorp(1);
             Ship ship = s1.CreateShip(corp);
             ship.AddDestination(s1);
             ship.AddDestination(s2);
             ship.AddDestination(s3, 1);
 
-            Assert.AreEqual(s1.ID, ship.GetDestinations(0).Destination.ID);
-            Assert.AreEqual(s3.ID, ship.GetDestinations(1).Destination.ID);
-            Assert.AreEqual(s2.ID, ship.GetDestinations(2).Destination.ID);
+            Assert.AreEqual(s1.ID, ship.GetDestination(0).Destination.ID);
+            Assert.AreEqual(s3.ID, ship.GetDestination(1).Destination.ID);
+            Assert.AreEqual(s2.ID, ship.GetDestination(2).Destination.ID);
         }
 
         [Test, Description("gestion destinations quand en route")]

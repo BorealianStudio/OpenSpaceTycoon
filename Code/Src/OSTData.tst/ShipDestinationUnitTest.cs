@@ -4,12 +4,19 @@ namespace OSTData.tst {
 
     [TestFixture]
     public class ShipDestinationUnitTest {
+        private Universe u = null;
+        private Corporation corp = null;
+
+        [SetUp]
+        public void init() {
+            u = new Universe(0);
+            corp = u.CreateCorp(1);
+            corp.AddICU(300, "");
+        }
 
         [Test, Description("construction")]
         public void ShipDestinationCreation() {
-            Universe u = new Universe(0);
             Station s = u.GetStation(1);
-            Corporation corp = new Corporation(1);
             Ship ship = s.CreateShip(corp);
 
             ShipDestination dest = ship.AddDestination(s);
@@ -28,6 +35,90 @@ namespace OSTData.tst {
             Assert.AreEqual(1, dest.GetUnloads().Count);
             Assert.AreEqual(ResourceElement.ResourceType.Water, dest.GetUnloads()[0].type);
             Assert.AreEqual(200, dest.GetUnloads()[0].qte);
+        }
+
+        [Test, Description("Suppression simple")]
+        public void ShipDestinationRemoveSimple() {
+            Station s = u.GetStation(1);
+            Ship ship = s.CreateShip(corp);
+
+            bool eventDone = false;
+            ship.onDestinationChange += () => { eventDone = true; };
+
+            ShipDestination dest1 = ship.AddDestination(u.GetStation(10));
+            ShipDestination dest2 = ship.AddDestination(u.GetStation(20));
+
+            Assert.IsTrue(eventDone);
+            eventDone = false;
+
+            ship.RemoveDestination(dest1);
+            Assert.IsTrue(eventDone);
+
+            Assert.AreEqual(1, ship.GetDestinations().Count);
+            Assert.AreEqual(dest2, ship.GetDestinations()[0]);
+        }
+
+        [Test, Description("suppression quand en marche")]
+        public void shipDestinationRemovePriorToCurrent() {
+            Station s = u.GetStation(1);
+            Ship ship = s.CreateShip(corp);
+
+            ShipDestination d1 = ship.AddDestination(u.GetStation(10));
+            ShipDestination d2 = ship.AddDestination(s);
+            ship.Start();
+
+            for (int i = 0; i < 12; i++) {
+                u.Update();
+            }
+
+            Assert.AreEqual(d2, ship.CurrentDestination);
+            ship.RemoveDestination(d1);
+
+            Assert.AreEqual(d2, ship.CurrentDestination);
+        }
+
+        [Test, Description("suppression dest en cours")]
+        public void ShipDestinationRemoveUsed() {
+            Station s = u.GetStation(1);
+            Ship ship = s.CreateShip(corp);
+
+            ShipDestination dest1 = ship.AddDestination(u.GetStation(10));
+            ShipDestination dest2 = ship.AddDestination(u.GetStation(15));
+            ship.Start();
+
+            ship.RemoveDestination(dest1);
+
+            Assert.AreEqual(2, ship.GetDestinations().Count);
+        }
+
+        [Test, Description("suppression dest autre ship")]
+        public void ShipDestinationRemoveWrong() {
+            Station s = u.GetStation(1);
+            Ship s1 = s.CreateShip(corp);
+            Ship s2 = s.CreateShip(corp);
+
+            ShipDestination dest1 = s1.AddDestination(u.GetStation(10));
+            ShipDestination dest2 = s1.AddDestination(u.GetStation(20));
+
+            ShipDestination dest3 = s2.AddDestination(u.GetStation(10));
+            ShipDestination dest4 = s2.AddDestination(u.GetStation(20));
+            s2.RemoveDestination(dest1);
+
+            Assert.AreEqual(2, s2.GetDestinations().Count);
+        }
+
+        [Test, Description("suppression d'une destination presente 2 fois")]
+        public void shipDestinationRemoveDouble() {
+            Station s = u.GetStation(1);
+            Ship ship = s.CreateShip(corp);
+
+            ShipDestination dest1 = ship.AddDestination(u.GetStation(10));
+            ShipDestination dest2 = ship.AddDestination(u.GetStation(20));
+            ShipDestination dest3 = ship.AddDestination(u.GetStation(10));
+            ShipDestination dest4 = ship.AddDestination(u.GetStation(20));
+            ship.RemoveDestination(dest1);
+
+            Assert.AreEqual(3, ship.GetDestinations().Count);
         }
     }
 }
