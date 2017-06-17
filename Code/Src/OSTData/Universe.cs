@@ -12,14 +12,10 @@ namespace OSTData {
 
         #region Events
 
-        /// <summary>
-        /// type de callback sans parametres
-        /// </summary>
+        /// <summary> Type de callback sans parametres </summary>
         public delegate void noParamAction();
 
-        /// <summary>
-        /// Event leve quand la fin d'une journée survient
-        /// </summary>
+        /// <summary> Event leve quand la fin d'une journée survient </summary>
         public event noParamAction onDayEnd = delegate { };
 
         #endregion Events
@@ -27,7 +23,7 @@ namespace OSTData {
         private Universe() {
         }
 
-        /// <summary> basic constructor </summary>
+        /// <summary> Constructeur basique </summary>
         /// <param name="seed"></param>
         public Universe(int seed) {
             _random = new OSTTools.Random(seed);
@@ -39,8 +35,8 @@ namespace OSTData {
         }
 
         /// <summary>
-        /// demande a l'univers de se creer les entitées necessaires.
-        /// ne pas faire plus d'une fois, et pas besoin apres une deserialization
+        /// Demande a l'univers de se creer les entitées necessaires.
+        /// Ne pas faire plus d'une fois, et pas besoin apres une deserialization.
         /// </summary>
         public void Build() {
             HardCordedBuildUniverse();
@@ -51,7 +47,7 @@ namespace OSTData {
         }
 
         /// <summary>
-        /// Effectuer une mise a jour d'un tour. c'est faire avancer le temps de 1/5 de jour
+        /// Effectuer une mise a jour d'un tour. C'est faire avancer le temps de 1/5 de jour.
         /// </summary>
         public void Update() {
             Hour++;
@@ -67,7 +63,7 @@ namespace OSTData {
         }
 
         /// <summary> Recuperer la liste de toutes les stations de l'univers </summary>
-        /// <returns>Une collection de reference sur les stations</returns>
+        /// <returns> Une collection de reference sur les stations </returns>
         public ICollection<Station> GetStations() {
             return new List<Station>(_stations.Values);
         }
@@ -80,34 +76,34 @@ namespace OSTData {
         }
 
         /// <summary> Recuperer une station par son ID</summary>
-        /// <param name="ID">l'ID de la station a recuperer</param>
-        /// <returns>la station ou null si aucune ne correspond</returns>
+        /// <param name="ID"> L'ID de la station a recuperer</param>
+        /// <returns> La station ou null si aucune ne correspond</returns>
         public Station GetStation(int ID) {
             if (_stations.ContainsKey(ID))
                 return _stations[ID];
             return null;
         }
 
-        /// <summary> Les systemes contenus dans cet univers </summary>        ///
+        /// <summary> Les systemes contenus dans cet univers </summary>
         public Dictionary<int, StarSystem> Systems { get; set; }
 
-        /// <summary> liste des vaisseaux dans l'univers </summary>
+        /// <summary> Liste des vaisseaux dans l'univers </summary>
         public List<Ship> Ships { get; set; }
 
         /// <summary> List des portail de cet univers </summary>
         public List<Portal> Portals { get; set; }
 
-        /// <summary> nombre de jour ecoule depuis le debut du jeu </summary>
+        /// <summary> Nombre de jour ecoule depuis le debut du jeu </summary>
         public int Day { get; private set; }
 
-        /// <summary> nombre d'heure ecoule dans le jour en cours</summary>
+        /// <summary> Nombre d'heure ecoule dans le jour en cours </summary>
         public int Hour { get; private set; }
 
         /// <summary>
-        /// recuperer une corporation par son ID
+        /// Recuperer une corporation par son ID
         /// </summary>
-        /// <param name="corpID">l'identifiant de la corporation</param>
-        /// <returns>la corporation si elle existe, null sinon</returns>
+        /// <param name="corpID"> L'identifiant de la corporation </param>
+        /// <returns> La corporation si elle existe, null sinon </returns>
         public Corporation GetCorporation(int corpID) {
             if (_corporations.ContainsKey(corpID))
                 return _corporations[corpID];
@@ -115,10 +111,11 @@ namespace OSTData {
         }
 
         /// <summary>
-        /// permet de creer une nouvelle corporation dans l'univers
+        /// Permet de creer une nouvelle corporation dans l'univers.
+        /// De base la corporation possede un capital de 100 ICU.
         /// </summary>
-        /// <param name="ID">l'identifiant unique de la corp</param>
-        /// <returns>la corporation creer si l'id etait libre, null sinon</returns>
+        /// <param name="ID"> L'identifiant unique de la corp</param>
+        /// <returns> La corporation cree si l'id etait libre, null sinon</returns>
         public Corporation CreateCorp(int ID) {
             if (_corporations.ContainsKey(ID))
                 return null;
@@ -130,9 +127,9 @@ namespace OSTData {
         }
 
         /// <summary>
-        /// Compare si deux object sont identique.
+        /// Compare si deux object sont identiques.
         /// </summary>
-        /// <param name="obj">l'autre objet a comparer</param>
+        /// <param name="obj">L'autre objet a comparer</param>
         /// <returns></returns>
         public override bool Equals(object obj) {
             Universe other = obj as Universe;

@@ -12,7 +12,7 @@ namespace OSTData {
         /// <summary>
         /// Constructeur de base
         /// </summary>
-        /// <param name="maxFreq">le nombre de fois que la recette peut etre effectue par jour</param>
+        /// <param name="maxFreq"> Le nombre de fois que la recette peut etre effectue par jour</param>
         public Receipe(int maxFreq) {
             MaxFreq = maxFreq;
         }
@@ -85,14 +85,14 @@ namespace OSTData {
             return true;
         }
 
-        /// <summary> le nombre de fois maximum que peut etre effectue une recette par jour </summary>
+        /// <summary> Le nombre de fois maximum que peut etre effectue la recette par jour. </summary>
         public int MaxFreq { get; private set; }
 
         /// <summary>
-        /// permet de connaitre si des outputs de cette recette produise un certain type de ressource
+        /// Permet de connaitre si des outputs de cette recette produise un certain type de ressource
         /// </summary>
-        /// <param name="type">la ressource a tester</param>
-        /// <returns>true si la recette peut produire ce type de ressource </returns>
+        /// <param name="type"> La ressource a tester</param>
+        /// <returns> true si la recette peut produire ce type de ressource </returns>
         public bool IsProducing(ResourceElement.ResourceType type) {
             return _outputs.ContainsKey(type);
         }

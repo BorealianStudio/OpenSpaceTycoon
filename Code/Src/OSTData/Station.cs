@@ -26,9 +26,9 @@ namespace OSTData {
 
         /// <summary> Constructeur par type </summary>
         /// <param name="type">le type de la station</param>
-        /// <param name="starSystem">Le systeme qui contient cette station</param>
-        /// <param name="position">La position de la station dans sons syteme, en AU</param>
-        /// <param name="iID">un identifiant pour cette station</param>
+        /// <param name="starSystem">Le systeme solair qui contient cette station</param>
+        /// <param name="position">La position de la station dans son syteme, en AU</param>
+        /// <param name="iID">Un identifiant pour cette station</param>
         public Station(StationType type, StarSystem starSystem, OSTTools.Vector3 position, int iID) {
             Type = type;
             Position = position;
@@ -77,10 +77,10 @@ namespace OSTData {
         }
 
         /// <summary>
-        /// methode utilise par un vaisseau pour indiquer qu'il est en train de s echarger d'un certain type de ressource
+        /// Methode utilise par un vaisseau pour indiquer qu'il est en train de s'echarger d'un certain type de ressource
         /// </summary>
-        /// <param name="ship">le vaisseau qui se charge</param>
-        /// <param name="type">le type de ressource qu'il charge</param>
+        /// <param name="ship"> Le vaisseau qui se charge</param>
+        /// <param name="type"> Le type de ressource qu'il charge</param>
         public void InformLoading(Ship ship, ResourceElement.ResourceType type) {
             if (!_currentLoaders.ContainsKey(ship.Owner.ID)) {
                 _currentLoaders.Add(ship.Owner.ID, new HashSet<ResourceElement.ResourceType>());
@@ -135,9 +135,9 @@ namespace OSTData {
             return result;
         }
 
-        /// <summary> permet de creer un vaisseau dans cette station </summary>
-        /// <param name="corp">la corporation proprietaire de ce vaisseau</param>
-        /// <returns>le vaisseau cree</returns>
+        /// <summary> Permet de creer un vaisseau dans cette station. </summary>
+        /// <param name="corp"> La corporation proprietaire de ce vaisseau. </param>
+        /// <returns> Le vaisseau cree. </returns>
         public Ship CreateShip(Corporation corp) {
             if (corp.ICU < 100)
                 return null;
@@ -145,7 +145,7 @@ namespace OSTData {
             Ship result = new Ship(System.Universe.Ships.Count + 1, corp);
             result.CurrentStation = this;
             System.Universe.Ships.Add(result);
-            corp.RemoveICU(100, "buying ship");
+            corp.RemoveICU(100, "Buying ship");
 
             return result;
         }

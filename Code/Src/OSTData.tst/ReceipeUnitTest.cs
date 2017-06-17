@@ -10,7 +10,7 @@ namespace OSTData.tst {
         }
 
         [Test, Description("Creation")]
-        public void UniverseConstruction() {
+        public void ReceipeConstruction() {
             Receipe r = new Receipe(10);
 
             Assert.AreEqual(10, r.MaxFreq);

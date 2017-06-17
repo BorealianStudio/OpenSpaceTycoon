@@ -59,7 +59,7 @@ namespace OSTData.tst {
         }
 
         [Test, Description("suppression quand en marche")]
-        public void shipDestinationRemovePriorToCurrent() {
+        public void ShipDestinationRemovePriorToCurrent() {
             Station s = u.GetStation(1);
             Ship ship = s.CreateShip(corp);
 
@@ -77,7 +77,7 @@ namespace OSTData.tst {
             Assert.AreEqual(d2, ship.CurrentDestination);
         }
 
-        [Test, Description("suppression dest en cours")]
+        [Test, Description("suppression destination en cours")]
         public void ShipDestinationRemoveUsed() {
             Station s = u.GetStation(1);
             Ship ship = s.CreateShip(corp);
@@ -91,7 +91,7 @@ namespace OSTData.tst {
             Assert.AreEqual(2, ship.GetDestinations().Count);
         }
 
-        [Test, Description("suppression dest autre ship")]
+        [Test, Description("Suppression destination autres ship")]
         public void ShipDestinationRemoveWrong() {
             Station s = u.GetStation(1);
             Ship s1 = s.CreateShip(corp);
@@ -107,8 +107,8 @@ namespace OSTData.tst {
             Assert.AreEqual(2, s2.GetDestinations().Count);
         }
 
-        [Test, Description("suppression d'une destination presente 2 fois")]
-        public void shipDestinationRemoveDouble() {
+        [Test, Description("Suppression d'une destination presente 2 fois")]
+        public void ShipDestinationRemoveDouble() {
             Station s = u.GetStation(1);
             Ship ship = s.CreateShip(corp);
 

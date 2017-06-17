@@ -115,7 +115,7 @@ namespace OSTData.tst {
         [Test, Description("Ajout d'un stack a un stack, aléatoirement")]
         public void StackAddStackRandom() {
             System.Random _rand = new System.Random();
-            for (int i = 0; i < 100000; i++) { // Faire 100.000 tests aléatoires
+            for (int i = 0; i < 50000; i++) { // Faire 50.000 tests aléatoires
                 int quantityElem1 = _rand.Next(0, int.MaxValue/4);
                 int quantityElem2 = _rand.Next(0, int.MaxValue/4);
                 int quantityElem3 = _rand.Next(0, int.MaxValue/4);
