@@ -5,7 +5,7 @@ namespace OSTData.tst {
     [TestFixture]
     public class CorporationUnitTest {
 
-        [Test, Description("gestion des ICUs")]
+        [Test, Description("Gestion des ICU")]
         public void CorporationICUs1() {
             Universe u = new Universe(0);
             Corporation corp = u.CreateCorp(1);
@@ -30,5 +30,8 @@ namespace OSTData.tst {
             Assert.IsTrue(eventTest);
             eventTest = false;
         }
+        
     }
+
+
 }

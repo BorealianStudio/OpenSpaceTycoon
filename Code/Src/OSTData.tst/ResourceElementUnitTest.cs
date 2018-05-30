@@ -54,5 +54,32 @@ namespace OSTData.tst {
             Assert.AreEqual(100, elem3.Quantity); // elem3 est une copie de elem1
             Assert.AreEqual(0, elem1.Quantity);
         }
+
+        [Test, Description("Division d'un ResourceStack en 2, tests aléatoires")]
+        public void ElementDivideRandom() {
+            System.Random _rand = new System.Random();
+            for (int i = 0; i < 100000; i++) { // Faire 100.000 tests aléatoires
+                int quantityStart = _rand.Next(0, int.MaxValue);
+                int quantityToRemove = _rand.Next(int.MinValue, int.MaxValue);
+
+                ResourceElement elem1 = new ResourceElement(ResourceElement.ResourceType.Water, station, quantityStart, 200);
+                ResourceElement elem2 = elem1.Split(quantityToRemove);
+
+                if (quantityToRemove < 0) { // cas si qte impossible
+                    Assert.AreEqual(null, elem2);
+                    Assert.AreEqual(quantityStart, elem1.Quantity);
+                } else if (quantityToRemove > quantityStart) { //cas si qte trop grande
+                    Assert.AreEqual(null, elem2);
+                    Assert.AreEqual(quantityStart, elem1.Quantity);
+                } else if (quantityToRemove == quantityStart) { //cas si qte egale
+                    Assert.AreEqual(quantityStart, elem2.Quantity); // elem2 est une copie de elem1
+                    Assert.AreEqual(0, elem1.Quantity);
+                } else {
+                    Assert.AreEqual(quantityToRemove, elem2.Quantity);
+                    Assert.AreEqual(quantityStart - quantityToRemove, elem1.Quantity);
+                }
+            }            
+        }
+
     }
 }

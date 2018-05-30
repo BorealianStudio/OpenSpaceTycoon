@@ -1,13 +1,13 @@
 namespace OSTData {
 
     /// <summary>
-    /// Classe representant une partie de Open space tycoon
+    /// Classe representant une partie de Open space tycoon.
     /// </summary>
     public class Game {
         private Universe _Universe = null;
 
         /// <summary>
-        /// new game creation
+        /// New game creation
         /// </summary>
         public Game() {
             _Universe = new Universe(0);

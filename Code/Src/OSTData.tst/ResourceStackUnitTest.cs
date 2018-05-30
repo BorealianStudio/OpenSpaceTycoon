@@ -110,5 +110,38 @@ namespace OSTData.tst {
             Assert.AreEqual(2, elems[1].DateProd);
             Assert.AreEqual(25, elems[1].Quantity);
         }
+
+
+        [Test, Description("Ajout d'un stack a un stack, aléatoirement")]
+        public void StackAddStackRandom() {
+            System.Random _rand = new System.Random();
+            for (int i = 0; i < 50000; i++) { // Faire 50.000 tests aléatoires
+                int quantityElem1 = _rand.Next(0, int.MaxValue/4);
+                int quantityElem2 = _rand.Next(0, int.MaxValue/4);
+                int quantityElem3 = _rand.Next(0, int.MaxValue/4);
+
+                ResourceStack stack1 = new ResourceStack(ResourceElement.ResourceType.Water);
+                ResourceElement elem1 = new ResourceElement(ResourceElement.ResourceType.Water, station, quantityElem1, 1);
+                ResourceElement elem2 = new ResourceElement(ResourceElement.ResourceType.Water, station, quantityElem2, 2);
+                stack1.Add(elem1);
+                stack1.Add(elem2);
+
+                ResourceStack stack2 = new ResourceStack(ResourceElement.ResourceType.Water);
+                ResourceElement elem3 = new ResourceElement(ResourceElement.ResourceType.Water, station, quantityElem3, 3);
+                stack2.Add(elem3);
+
+                stack1.Add(stack2);
+
+                Assert.AreEqual(quantityElem1+ quantityElem2 + quantityElem3, stack1.Qte);
+                Assert.AreEqual(0, stack2.Qte);
+
+                ResourceElement elem4 = new ResourceElement(ResourceElement.ResourceType.ToxicWaste, station, 10, 1);
+                ResourceStack stack3 = new ResourceStack(elem4);
+                stack1.Add(stack3);
+                Assert.AreEqual(quantityElem1 + quantityElem2 + quantityElem3, stack1.Qte);
+                Assert.AreEqual(10, stack3.Qte);
+            }
+        }
+
     }
 }

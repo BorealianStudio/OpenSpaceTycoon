@@ -25,7 +25,7 @@ namespace OSTData {
             ID = id;
         }
 
-        /// <summary> identifiant unique pour cette corporation </summary>
+        /// <summary> Identifiant unique pour cette corporation </summary>
         public int ID { get; private set; }
 
         private long _ICU = 0;
@@ -39,10 +39,10 @@ namespace OSTData {
         }
 
         /// <summary>
-        /// ajouter des ICU dans le compte de la corpo
+        /// Ajouter des ICU dans le compte de la corporation.
         /// </summary>
-        /// <param name="qte">la quantite a ajouter</param>
-        /// <param name="reason">le poste budgetaire ou ajouter les credits</param>
+        /// <param name="qte"> La quantite a ajouter</param>
+        /// <param name="reason"> Le poste budgetaire ou ajouter les credits (inutilise pour le moment) </param>
         public void AddICU(int qte, string reason) {
             ICU += qte;
         }
@@ -50,8 +50,8 @@ namespace OSTData {
         /// <summary>
         /// Retirer des ICU du compte de la corp et ajouter une ligne dans les depenses
         /// </summary>
-        /// <param name="qte">la quantite a retirer</param>
-        /// <param name="reason">la raison de la depense</param>
+        /// <param name="qte"> La quantite a retirer</param>
+        /// <param name="reason"> La raison de la depense</param>
         public void RemoveICU(int qte, string reason) {
             ICU -= qte;
         }
